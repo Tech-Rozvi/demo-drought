@@ -1,0 +1,156 @@
+{
+  "selected_access_method": "Models accessed through installed packages and app services as the operational interface.",
+  "pc_specs": {
+    "hostname": "SimonPC",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.12.9",
+    "python_executable": "C:\\Projects\\Infer RozviDrought\\.venv\\Scripts\\python.exe",
+    "cpu_name": "12th Gen Intel(R) Core(TM) i5-1235U",
+    "master_path": "C:\\Projects\\Infer RozviDrought\\data\\master_inputs\\master_inputs_long_198001_205012.parquet",
+    "cpu_logical_cores": 12,
+    "cpu_physical_cores": 10,
+    "ram_total_gb": 31.68,
+    "ram_available_gb": 19.53,
+    "tensorflow_version": "2.21.0",
+    "pandas_version": "3.0.1"
+  },
+  "dataset": {
+    "master_path": "C:\\Projects\\Infer RozviDrought\\data\\master_inputs\\master_inputs_long_198001_205012.parquet",
+    "rows": 38957625,
+    "load_time_s": 1.3460109000006923
+  },
+  "benchmarks": {
+    "point_models_priority": {
+      "pixel_id": 12539,
+      "timeseries_rows": 565,
+      "prepare_inputs": {
+        "n": 5,
+        "mean_s": 0.04401901999808615,
+        "median_s": 0.04435959999682382,
+        "min_s": 0.037605099998472724,
+        "max_s": 0.048758899996755645,
+        "p95_s": 0.048758899996755645,
+        "worst_s": 0.048758899996755645
+      },
+      "subsystems": {
+        "n": 5,
+        "mean_s": 0.819471359999443,
+        "median_s": 0.8244956999988062,
+        "min_s": 0.7877896999998484,
+        "max_s": 0.833088499995938,
+        "p95_s": 0.833088499995938,
+        "worst_s": 0.833088499995938
+      },
+      "fusion": {
+        "n": 5,
+        "mean_s": 0.05849476000003051,
+        "median_s": 0.05580519999784883,
+        "min_s": 0.05239560000336496,
+        "max_s": 0.06805470000108471,
+        "p95_s": 0.06805470000108471,
+        "worst_s": 0.06805470000108471
+      },
+      "total_models_path": {
+        "n": 5,
+        "mean_s": 0.9219851399975596,
+        "median_s": 0.9289543999984744,
+        "min_s": 0.8870717999961926,
+        "max_s": 0.9369099999967148,
+        "p95_s": 0.9369099999967148,
+        "worst_s": 0.9369099999967148
+      }
+    },
+    "point_full_chain": {
+      "locate_point": {
+        "n": 5,
+        "mean_s": 4.919999628327787e-06,
+        "median_s": 4.699999408330768e-06,
+        "min_s": 4.199995601084083e-06,
+        "max_s": 5.699999746866524e-06,
+        "p95_s": 5.699999746866524e-06,
+        "worst_s": 5.699999746866524e-06
+      },
+      "read_timeseries": {
+        "n": 5,
+        "mean_s": 0.2922842199986917,
+        "median_s": 0.2904056999977911,
+        "min_s": 0.2789176000005682,
+        "max_s": 0.30548149999958696,
+        "p95_s": 0.30548149999958696,
+        "worst_s": 0.30548149999958696
+      },
+      "prepare_inputs": {
+        "n": 5,
+        "mean_s": 0.03682264000090072,
+        "median_s": 0.037089899997226894,
+        "min_s": 0.03227370000240626,
+        "max_s": 0.03923950000171317,
+        "p95_s": 0.03923950000171317,
+        "worst_s": 0.03923950000171317
+      },
+      "subsystems": {
+        "n": 5,
+        "mean_s": 0.7314380200012238,
+        "median_s": 0.69436709999718,
+        "min_s": 0.6660979000007501,
+        "max_s": 0.8450765000015963,
+        "p95_s": 0.8450765000015963,
+        "worst_s": 0.8450765000015963
+      },
+      "fusion": {
+        "n": 5,
+        "mean_s": 0.05430563999834703,
+        "median_s": 0.049022799998056144,
+        "min_s": 0.048185200001171324,
+        "max_s": 0.06914929999766173,
+        "p95_s": 0.06914929999766173,
+        "worst_s": 0.06914929999766173
+      },
+      "total_full_chain": {
+        "n": 5,
+        "mean_s": 1.1148554399987916,
+        "median_s": 1.0625101000041468,
+        "min_s": 1.053747799996927,
+        "max_s": 1.2280403999975533,
+        "p95_s": 1.2280403999975533,
+        "worst_s": 1.2280403999975533
+      }
+    },
+    "polygon_full_chain": {
+      "geometry_type": "Polygon",
+      "cells_selected": 4,
+      "total": {
+        "n": 5,
+        "mean_s": 8.071868580000592,
+        "median_s": 8.262656500002777,
+        "min_s": 6.9731001000036485,
+        "max_s": 8.487902799999574,
+        "p95_s": 8.487902799999574,
+        "worst_s": 8.487902799999574
+      },
+      "mean_seconds_per_cell": 2.017967145000148,
+      "worst_seconds_per_cell": 2.1219756999998935
+    },
+    "multipolygon_full_chain": {
+      "geometry_type": "MultiPolygon",
+      "cells_selected": 10,
+      "total": {
+        "n": 5,
+        "mean_s": 16.600716759997887,
+        "median_s": 16.498540000000503,
+        "min_s": 16.202974599997106,
+        "max_s": 17.017848899995442,
+        "p95_s": 17.017848899995442,
+        "worst_s": 17.017848899995442
+      },
+      "mean_seconds_per_cell": 1.6600716759997887,
+      "worst_seconds_per_cell": 1.7017848899995442
+    }
+  },
+  "outlook": {
+    "worst_case_point_models_s": 0.9369099999967148,
+    "worst_case_point_full_chain_s": 1.2280403999975533,
+    "worst_case_polygon_full_chain_s": 8.487902799999574,
+    "worst_case_multipolygon_full_chain_s": 17.017848899995442
+  }
+}

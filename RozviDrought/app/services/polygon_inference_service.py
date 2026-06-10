@@ -42,12 +42,12 @@ class PolygonInferenceService:
         scenario: str,
         run_yyyymm: int,
     ) -> pd.DataFrame:
-        run_yyyymm = str(run_yyyymm)
+        run_yyyymm_str = str(run_yyyymm)
         base = self.master_df[self.master_df["pixel_id"] == pixel_id].copy()
 
         if scenario == "historical":
             ts = base[base["scenario"] == "historical"].copy()
-            ts = ts[ts["yyyymm"] <= run_yyyymm]
+            ts = ts[ts["yyyymm"] <= run_yyyymm_str]
         else:
             hist = base[
                 (base["scenario"] == "historical")
@@ -57,7 +57,7 @@ class PolygonInferenceService:
             fut = base[
                 (base["scenario"] == scenario)
                 & (base["yyyymm"] >= "202601")
-                & (base["yyyymm"] <= run_yyyymm)
+                & (base["yyyymm"] <= run_yyyymm_str)
             ].copy()
 
             ts = pd.concat([hist, fut], ignore_index=True)
@@ -68,6 +68,59 @@ class PolygonInferenceService:
             .reset_index(drop=True)
         )
         return ts
+
+    def _select_target_subsystem_outputs(
+        self,
+        prepared: dict[str, pd.DataFrame],
+        subsystem_outputs: dict[str, pd.DataFrame],
+        run_yyyymm: int,
+    ) -> dict[str, pd.DataFrame]:
+        run_yyyymm_str = str(run_yyyymm)
+        selected_outputs: dict[str, pd.DataFrame] = {}
+
+        for subsystem_name, output_df in subsystem_outputs.items():
+            if output_df.empty:
+                selected_outputs[subsystem_name] = output_df
+                continue
+
+            output_df = output_df.reset_index(drop=True)
+
+            # Some subsystem models, especially sequence models, may already return
+            # only the requested target-month prediction.
+            if len(output_df) == 1:
+                selected_outputs[subsystem_name] = output_df
+                continue
+
+            prepared_df = prepared.get(subsystem_name)
+
+            if prepared_df is None or prepared_df.empty:
+                selected_outputs[subsystem_name] = output_df.tail(1).reset_index(drop=True)
+                continue
+
+            prepared_df = prepared_df.reset_index(drop=True).copy()
+            prepared_df["yyyymm"] = prepared_df["yyyymm"].astype(str)
+
+            target_positions = prepared_df.index[
+                prepared_df["yyyymm"] == run_yyyymm_str
+            ].tolist()
+
+            if target_positions:
+                target_pos = target_positions[-1]
+            else:
+                # Fallback to the latest prepared row, because _prepare_timeseries()
+                # already clips the time series up to run_yyyymm.
+                target_pos = len(prepared_df) - 1
+
+            if target_pos >= len(output_df):
+                target_pos = len(output_df) - 1
+
+            selected_outputs[subsystem_name] = (
+                output_df.iloc[[target_pos]]
+                .reset_index(drop=True)
+                .copy()
+            )
+
+        return selected_outputs
 
     def _infer_one_pixel(
         self,
@@ -89,8 +142,19 @@ class PolygonInferenceService:
             ts,
             run_yyyymm=run_yyyymm,
         )
+
         subsystem_outputs = self.subsystem_service.run_subsystems(prepared)
-        fusion_result = self.fusion_service.run(subsystem_outputs, model=model)
+
+        target_subsystem_outputs = self._select_target_subsystem_outputs(
+            prepared=prepared,
+            subsystem_outputs=subsystem_outputs,
+            run_yyyymm=run_yyyymm,
+        )
+
+        fusion_result = self.fusion_service.run(
+            target_subsystem_outputs,
+            model=model,
+        )
 
         if hasattr(fusion_result, "to_dict"):
             fusion_result = fusion_result.to_dict()
