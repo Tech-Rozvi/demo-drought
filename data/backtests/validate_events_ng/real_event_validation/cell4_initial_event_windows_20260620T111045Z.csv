@@ -1,0 +1,4 @@
+event_id,event_name,reported_severity,start_yyyymm,end_yyyymm,initial_geography,window_definition
+zim_2015_2016,Zimbabwe drought 2015–2016,extreme,201501,201612,national,timeline_year_range_unrefined
+zim_2018_2019,Zimbabwe drought 2018–2019,moderate,201801,201912,national,timeline_year_range_unrefined
+zim_2023_2024,Zimbabwe drought 2023–2024,catastrophic,202301,202412,national,timeline_year_range_unrefined

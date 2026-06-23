@@ -1,0 +1,86 @@
+{
+  "run_id": "20260620T145557Z",
+  "purpose": "Expanded legacy hydrology context with predictor inputs and master TWS-only fallback.",
+  "predictor_source": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\model_inputs\\temporal_predictors_full_20260614T141118Z.parquet",
+  "master_tws_only_source": "C:\\Projects\\Infer RozviDrought\\data\\master_inputs\\master_inputs_long_198001_205012.parquet",
+  "predictor_columns_read": [
+    "row",
+    "col",
+    "lon",
+    "lat",
+    "yyyymm",
+    "t2m",
+    "d2m",
+    "pet",
+    "sm_esa_cci",
+    "ndvi",
+    "tws"
+  ],
+  "master_columns_read": [
+    "row",
+    "col",
+    "yyyymm",
+    "tws"
+  ],
+  "pixel_id_rule": "pixel_id = '<row>_<col>'",
+  "scenario_rule": "scenario is null because neither source supplies it.",
+  "raw_feature_mapping": {
+    "t2m": "predictor:t2m",
+    "d2m": "predictor:d2m",
+    "pet": "predictor:pet",
+    "sm": "predictor:sm_esa_cci",
+    "ndvi": "predictor:ndvi",
+    "tws": "predictor:tws where non-null; otherwise master_inputs:tws"
+  },
+  "hydrology_contract": {
+    "feature_list": [
+      "tws",
+      "tws_lag1",
+      "tws_lag2",
+      "tws_lag3",
+      "tws_lag6",
+      "tws_rollmean3",
+      "tws_rollmean6",
+      "tws_rollmean12"
+    ],
+    "sequence_config": {
+      "model_type": "GRU",
+      "seq_len": 24,
+      "max_gap_months": 6
+    },
+    "warmup_months": 11,
+    "required_raw_months": 35
+  },
+  "events": [
+    {
+      "event_id": "zimbabwe_2015_2016",
+      "first_scored_yyyymm": 201510,
+      "last_scored_yyyymm": 201602,
+      "required_raw_context_start": 201212
+    },
+    {
+      "event_id": "zimbabwe_2018_2019",
+      "first_scored_yyyymm": 201810,
+      "last_scored_yyyymm": 201905,
+      "required_raw_context_start": 201512
+    },
+    {
+      "event_id": "zimbabwe_2023_2024",
+      "first_scored_yyyymm": 202310,
+      "last_scored_yyyymm": 202403,
+      "required_raw_context_start": 202012
+    }
+  ],
+  "grid_rows_per_month": 26775,
+  "rows_written": 3159450,
+  "hydrology_preflight_passed": true,
+  "outputs": {
+    "context_parquet": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_context_tws_backfilled_20260620T145557Z.parquet",
+    "coverage_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_context_coverage_20260620T145557Z.csv",
+    "monthly_tws_provenance_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_monthly_tws_provenance_20260620T145557Z.csv",
+    "event_expansion_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_event_context_expansion_20260620T145557Z.csv",
+    "hydrology_preflight_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_hydrology_sequence_preflight_20260620T145557Z.csv",
+    "target_raw_coverage_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_target_raw_coverage_20260620T145557Z.csv",
+    "manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_context_manifest_20260620T145557Z.json"
+  }
+}

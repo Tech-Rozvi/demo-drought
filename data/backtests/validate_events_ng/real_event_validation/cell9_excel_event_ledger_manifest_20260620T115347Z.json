@@ -1,0 +1,32 @@
+{
+  "run_id": "20260620T115347Z",
+  "status": "excel_season_aligned_event_ledger_and_v2_inference_eligibility_completed",
+  "event_workbook_path": "C:\\Projects\\Infer RozviDrought\\data\\events\\Zimbabwe_Drought_Timeline_1902_2024.xlsx",
+  "sheet_name": "Chronological Timeline",
+  "header_row_excel_number": 3,
+  "event_window_protocol": {
+    "anchor": "October of Growing Season first year",
+    "anchor_month_number": 10,
+    "duration": "Excel Duration (Months), inclusive",
+    "spi12_context_requirement": "event month plus prior 24 complete source months"
+  },
+  "source_coverage": {
+    "first_month": "2002-01",
+    "last_month": "2024-12",
+    "full_grid_cell_count": 26775,
+    "internal_month_gap_count": 0,
+    "first_full_spi12_context_month": "2004-01"
+  },
+  "event_count": 17,
+  "ready_event_count": 4,
+  "partial_event_count": 0,
+  "historical_reconstruction_event_count": 13,
+  "outputs": {
+    "full_predictor_month_coverage_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_full_predictor_month_coverage_20260620T115347Z.csv",
+    "event_ledger_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_excel_season_aligned_event_ledger_20260620T115347Z.csv",
+    "event_month_ledger_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_excel_season_aligned_event_month_ledger_20260620T115347Z.csv",
+    "event_inference_eligibility_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_event_inference_eligibility_20260620T115347Z.csv",
+    "events_ready_for_comparison_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_events_ready_for_comparison_20260620T115347Z.csv",
+    "manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_excel_event_ledger_manifest_20260620T115347Z.json"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "run_id": "20260620T113613Z",
+  "status": "source_provenance_found_review_formula_context_before_derivation",
+  "purpose": "Locate source provenance for SPI12 long-horizon sequence features before attempting feature recreation.",
+  "search_terms": [
+    "rain_chirps_seq_lag12",
+    "rain_chirps_seq_rollmean24",
+    "tws_seq_lag24",
+    "tws_grace_seq_rollstd24",
+    "seq_lag12",
+    "seq_lag24",
+    "seq_delta12",
+    "seq_delta24",
+    "seq_rollmean24",
+    "seq_rollstd24",
+    "__is_missing"
+  ],
+  "exact_sequence_feature_count": 48,
+  "search_roots": {
+    "release_handoff_root": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\model_outputs\\release_v2_package_handoff",
+    "v2_artifact_root": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\package_releases\\rozvidrought_v2\\rozvidrought\\artifacts",
+    "source_roots_outside_data": [
+      "C:\\Projects\\ramangwana\\risks\\biophysical_profiles",
+      "C:\\Projects\\ramangwana\\risks\\data_extraction_scripts",
+      "C:\\Projects\\ramangwana\\risks\\docs",
+      "C:\\Projects\\ramangwana\\risks\\models",
+      "C:\\Projects\\ramangwana\\risks\\preprocessing_scripts",
+      "C:\\Projects\\ramangwana\\risks\\processing_scripts",
+      "C:\\Projects\\ramangwana\\risks\\results",
+      "C:\\Projects\\ramangwana\\risks\\test"
+    ],
+    "drought_source_roots": []
+  },
+  "summary": [
+    {
+      "metric": "priority_metadata_files_scanned",
+      "value": 41
+    },
+    {
+      "metric": "source_code_files_scanned",
+      "value": 121
+    },
+    {
+      "metric": "drought_source_files_scanned",
+      "value": 0
+    },
+    {
+      "metric": "all_text_matches",
+      "value": 473
+    },
+    {
+      "metric": "exact_missing_sequence_feature_hits",
+      "value": 24
+    },
+    {
+      "metric": "formula_keyword_hits",
+      "value": 449
+    }
+  ],
+  "outputs": {
+    "priority_metadata_hits_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell7_priority_metadata_hits_20260620T113613Z.csv",
+    "source_code_hits_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell7_source_code_hits_20260620T113613Z.csv",
+    "drought_source_hits_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell7_drought_source_hits_20260620T113613Z.csv",
+    "consolidated_hits_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell7_consolidated_provenance_hits_20260620T113613Z.csv",
+    "summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell7_provenance_summary_20260620T113613Z.csv",
+    "manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell7_feature_provenance_search_manifest_20260620T113613Z.json"
+  }
+}

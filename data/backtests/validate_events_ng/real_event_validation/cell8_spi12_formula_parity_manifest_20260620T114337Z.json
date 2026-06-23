@@ -1,0 +1,36 @@
+{
+  "run_id": "20260620T114337Z",
+  "status": "spi12_full_predictor_feature_recreation_parity_passed_for_release_overlap_months",
+  "purpose": "Formula-parity validation for SPI12 fields absent from temporal_predictors_full.",
+  "release_formula_notebook": "C:\\Projects\\ramangwana\\risks\\processing_scripts\\drought\\subsystems\\release_v2_package_handoff\\2_generate_release_bundle_predictions.ipynb",
+  "formula_code_cell": "code_cell_3",
+  "formula_marker_line": 291,
+  "full_predictor_source_path": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\model_inputs\\temporal_predictors_full_20260614T141118Z.parquet",
+  "release_feature_frame_path": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\model_outputs\\release_v2_package_handoff\\release_bundle_predictions\\release_bundle_prediction_feature_frame_20260618T152226Z.parquet",
+  "parity_months": [
+    "201501",
+    "201601",
+    "201805",
+    "201905",
+    "202301",
+    "202410"
+  ],
+  "expected_comparison_rows": 160650,
+  "matched_comparison_rows": 160650,
+  "numeric_tolerance": 1e-05,
+  "recreated_feature_count": 68,
+  "passed_feature_count": 68,
+  "failed_feature_count": 0,
+  "total_value_mismatch_count": 0,
+  "formula_parity_passed": true,
+  "outputs": {
+    "release_formula_context_txt": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell8_release_formula_context_20260620T114337Z.txt",
+    "formula_specification_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell8_spi12_formula_specification_20260620T114337Z.csv",
+    "recreated_month_counts_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell8_recreated_month_counts_20260620T114337Z.csv",
+    "release_month_counts_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell8_release_month_counts_20260620T114337Z.csv",
+    "feature_parity_summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell8_spi12_feature_parity_summary_20260620T114337Z.csv",
+    "mismatch_sample_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell8_spi12_feature_mismatch_sample_20260620T114337Z.csv",
+    "decision_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell8_spi12_formula_parity_decision_20260620T114337Z.csv",
+    "manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell8_spi12_formula_parity_manifest_20260620T114337Z.json"
+  }
+}

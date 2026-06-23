@@ -1,0 +1,5 @@
+scenario,first_month,last_month,observed_month_count,expected_month_count,missing_month_count,missing_months_preview
+historical,198001,202603,555,555,0,
+ssp245,202601,205012,300,300,0,
+ssp370,202601,205012,300,300,0,
+ssp585,202601,205012,300,300,0,

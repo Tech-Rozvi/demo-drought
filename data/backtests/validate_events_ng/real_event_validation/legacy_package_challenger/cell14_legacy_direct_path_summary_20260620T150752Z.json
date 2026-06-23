@@ -1,0 +1,36 @@
+{
+  "run_id": "20260620T150752Z",
+  "status": "legacy_hybrid_preflight_passed_ready_for_national_run",
+  "master_inputs_read_in_cell14": false,
+  "predictor_source_read_in_cell14": false,
+  "cell13_context_source": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_context_tws_backfilled_20260620T145557Z.parquet",
+  "probe_pixel_id": "0_101",
+  "target_yyyymm": 201510,
+  "context_start_yyyymm": 201212,
+  "context_month_count": 35,
+  "hydrology_features": [
+    "tws",
+    "tws_lag1",
+    "tws_lag2",
+    "tws_lag3",
+    "tws_lag6",
+    "tws_rollmean3",
+    "tws_rollmean6",
+    "tws_rollmean12"
+  ],
+  "hydrology_feature_warmup_months": 11,
+  "hydrology_seq_len": 24,
+  "hydrology_valid_window_count": 1,
+  "hydrology_target_has_valid_window": true,
+  "hydrology_sequence_shape": "1x24x8",
+  "package_exception": null,
+  "package_traceback": null,
+  "outputs": {
+    "candidate_audit_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell14_candidate_audit_20260620T150752Z.csv",
+    "direct_path_audit_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell14_legacy_direct_path_audit_20260620T150752Z.csv",
+    "probe_history_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell14_legacy_probe_history_20260620T150752Z.csv",
+    "subsystem_probabilities_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell14_legacy_subsystem_probabilities_20260620T150752Z.csv",
+    "fusion_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell14_legacy_probe_fusion_20260620T150752Z.json",
+    "summary_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell14_legacy_direct_path_summary_20260620T150752Z.json"
+  }
+}

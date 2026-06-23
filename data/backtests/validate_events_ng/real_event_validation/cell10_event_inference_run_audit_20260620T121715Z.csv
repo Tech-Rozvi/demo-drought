@@ -1,0 +1,4 @@
+event_key,excel_event_id,window_start_yyyymm,window_end_yyyymm,event_month_count,national_cell_count,input_rows_scored,spi12_reconstruction_status,status
+zimbabwe_2015_2016,15,201510,201602,5,26775,133875,cell8_exact_formula_parity_pass,inference_completed
+zimbabwe_2018_2019,16,201810,201905,8,26775,214200,cell8_exact_formula_parity_pass,inference_completed
+zimbabwe_2023_2024,17,202310,202403,6,26775,160650,cell8_exact_formula_parity_pass,inference_completed

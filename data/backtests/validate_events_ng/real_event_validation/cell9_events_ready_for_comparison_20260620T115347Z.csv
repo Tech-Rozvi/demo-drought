@@ -1,0 +1,5 @@
+event_key,excel_event_id,event_period_raw,growing_season_raw,duration_months,excel_severity_score,excel_severity_label,event_start_yyyymm,event_end_yyyymm,window_within_event_period_years,source_months_present,complete_grid_months,spi12_context_ready_months,raw_reconstruction_months,source_history_months_required,event_coverage_rate,event_inference_status
+excel_event_14_2012–2013,14,2012–2013,2012/13,8,2,2 – Moderate,201210,201305,True,8,8,8,0,0,1.0,ready_for_full_event_model_vs_excel_comparison
+excel_event_15_2015–2016,15,2015–2016,2015/16,12,4,4 – Extreme,201510,201609,True,12,12,12,0,0,1.0,ready_for_full_event_model_vs_excel_comparison
+excel_event_16_2018–2019,16,2018–2019,2018/19,8,2,2 – Moderate,201810,201905,True,8,8,8,0,0,1.0,ready_for_full_event_model_vs_excel_comparison
+excel_event_17_2023–2024,17,2023–2024,2023/24,12,5,5 – Catastrophic,202310,202409,True,12,12,12,0,0,1.0,ready_for_full_event_model_vs_excel_comparison

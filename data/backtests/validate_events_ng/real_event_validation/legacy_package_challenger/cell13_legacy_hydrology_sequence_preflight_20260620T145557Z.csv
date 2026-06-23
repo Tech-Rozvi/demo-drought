@@ -1,0 +1,4 @@
+event_id,probe_pixel_id,required_raw_context_start,first_scored_yyyymm,raw_context_months,seq_len,valid_window_count,target_has_valid_window,sequence_shape
+zimbabwe_2015_2016,0_0,201212,201510,35,24,1,True,1x24x8
+zimbabwe_2018_2019,0_0,201512,201810,35,24,1,True,1x24x8
+zimbabwe_2023_2024,0_0,202012,202310,35,24,1,True,1x24x8

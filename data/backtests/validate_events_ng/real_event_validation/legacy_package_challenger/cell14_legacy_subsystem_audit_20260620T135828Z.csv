@@ -1,0 +1,9 @@
+stage,subsystem,object_type,row_count,column_count,columns
+raw_subsystem_output,atmospheric,DataFrame,25,4,p0 | p1 | p2 | p3
+raw_subsystem_output,soil,DataFrame,25,4,p0 | p1 | p2 | p3
+raw_subsystem_output,vegetation,DataFrame,25,4,p0 | p1 | p2 | p3
+raw_subsystem_output,hydrology,DataFrame,0,4,p0 | p1 | p2 | p3
+selected_for_fusion,atmospheric,DataFrame,1,4,p0 | p1 | p2 | p3
+selected_for_fusion,soil,DataFrame,1,4,p0 | p1 | p2 | p3
+selected_for_fusion,vegetation,DataFrame,1,4,p0 | p1 | p2 | p3
+selected_for_fusion,hydrology,DataFrame,0,4,p0 | p1 | p2 | p3

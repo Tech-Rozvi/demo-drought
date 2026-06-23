@@ -1,0 +1,3 @@
+source_name,status,expected_seed_rows,matched_rows,max_abs_delta,mean_abs_delta,tolerance
+target_models_direct_vs_release,parity_difference_detected,13,13,5.960464477539063e-08,3.314741475034493e-09,1e-08
+weighted_fusion_vs_release_fusion,parity_difference_detected,13,13,3.5762786843029915e-08,3.813689334601671e-09,1e-08

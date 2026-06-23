@@ -1,0 +1,13 @@
+sheet_name,raw_rows,raw_columns,candidate_header_excel_row,candidate_header_score,candidate_header_values
+Chronological Timeline,20,13,3,91.0,"ID | Event Period | Growing Season | El Niño
+Association | Duration
+(Months) | Rainfall
+Deficit (%) | Agricultural Impact | Population
+Affected | Government Response / Declarations | Economic Cost
+(Estimated) | Severity
+Score (1–5) | Severity Label | Key Notes / Sources"
+Severity Ranking,19,8,2,56.0,"Rank | Period | Severity
+Score | Severity Level | El Niño | Population
+Affected (M est.) | Maize Impact | Significance"
+Key Statistics,12,7,2,54.0,Event | Season | Severity Score | Pop. Affected (M) | Rainfall Deficit (%) | Maize Production Change (%) | GDP Growth Impact (%)
+Legend & Methodology,17,2,6,44.0,Severity 3 – Severe | 2–3M affected; significant crop failures; multi-province impact; GMB imports needed

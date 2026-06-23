@@ -1,0 +1,3 @@
+source,status,path,rows_scanned,rows_found,missing_columns
+target_predictions,read_ok,C:\Projects\ramangwana\risks\data\drought_model\processed\model_outputs\release_v2_package_handoff\release_bundle_predictions\release_bundle_target_predictions_20260618T152729Z.parquet,1820700,13,[]
+fusion_predictions,read_ok,C:\Projects\ramangwana\risks\data\drought_model\processed\model_outputs\release_v2_package_handoff\release_bundle_predictions\release_bundle_fusion_v2_predictions_20260618T185446Z.parquet,1820700,13,[]

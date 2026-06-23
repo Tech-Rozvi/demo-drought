@@ -1,0 +1,13 @@
+stage,subsystem,object_type,row_count,column_count,feature_null_count,yyyymm_min,yyyymm_max,columns
+prepared,atmospheric,DataFrame,35,28,90,201212,201510,pixel_key | yyyymm | pet | t2m | d2m | pet_lag1 | pet_lag2 | pet_lag3 | pet_lag6 | t2m_lag1 | t2m_lag2 | t2m_lag3 | t2m_lag6 | d2m_lag1 | d2m_lag2 | d2m_lag3 | d2m_lag6 | pet_rollmean3 | pet_rollmean6 | pet_rollmean12 | t2m_rollmean3 | t2m_rollmean6 | t2m_rollmean12 | d2m_rollmean3 | d2m_rollmean6 | d2m_rollmean12 | time_type | run_yyyymm
+prepared,soil,DataFrame,35,12,30,201212,201510,pixel_key | yyyymm | sm | sm_lag1 | sm_lag2 | sm_lag3 | sm_lag6 | sm_rollmean3 | sm_rollmean6 | sm_rollmean12 | time_type | run_yyyymm
+prepared,vegetation,DataFrame,35,12,30,201212,201510,pixel_key | yyyymm | ndvi | ndvi_lag1 | ndvi_lag2 | ndvi_lag3 | ndvi_lag6 | ndvi_rollmean3 | ndvi_rollmean6 | ndvi_rollmean12 | time_type | run_yyyymm
+prepared,hydrology,DataFrame,35,12,30,201212,201510,pixel_key | yyyymm | tws | tws_lag1 | tws_lag2 | tws_lag3 | tws_lag6 | tws_rollmean3 | tws_rollmean6 | tws_rollmean12 | time_type | run_yyyymm
+target_prepared,atmospheric,DataFrame,1,28,0,201510,201510,pixel_key | yyyymm | pet | t2m | d2m | pet_lag1 | pet_lag2 | pet_lag3 | pet_lag6 | t2m_lag1 | t2m_lag2 | t2m_lag3 | t2m_lag6 | d2m_lag1 | d2m_lag2 | d2m_lag3 | d2m_lag6 | pet_rollmean3 | pet_rollmean6 | pet_rollmean12 | t2m_rollmean3 | t2m_rollmean6 | t2m_rollmean12 | d2m_rollmean3 | d2m_rollmean6 | d2m_rollmean12 | time_type | run_yyyymm
+target_prepared,soil,DataFrame,1,12,0,201510,201510,pixel_key | yyyymm | sm | sm_lag1 | sm_lag2 | sm_lag3 | sm_lag6 | sm_rollmean3 | sm_rollmean6 | sm_rollmean12 | time_type | run_yyyymm
+target_prepared,vegetation,DataFrame,1,12,0,201510,201510,pixel_key | yyyymm | ndvi | ndvi_lag1 | ndvi_lag2 | ndvi_lag3 | ndvi_lag6 | ndvi_rollmean3 | ndvi_rollmean6 | ndvi_rollmean12 | time_type | run_yyyymm
+target_prepared,hydrology,DataFrame,35,12,30,201212,201510,pixel_key | yyyymm | tws | tws_lag1 | tws_lag2 | tws_lag3 | tws_lag6 | tws_rollmean3 | tws_rollmean6 | tws_rollmean12 | time_type | run_yyyymm
+subsystem_output,atmospheric,DataFrame,1,4,0,,,p0 | p1 | p2 | p3
+subsystem_output,soil,DataFrame,1,4,0,,,p0 | p1 | p2 | p3
+subsystem_output,vegetation,DataFrame,1,4,0,,,p0 | p1 | p2 | p3
+subsystem_output,hydrology,DataFrame,1,4,0,,,p0 | p1 | p2 | p3

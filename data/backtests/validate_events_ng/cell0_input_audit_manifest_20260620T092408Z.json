@@ -1,0 +1,192 @@
+{
+  "run_id": "20260620T092408Z",
+  "status": "master_inputs_structurally_valid_for_event_target_selection",
+  "purpose": "Structural audit of the current app master inputs before targeted drought-event validation.",
+  "current_directory": "C:\\Projects\\Infer RozviDrought\\RozviDrought\\tests",
+  "project_root": "C:\\Projects\\Infer RozviDrought\\RozviDrought",
+  "workspace_dir": "C:\\Projects\\Infer RozviDrought",
+  "data_root": "C:\\Projects\\Infer RozviDrought\\data",
+  "master_input_path": "C:\\Projects\\Infer RozviDrought\\data\\master_inputs\\master_inputs_long_198001_205012.parquet",
+  "output_directory": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng",
+  "parquet_rows": 38957625,
+  "parquet_columns": 13,
+  "parquet_row_groups": 38,
+  "schema_columns": [
+    "pixel_id",
+    "row",
+    "col",
+    "lon",
+    "lat",
+    "scenario",
+    "yyyymm",
+    "t2m",
+    "d2m",
+    "pet",
+    "sm",
+    "ndvi",
+    "tws"
+  ],
+  "required_columns": [
+    "pixel_id",
+    "row",
+    "col",
+    "lon",
+    "lat",
+    "scenario",
+    "yyyymm",
+    "t2m",
+    "d2m",
+    "pet",
+    "sm",
+    "ndvi",
+    "tws"
+  ],
+  "missing_required_columns": [],
+  "invalid_yyyymm_count": 0,
+  "duplicate_key_count": 0,
+  "structural_issues": [],
+  "spatial_summary": {
+    "pixel_count": 26775,
+    "unique_pixel_coordinate_rows": 26775,
+    "row_min": 0,
+    "row_max": 152,
+    "col_min": 0,
+    "col_max": 174,
+    "lon_min": 25.220201601655564,
+    "lon_max": 33.0355445734954,
+    "lat_min": -22.43542422088505,
+    "lat_max": -15.608228061576686,
+    "pixels_with_multiple_coordinate_versions": 0
+  },
+  "scenario_summary": [
+    {
+      "scenario": "historical",
+      "rows": 14860125,
+      "pixel_count": 26775,
+      "first_month": "198001",
+      "last_month": "202603",
+      "month_count": 555,
+      "lon_min": 25.220201601655564,
+      "lon_max": 33.0355445734954,
+      "lat_min": -22.43542422088505,
+      "lat_max": -15.608228061576686
+    },
+    {
+      "scenario": "ssp245",
+      "rows": 8032500,
+      "pixel_count": 26775,
+      "first_month": "202601",
+      "last_month": "205012",
+      "month_count": 300,
+      "lon_min": 25.220201601655564,
+      "lon_max": 33.0355445734954,
+      "lat_min": -22.43542422088505,
+      "lat_max": -15.608228061576686
+    },
+    {
+      "scenario": "ssp370",
+      "rows": 8032500,
+      "pixel_count": 26775,
+      "first_month": "202601",
+      "last_month": "205012",
+      "month_count": 300,
+      "lon_min": 25.220201601655564,
+      "lon_max": 33.0355445734954,
+      "lat_min": -22.43542422088505,
+      "lat_max": -15.608228061576686
+    },
+    {
+      "scenario": "ssp585",
+      "rows": 8032500,
+      "pixel_count": 26775,
+      "first_month": "202601",
+      "last_month": "205012",
+      "month_count": 300,
+      "lon_min": 25.220201601655564,
+      "lon_max": 33.0355445734954,
+      "lat_min": -22.43542422088505,
+      "lat_max": -15.608228061576686
+    }
+  ],
+  "month_continuity": [
+    {
+      "scenario": "historical",
+      "first_month": "198001",
+      "last_month": "202603",
+      "observed_month_count": 555,
+      "expected_month_count": 555,
+      "missing_month_count": 0,
+      "missing_months_preview": ""
+    },
+    {
+      "scenario": "ssp245",
+      "first_month": "202601",
+      "last_month": "205012",
+      "observed_month_count": 300,
+      "expected_month_count": 300,
+      "missing_month_count": 0,
+      "missing_months_preview": ""
+    },
+    {
+      "scenario": "ssp370",
+      "first_month": "202601",
+      "last_month": "205012",
+      "observed_month_count": 300,
+      "expected_month_count": 300,
+      "missing_month_count": 0,
+      "missing_months_preview": ""
+    },
+    {
+      "scenario": "ssp585",
+      "first_month": "202601",
+      "last_month": "205012",
+      "observed_month_count": 300,
+      "expected_month_count": 300,
+      "missing_month_count": 0,
+      "missing_months_preview": ""
+    }
+  ],
+  "grid_coverage_summary": [
+    {
+      "scenario": "historical",
+      "month_count": 555,
+      "min_pixel_count": 26775,
+      "max_pixel_count": 26775,
+      "mean_pixel_count": 26775.0,
+      "incomplete_month_count": 0
+    },
+    {
+      "scenario": "ssp245",
+      "month_count": 300,
+      "min_pixel_count": 26775,
+      "max_pixel_count": 26775,
+      "mean_pixel_count": 26775.0,
+      "incomplete_month_count": 0
+    },
+    {
+      "scenario": "ssp370",
+      "month_count": 300,
+      "min_pixel_count": 26775,
+      "max_pixel_count": 26775,
+      "mean_pixel_count": 26775.0,
+      "incomplete_month_count": 0
+    },
+    {
+      "scenario": "ssp585",
+      "month_count": 300,
+      "min_pixel_count": 26775,
+      "max_pixel_count": 26775,
+      "mean_pixel_count": 26775.0,
+      "incomplete_month_count": 0
+    }
+  ],
+  "outputs": {
+    "scenario_summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell0_scenario_summary_20260620T092408Z.csv",
+    "month_continuity_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell0_month_continuity_20260620T092408Z.csv",
+    "grid_coverage_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell0_grid_coverage_20260620T092408Z.csv",
+    "missingness_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell0_missingness_20260620T092408Z.csv",
+    "numeric_summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell0_numeric_summary_20260620T092408Z.csv",
+    "coordinate_conflicts_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell0_coordinate_conflicts_20260620T092408Z.csv",
+    "audit_manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell0_input_audit_manifest_20260620T092408Z.json"
+  }
+}

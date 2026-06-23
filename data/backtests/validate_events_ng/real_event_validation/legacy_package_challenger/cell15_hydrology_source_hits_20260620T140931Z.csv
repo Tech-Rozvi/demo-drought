@@ -1,0 +1,17 @@
+file_path,line_number,line_text
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\feature_service.py,12,"hydrology_df=timeseries.copy(),"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\fusion_service.py,10,"hyd = subsystem_outputs[""hydrology""].iloc[0]"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,23,def _prepare_hydrology_sequence(
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,28,"hyd = prepared[""hydrology""].copy()"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,33,"raise ValueError(f""No hydrology history up to {run_yyyymm}"")"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,65,"if name == ""hydrology"":"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,66,target_prepared[name] = self._prepare_hydrology_sequence(
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,76,"hyd = target_prepared[""hydrology""]"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,84,"if subsystem_outputs[""hydrology""].empty:"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,86,"f""Hydrology returned no rows for scenario={scenario}, """
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\subsystem_service.py,11,"hydro_df = prepared[""hydrology""]"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\subsystem_service.py,13,atm_out = subs.predict_atmospheric_proba(atm_df)
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\subsystem_service.py,14,soil_out = subs.predict_soil_proba(soil_df)
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\subsystem_service.py,15,veg_out = subs.predict_vegetation_proba(veg_df)
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\subsystem_service.py,16,hydro_out = subs.predict_hydrology_proba_df(hydro_df)
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\subsystem_service.py,24,"""hydrology"": hydro_out,"

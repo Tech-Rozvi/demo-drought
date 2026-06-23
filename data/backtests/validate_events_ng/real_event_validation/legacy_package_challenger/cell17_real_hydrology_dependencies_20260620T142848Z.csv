@@ -1,0 +1,3 @@
+dependency_name,dependency_type,source_path,source_start_line,source_available
+build_hydrology_sequences,builtins.function,c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_windows.py,15,True
+predict_hydrology_proba,builtins.function,c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,13,True

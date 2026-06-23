@@ -1,0 +1,24 @@
+{
+  "run_id": "20260620T093140Z",
+  "status": "no_v2_feature_source_auto_confirmed_rebuild_or_explicit_path_required",
+  "purpose": "Discover v2 feature-data candidates and artifact/manifests before seed or historical event testing.",
+  "current_workspace": "C:\\Projects\\Infer RozviDrought",
+  "current_data_root": "C:\\Projects\\Infer RozviDrought\\data",
+  "master_input_path": "C:\\Projects\\Infer RozviDrought\\data\\master_inputs\\master_inputs_long_198001_205012.parquet",
+  "training_drought_root": "C:\\Projects\\ramangwana\\risks\\data\\drought_model",
+  "rozvidrought_repo_root": "C:\\Projects\\rozvi\\models\\rozvidrought",
+  "master_input_v2_assessment": {
+    "has_rainfall_or_spi_signal": false,
+    "has_temporal_features": false,
+    "is_possible_direct_v2_source": false
+  },
+  "possible_v2_feature_source_count": 0,
+  "possible_v2_feature_sources": [],
+  "outputs": {
+    "parquet_catalog_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell1_v2_parquet_catalog_20260620T093140Z.csv",
+    "artifact_inventory_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell1_v2_artifact_inventory_20260620T093140Z.csv",
+    "manifest_catalog_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell1_v2_manifest_catalog_20260620T093140Z.csv",
+    "possible_sources_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell1_possible_v2_feature_sources_20260620T093140Z.csv",
+    "discovery_manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\cell1_v2_source_discovery_manifest_20260620T093140Z.json"
+  }
+}

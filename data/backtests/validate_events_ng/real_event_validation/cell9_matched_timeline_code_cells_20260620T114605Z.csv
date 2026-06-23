@@ -1,0 +1,170 @@
+notebook_path,notebook_name,notebook_cell_number,matched_terms,source_preview
+C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\cyclones.ipynb,cyclones.ipynb,2,Duration,"# CELL 2: Cyclone Track Reconstruction from GEE Data
+# Use ERA5 reanalysis + satellite data to identify and track cyclone signatures
+
+print(""🌀 CELL 2: CYCLONE TRACK RECONSTRUCTION FROM GEE"")
+print(""=""*60)
+
+import ee
+import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+import json
+from pathlib import Path
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\cyclones.ipynb,cyclones.ipynb,6,event_id,"# DATA EXTRACTION CELL: REPORTED EVENT LABELS (GDIS) EXPORT (GEE TASKS) — FULL CELL (FIXED)
+# Earth Engine only, self-contained.
+# Exports reported storm/cyclone-type disasters to Google Drive for labeling.
+# Saves metadata to: data/cyclone_model/metadata/
+# You manually download the CSV from Drive and place it in:
+#   data/cyclone_model/02_reported_events/raw/
+
+print(""🗂️ DATA EXTRACTION: GDIS REPORTED EVENT LABELS EXPORT"")
+print(""="" * 70)
+
+import ee
+import json
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\hdx_data.ipynb,hdx_data.ipynb,4,pd.read_excel | read_excel,"%pip install openpyxl -q
+
+import openpyxl
+
+# Inspect each file's sheets and columns
+for item in downloaded:
+    path = Path(item[""path""])
+    if not path.exists():
+        continue
+    
+    print(f""\n=== {path.name[:60]} ==="")
+    xl = pd.ExcelFile(path)
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\hdx_data.ipynb,hdx_data.ipynb,5,pd.read_excel | read_excel,"# Look for spatial data (GIS sheets, lat/lon columns)
+spatial_info = []
+
+for item in downloaded:
+    path = Path(item[""path""])
+    if not path.exists():
+        continue
+    
+    xl = pd.ExcelFile(path)
+    
+    for sheet in xl.sheet_names:
+        df = pd.read_excel(xl, sheet_name=sheet, nrows=5)
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\hdx_data.ipynb,hdx_data.ipynb,12,pd.read_excel | read_excel,"# CELL 12: EXTRACT ELOISE AND CHALANE IMPACTS FROM EXISTING HDX DATA
+
+print(""🧵 CELL 12: EXTRACT MULTI-CYCLONE IMPACTS"")
+print(""="" * 90)
+
+import pandas as pd
+from pathlib import Path
+
+# Paths
+RAW_DIR = Path(""../../data/cyclone_model/07_reported_events/raw"")
+
+# Load Round 7 data (has all three cyclones)
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\data_extraction_scripts\extreme_rainfall\events.ipynb,events.ipynb,3,event_id,"# Cell 3: Extract Extreme Rainfall Events (100k Sample - Ultra-Fast)
+""""""
+Ultra-fast event extraction using vectorized operations and memory optimization.
+Maintains all statistics while maximizing processing speed.
+""""""
+
+import pandas as pd
+import numpy as np
+import rasterio
+from pathlib import Path
+import time
+import gc
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\data_extraction_scripts\extreme_rainfall\events.ipynb,events.ipynb,4,event_id,"# Cell 4: Ultra-Fast Atmospheric Signatures (Vectorized)
+""""""
+Ultra-fast atmospheric extraction using vectorized operations and batch processing.
+Optimized for maximum speed while maintaining all signature data.
+""""""
+
+import pandas as pd
+import numpy as np
+import rasterio
+from pathlib import Path
+import time
+import gc
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\data_extraction_scripts\floods\v0\dartmouth.ipynb,dartmouth.ipynb,2,event_id,"# Cell 2: Extract GFD Floods Actually IN Zimbabwe
+
+import ee
+import numpy as np
+import pandas as pd
+import h3
+from pathlib import Path
+from tqdm import tqdm
+import warnings
+warnings.filterwarnings('ignore')
+
+print(""🌊 EXTRACT GFD FLOOD MASKS → H3 LABELS (REVISED)"")
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\preprocessing_scripts\cyclones.ipynb,cyclones.ipynb,2,pd.read_excel | read_excel,"# CELL 6 (PREPROCESSING): JOIN IDAI IMPACT TO WARD CENTROIDS
+
+print(""🧵 CELL 6: JOIN IDAI IMPACT TO WARD CENTROIDS"")
+print(""="" * 90)
+
+import pandas as pd
+from pathlib import Path
+
+# Paths
+def find_repo_root(start: Path) -> Path:
+    start = start.resolve()
+    for p in [start] + list(start.parents):
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\preprocessing_scripts\extreme_rainfall.ipynb,extreme_rainfall.ipynb,2,Duration,"# Cell 2: Identify Extreme Rainfall Events from CHIRPS
+""""""
+Process CHIRPS daily rainfall data to identify extreme events.
+Uses objective thresholds and merges consecutive wet days into events.
+""""""
+
+import rasterio
+import numpy as np
+from datetime import datetime, timedelta
+import pandas as pd
+from pathlib import Path
+
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\preprocessing_scripts\extreme_rainfall.ipynb,extreme_rainfall.ipynb,5,event_month,"# Cell 5: Condition Events by Climate Phases (ENSO/IOD)
+""""""
+Link extreme rainfall events to climate indices for frequency modeling.
+Determines which climate phase each event occurred during.
+""""""
+
+import pandas as pd
+import numpy as np
+from datetime import datetime
+
+print('🌍 CLIMATE PHASE CONDITIONING')
+print('=' * 32)
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\1_define_fusion_v2_rules_from_release_bundles.ipynb,1_define_fusion_v2_rules_from_release_bundles.ipynb,1,Severity Ranking,"# 1_define_fusion_v2_rules_from_release_bundles.ipynb — Cell 1
+# Goal:
+# - Read staged RozviDrought v2 release bundles
+# - Validate bundle contracts/checksums exist
+# - Define hybrid probabilistic Fusion v2 rules
+# - Write fusion rule contracts for shadow validation
+#
+# This cell does NOT generate predictions.
+# This cell does NOT replace legacy fusion.
+# This cell defines the fusion-v2 rule contract only.
+
+from pathlib import Path
+... [truncated in CSV preview]"
+C:\Projects\ramangwana\risks\processing_scripts\extreme_rainfall\extreme_rain_model_signature.ipynb,extreme_rain_model_signature.ipynb,1,event_id,"# Cell 1: Initialize Signature-Based Extreme Rainfall Prediction System
+""""""
+Initialize physics-informed signature matching system for extreme rainfall prediction.
+Loads verified event signatures and sets up pattern recognition framework.
+""""""
+
+import pandas as pd
+import numpy as np
+from pathlib import Path
+import warnings
+warnings.filterwarnings('ignore')
+
+... [truncated in CSV preview]"

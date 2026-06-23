@@ -1,0 +1,8 @@
+metric,value
+status,legacy_challenger_blocked_no_documented_sm_mapping_without_master
+master_inputs_used,False
+legacy_sm_directly_available,False
+soil_moisture_candidate_columns,sm_esa_cci | sm_esa_cci_anom | sm_esa_cci_lag1 | sm_esa_cci_lag12 | sm_esa_cci_lag2 | sm_esa_cci_lag3 | sm_esa_cci_lag6 | sm_esa_cci_rollmean12 | sm_esa_cci_rollmean3 | sm_esa_cci_rollmean6 | soil_texture_class_static
+explicit_sm_and_sm_esa_cci_same_line_hits,0
+all_mapping_evidence_hits,2
+legacy_service_source,C:\Projects\Infer RozviDrought\RozviDrought\app\services\polygon_inference_service.py

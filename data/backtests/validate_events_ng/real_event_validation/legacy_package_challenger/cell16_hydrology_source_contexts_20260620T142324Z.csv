@@ -1,0 +1,257 @@
+file_path,match_line_number,matched_line,context_start_line,context_end_line,context
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\feature_service.py,12,"hydrology_df=timeseries.copy(),",9,15,"    9:             atmospheric_df=timeseries.copy(),
+   10:             soil_df=timeseries.copy(),
+   11:             vegetation_df=timeseries.copy(),
+   12:             hydrology_df=timeseries.copy(),
+   13:             run_yyyymm=run_yyyymm,
+   14:         )
+   15:         return prepared"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\fusion_service.py,10,"hyd = subsystem_outputs[""hydrology""].iloc[0]",7,16,"    7:         atm = subsystem_outputs[""atmospheric""].iloc[0]
+    8:         soil = subsystem_outputs[""soil""].iloc[0]
+    9:         veg = subsystem_outputs[""vegetation""].iloc[0]
+   10:         hyd = subsystem_outputs[""hydrology""].iloc[0]
+   11: 
+   12:         return {
+   13:             ""atm_p0"": float(atm[""p0""]),
+   14:             ""atm_p1"": float(atm[""p1""]),
+   15:             ""atm_p2"": float(atm[""p2""]),
+   16:             ""atm_p3"": float(atm[""p3""]),"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,23,def _prepare_hydrology_sequence(,20,29,"   20:         self.subsystem_service = SubsystemService()
+   21:         self.fusion_service = FusionService()
+   22: 
+   23:     def _prepare_hydrology_sequence(
+   24:         self,
+   25:         prepared: Dict[str, pd.DataFrame],
+   26:         run_yyyymm: int,
+   27:     ) -> pd.DataFrame:
+   28:         hyd = prepared[""hydrology""].copy()
+   29:         hyd = hyd.sort_values(""yyyymm"").reset_index(drop=True)"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,28,"hyd = prepared[""hydrology""].copy()",25,34,"   25:         prepared: Dict[str, pd.DataFrame],
+   26:         run_yyyymm: int,
+   27:     ) -> pd.DataFrame:
+   28:         hyd = prepared[""hydrology""].copy()
+   29:         hyd = hyd.sort_values(""yyyymm"").reset_index(drop=True)
+   30:         hyd_seq = hyd[hyd[""yyyymm""] <= str(run_yyyymm)].copy()
+   31: 
+   32:         if hyd_seq.empty:
+   33:             raise ValueError(f""No hydrology history up to {run_yyyymm}"")
+   34: "
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,32,if hyd_seq.empty:,29,38,"   29:         hyd = hyd.sort_values(""yyyymm"").reset_index(drop=True)
+   30:         hyd_seq = hyd[hyd[""yyyymm""] <= str(run_yyyymm)].copy()
+   31: 
+   32:         if hyd_seq.empty:
+   33:             raise ValueError(f""No hydrology history up to {run_yyyymm}"")
+   34: 
+   35:         return hyd_seq
+   36: 
+   37:     def infer_point(
+   38:         self,"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,33,"raise ValueError(f""No hydrology history up to {run_yyyymm}"")",30,39,"   30:         hyd_seq = hyd[hyd[""yyyymm""] <= str(run_yyyymm)].copy()
+   31: 
+   32:         if hyd_seq.empty:
+   33:             raise ValueError(f""No hydrology history up to {run_yyyymm}"")
+   34: 
+   35:         return hyd_seq
+   36: 
+   37:     def infer_point(
+   38:         self,
+   39:         lon: float,"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,65,"if name == ""hydrology"":",62,71,"   62:         target_prepared = {}
+   63: 
+   64:         for name, df in prepared.items():
+   65:             if name == ""hydrology"":
+   66:                 target_prepared[name] = self._prepare_hydrology_sequence(
+   67:                     prepared,
+   68:                     yyyymm,
+   69:                 )
+   70:             else:
+   71:                 target_prepared[name] = ("
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,66,target_prepared[name] = self._prepare_hydrology_sequence(,63,72,"   63: 
+   64:         for name, df in prepared.items():
+   65:             if name == ""hydrology"":
+   66:                 target_prepared[name] = self._prepare_hydrology_sequence(
+   67:                     prepared,
+   68:                     yyyymm,
+   69:                 )
+   70:             else:
+   71:                 target_prepared[name] = (
+   72:                     df[df[""yyyymm""] == str(yyyymm)]"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,76,"hyd = target_prepared[""hydrology""]",73,82,"   73:                     .copy()
+   74:                     .reset_index(drop=True)
+   75:                 )
+   76:         hyd = target_prepared[""hydrology""]
+   77:         print(""HYD SHAPE:"", hyd.shape)
+   78:         print(""HYD COLS:"", hyd.columns.tolist())
+   79:         print(hyd.tail(5).to_string())
+   80:         subsystem_outputs = self.subsystem_service.run_subsystems(
+   81:             target_prepared
+   82:         )"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,84,"if subsystem_outputs[""hydrology""].empty:",81,90,"   81:             target_prepared
+   82:         )
+   83: 
+   84:         if subsystem_outputs[""hydrology""].empty:
+   85:             raise ValueError(
+   86:                 f""Hydrology returned no rows for scenario={scenario}, ""
+   87:                 f""yyyymm={yyyymm}, pixel_id={pixel_id}""
+   88:             )
+   89: 
+   90:         fusion = self.fusion_service.run("
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\inference_service.py,86,"f""Hydrology returned no rows for scenario={scenario}, """,83,92,"   83: 
+   84:         if subsystem_outputs[""hydrology""].empty:
+   85:             raise ValueError(
+   86:                 f""Hydrology returned no rows for scenario={scenario}, ""
+   87:                 f""yyyymm={yyyymm}, pixel_id={pixel_id}""
+   88:             )
+   89: 
+   90:         fusion = self.fusion_service.run(
+   91:             subsystem_outputs=subsystem_outputs,
+   92:             model=""hybrid"","
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\parquet_reader.py,22,if block.empty:,19,28,"   19:             (self._df[""yyyymm""] == yyyymm)
+   20:         ].reset_index(drop=True)
+   21: 
+   22:         if block.empty:
+   23:             raise ValueError(f""No data found for scenario={scenario}, yyyymm={yyyymm}"")
+   24: 
+   25:         if not 0 <= pixel_id < self.pixels_per_block:
+   26:             raise ValueError(f""pixel_id must be between 0 and {self.pixels_per_block - 1}"")
+   27: 
+   28:         return block.iloc[pixel_id]"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\parquet_reader.py,32,if df.empty:,29,38,"   29: 
+   30:     def _get_single_scenario_timeseries(self, scenario: str, pixel_id: int) -> pd.DataFrame:
+   31:         df = self._df[self._df[""scenario""] == scenario].copy()
+   32:         if df.empty:
+   33:             raise ValueError(f""No data found for scenario={scenario}"")
+   34: 
+   35:         rows = []
+   36:         for yyyymm, block in df.groupby(""yyyymm"", sort=True):
+   37:             block = block.reset_index(drop=True)
+   38:             if len(block) != self.pixels_per_block:"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\parquet_reader.py,63,"stitched = stitched.sort_values(""yyyymm"").drop_duplicates(subset=[""yyyymm""], keep=""last"")",60,66,"   60:         future_ts = future_ts[future_ts[""yyyymm""] >= ""202601""].copy()
+   61: 
+   62:         stitched = pd.concat([historical_ts, future_ts], axis=0, ignore_index=True)
+   63:         stitched = stitched.sort_values(""yyyymm"").drop_duplicates(subset=[""yyyymm""], keep=""last"")
+   64:         stitched = stitched.reset_index(drop=True)
+   65: 
+   66:         return stitched"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\polygon_inference_service.py,30,"points = self.master_df[[""pixel_id"", ""lon"", ""lat""]].drop_duplicates().copy()",27,36,"   27:         self.fusion_service = FusionService()
+   28: 
+   29:     def _geometry_mask(self, geometry: Polygon | MultiPolygon) -> pd.Series:
+   30:         points = self.master_df[[""pixel_id"", ""lon"", ""lat""]].drop_duplicates().copy()
+   31:         points[""_inside""] = points.apply(
+   32:             lambda r: geometry.contains(Point(r[""lon""], r[""lat""]))
+   33:             or geometry.touches(Point(r[""lon""], r[""lat""])),
+   34:             axis=1,
+   35:         )
+   36:         inside_pixel_ids = points.loc[points[""_inside""], ""pixel_id""].unique()"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\polygon_inference_service.py,67,".drop_duplicates(subset=[""pixel_id"", ""yyyymm""], keep=""last"")",64,73,"   64: 
+   65:         ts = (
+   66:             ts.sort_values([""yyyymm""])
+   67:             .drop_duplicates(subset=[""pixel_id"", ""yyyymm""], keep=""last"")
+   68:             .reset_index(drop=True)
+   69:         )
+   70:         return ts
+   71: 
+   72:     def _select_target_subsystem_outputs(
+   73:         self,"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\polygon_inference_service.py,82,if output_df.empty:,79,88,"   79:         selected_outputs: dict[str, pd.DataFrame] = {}
+   80: 
+   81:         for subsystem_name, output_df in subsystem_outputs.items():
+   82:             if output_df.empty:
+   83:                 selected_outputs[subsystem_name] = output_df
+   84:                 continue
+   85: 
+   86:             output_df = output_df.reset_index(drop=True)
+   87: 
+   88:             # Some subsystem models, especially sequence models, may already return"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\polygon_inference_service.py,88,"# Some subsystem models, especially sequence models, may already return",85,94,"   85: 
+   86:             output_df = output_df.reset_index(drop=True)
+   87: 
+   88:             # Some subsystem models, especially sequence models, may already return
+   89:             # only the requested target-month prediction.
+   90:             if len(output_df) == 1:
+   91:                 selected_outputs[subsystem_name] = output_df
+   92:                 continue
+   93: 
+   94:             prepared_df = prepared.get(subsystem_name)"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\polygon_inference_service.py,96,if prepared_df is None or prepared_df.empty:,93,102,"   93: 
+   94:             prepared_df = prepared.get(subsystem_name)
+   95: 
+   96:             if prepared_df is None or prepared_df.empty:
+   97:                 selected_outputs[subsystem_name] = output_df.tail(1).reset_index(drop=True)
+   98:                 continue
+   99: 
+  100:             prepared_df = prepared_df.reset_index(drop=True).copy()
+  101:             prepared_df[""yyyymm""] = prepared_df[""yyyymm""].astype(str)
+  102: "
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\polygon_inference_service.py,138,if ts.empty:,135,144,"  135:             run_yyyymm=run_yyyymm,
+  136:         )
+  137: 
+  138:         if ts.empty:
+  139:             return None
+  140: 
+  141:         prepared = self.feature_service.prepare_subsystem_inputs(
+  142:             ts,
+  143:             run_yyyymm=run_yyyymm,
+  144:         )"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\subsystem_service.py,11,"hydro_df = prepared[""hydrology""]",8,17,"    8:         atm_df = prepared[""atmospheric""]
+    9:         soil_df = prepared[""soil""]
+   10:         veg_df = prepared[""vegetation""]
+   11:         hydro_df = prepared[""hydrology""]
+   12: 
+   13:         atm_out = subs.predict_atmospheric_proba(atm_df)
+   14:         soil_out = subs.predict_soil_proba(soil_df)
+   15:         veg_out = subs.predict_vegetation_proba(veg_df)
+   16:         hydro_out = subs.predict_hydrology_proba_df(hydro_df)
+   17: "
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\subsystem_service.py,16,hydro_out = subs.predict_hydrology_proba_df(hydro_df),13,22,"   13:         atm_out = subs.predict_atmospheric_proba(atm_df)
+   14:         soil_out = subs.predict_soil_proba(soil_df)
+   15:         veg_out = subs.predict_vegetation_proba(veg_df)
+   16:         hydro_out = subs.predict_hydrology_proba_df(hydro_df)
+   17: 
+   18:         hydro_out = hydro_out.tail(1).reset_index(drop=True)
+   19: 
+   20:         return {
+   21:             ""atmospheric"": atm_out,
+   22:             ""soil"": soil_out,"
+C:\Projects\Infer RozviDrought\RozviDrought\app\services\subsystem_service.py,24,"""hydrology"": hydro_out,",21,25,"   21:             ""atmospheric"": atm_out,
+   22:             ""soil"": soil_out,
+   23:             ""vegetation"": veg_out,
+   24:             ""hydrology"": hydro_out,
+   25:         }"
+C:\Projects\Infer RozviDrought\RozviDrought\inspections\inspect_datasets.py,25,if df.empty:,22,31,"   22:         self._load()
+   23: 
+   24:         df = self._df[self._df[""scenario""] == scenario].copy()
+   25:         if df.empty:
+   26:             raise ValueError(f""No data found for scenario={scenario}"")
+   27: 
+   28:         rows = []
+   29:         for yyyymm, block in df.groupby(""yyyymm"", sort=True):
+   30:             block = block.reset_index(drop=True)
+   31:             if len(block) != self.pixels_per_block:"
+C:\Projects\Infer RozviDrought\RozviDrought\inspections\inspect_datasets.py,82,if diff_rows.empty:,79,85,"   79:     diff_mask = ~((s1 == s2) | (s1.isna() & s2.isna()))
+   80:     diff_rows = merged.loc[diff_mask, [""yyyymm"", f""{col}_a"", f""{col}_b""]]
+   81:     print(f""\n--- {col} ---"")
+   82:     if diff_rows.empty:
+   83:         print(""No differences found"")
+   84:     else:
+   85:         print(diff_rows.head(10).to_string(index=False))"
+C:\Projects\Infer RozviDrought\RozviDrought\tests\benchmark_inference_latency.py,147,".drop_duplicates(subset=[""pixel_id"", ""yyyymm""], keep=""last"")",144,153,"  144: 
+  145:     ts = (
+  146:         ts.sort_values([""yyyymm""])
+  147:         .drop_duplicates(subset=[""pixel_id"", ""yyyymm""], keep=""last"")
+  148:         .reset_index(drop=True)
+  149:     )
+  150:     return ts
+  151: 
+  152: 
+  153: def geometry_pixel_ids(master_df, geometry):"
+C:\Projects\Infer RozviDrought\RozviDrought\tests\benchmark_inference_latency.py,154,"pts = master_df[[""pixel_id"", ""lon"", ""lat""]].drop_duplicates().copy()",151,160,"  151: 
+  152: 
+  153: def geometry_pixel_ids(master_df, geometry):
+  154:     pts = master_df[[""pixel_id"", ""lon"", ""lat""]].drop_duplicates().copy()
+  155:     pts[""_inside""] = pts.apply(
+  156:         lambda r: geometry.contains(Point(r[""lon""], r[""lat""])) or geometry.touches(Point(r[""lon""], r[""lat""])),
+  157:         axis=1,
+  158:     )
+  159:     return sorted(pts.loc[pts[""_inside""], ""pixel_id""].unique().tolist())
+  160: "

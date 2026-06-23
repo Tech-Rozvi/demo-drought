@@ -1,0 +1,36 @@
+{
+  "run_id": "20260620T114605Z",
+  "status": "prior_event_month_expansion_logic_found_review_exact_cells_before_reuse",
+  "purpose": "Recover prior Excel event-month expansion logic before creating a corrected current validation ledger.",
+  "risks_root": "C:\\Projects\\ramangwana\\risks",
+  "search_terms": [
+    "Zimbabwe_Drought_Timeline",
+    "Chronological Timeline",
+    "Severity Ranking",
+    "Legend & Methodology",
+    "Event Period",
+    "Growing Season",
+    "Duration",
+    "Severity Score",
+    "Severity Label",
+    "timeline_severity",
+    "event_month",
+    "event-month",
+    "event_months",
+    "event_id",
+    "pd.read_excel",
+    "read_excel"
+  ],
+  "best_candidate_notebook": "C:\\Projects\\ramangwana\\risks\\preprocessing_scripts\\extreme_rainfall.ipynb",
+  "candidate_count": 8,
+  "strong_candidate_count": 1,
+  "matched_code_cell_count": 13,
+  "outputs": {
+    "candidate_notebooks_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_candidate_expansion_notebooks_20260620T114605Z.csv",
+    "matched_code_cells_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_matched_timeline_code_cells_20260620T114605Z.csv",
+    "matched_code_cells_txt": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_matched_timeline_code_cells_20260620T114605Z.txt",
+    "notebook_read_failures_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_notebook_read_failures_20260620T114605Z.csv",
+    "summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_event_timeline_logic_search_summary_20260620T114605Z.csv",
+    "manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_event_timeline_logic_search_manifest_20260620T114605Z.json"
+  }
+}

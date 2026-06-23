@@ -1,0 +1,126 @@
+Release formula notebook:
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb
+
+Located code cell: code_cell_3
+Marker source line: 291
+
+ 266: # ------------------------------------------------------------
+ 267: spi12_features = target_features["spi12"]
+ 268: 
+ 269: missingness_features = [
+ 270:     f for f in spi12_features
+ 271:     if f.endswith("__is_missing")
+ 272: ]
+ 273: 
+ 274: missingness_source_features = sorted(
+ 275:     set(f.replace("__is_missing", "") for f in missingness_features)
+ 276: )
+ 277: 
+ 278: sequence_base_cols = [
+ 279:     "rain_chirps",
+ 280:     "rain_chirps_anom",
+ 281:     "sm_esa_cci",
+ 282:     "sm_esa_cci_anom",
+ 283:     "tws",
+ 284:     "tws_anom",
+ 285:     "tws_grace",
+ 286:     "tws_grace_anom",
+ 287: ]
+ 288: 
+ 289: engineered_sequence_features = []
+ 290: 
+ 291: for c in sequence_base_cols:
+ 292:     engineered_sequence_features.extend([
+ 293:         f"{c}_seq_lag12",
+ 294:         f"{c}_seq_lag24",
+ 295:         f"{c}_seq_rollmean24",
+ 296:         f"{c}_seq_rollstd24",
+ 297:         f"{c}_seq_delta12",
+ 298:         f"{c}_seq_delta24",
+ 299:     ])
+ 300: 
+ 301: features_available_directly = sorted(
+ 302:     set(
+ 303:         f
+ 304:         for features in target_features.values()
+ 305:         for f in features
+ 306:         if f in dataset_col_set
+ 307:     )
+ 308: )
+ 309: 
+ 310: source_cols_needed = sorted(
+ 311:     set(
+ 312:         pixel_cols
+ 313:         + [time_col]
+ 314:         + label_cols
+ 315:         + features_available_directly
+ 316:         + sequence_base_cols
+ 317:         + missingness_source_features
+ 318:         + [f"{c}_lag12" for c in sequence_base_cols]
+ 319:     )
+ 320: )
+ 321: 
+ 322: source_cols_needed = [
+ 323:     c for c in source_cols_needed
+ 324:     if c in dataset_col_set
+ 325: ]
+ 326: 
+ 327: missing_source_cols = [
+ 328:     c for c in sequence_base_cols + missingness_source_features
+ 329:     if c not in dataset_col_set
+ 330: ]
+ 331: 
+ 332: assert not missing_source_cols, f"Missing source columns required for SPI12 reconstruction: {missing_source_cols}"
+ 333: 
+ 334: print("\n=== Reconstruction plan ===")
+ 335: print("Direct available feature count:", len(features_available_directly))
+ 336: print("Missingness indicators to build:", len(missingness_features))
+ 337: print("Missingness source features:", len(missingness_source_features))
+ 338: print("Sequence base columns:", sequence_base_cols)
+ 339: print("Engineered sequence features:", len(engineered_sequence_features))
+ 340: print("Source columns to read:", len(source_cols_needed))
+ 341: 
+ 342: # ------------------------------------------------------------
+ 343: # Load context frame
+ 344: # ------------------------------------------------------------
+ 345: try:
+ 346:     df_context = pd.read_parquet(
+ 347:         DATASET_PATH,
+ 348:         columns=source_cols_needed,
+ 349:         filters=[
+ 350:             (time_col, ">=", context_start_month),
+ 351:             (time_col, "<=", context_end_month),
+ 352:         ],
+ 353:     )
+ 354: 
+ 355: except Exception as e:
+ 356:     print("Filtered read failed. Falling back to full selected-column read then filtering.")
+ 357:     print("Reason:", repr(e))
+ 358: 
+ 359:     df_context = pd.read_parquet(
+ 360:         DATASET_PATH,
+ 361:         columns=source_cols_needed,
+ 362:     )
+ 363: 
+ 364:     df_context[time_col] = df_context[time_col].astype(int)
+ 365:     df_context = df_context.loc[
+ 366:         (df_context[time_col] >= context_start_month)
+ 367:         & (df_context[time_col] <= context_end_month)
+ 368:     ].copy()
+ 369: 
+ 370: df_context[time_col] = df_context[time_col].astype(int)
+ 371: 
+ 372: df_context = df_context.sort_values(
+ 373:     pixel_cols + [time_col],
+ 374:     kind="mergesort",
+ 375: ).reset_index(drop=True)
+ 376: 
+ 377: context_rows = int(len(df_context))
+ 378: context_months = sorted(df_context[time_col].unique().astype(int).tolist())
+ 379: 
+ 380: print("\n=== Loaded context frame ===")
+ 381: print("Rows:", context_rows)
+ 382: print("Columns:", len(df_context.columns))
+ 383: print("First/last month:", min(context_months), "->", max(context_months))
+ 384: print("Month count:", len(context_months))
+ 385: 

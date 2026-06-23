@@ -1,0 +1,10 @@
+{
+  "run_id": "20260622T055931Z",
+  "cell13_context": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_context_tws_backfilled_20260620T145557Z.parquet",
+  "pixel_predictions": 508725,
+  "outputs": {
+    "pixel_predictions": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell20_vectorized_pixel_predictions_20260622T055931Z.parquet",
+    "monthly_summary": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell20_vectorized_monthly_summary_20260622T055931Z.csv",
+    "event_summary": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell20_vectorized_event_summary_20260622T055931Z.csv"
+  }
+}

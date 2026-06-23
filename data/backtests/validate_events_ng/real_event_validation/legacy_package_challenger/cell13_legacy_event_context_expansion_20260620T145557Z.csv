@@ -1,0 +1,4 @@
+event_id,required_raw_context_start,first_scored_yyyymm,last_scored_yyyymm,scored_month_count,raw_context_month_count
+zimbabwe_2015_2016,201212,201510,201602,5,39
+zimbabwe_2018_2019,201512,201810,201905,8,42
+zimbabwe_2023_2024,202012,202310,202403,6,40

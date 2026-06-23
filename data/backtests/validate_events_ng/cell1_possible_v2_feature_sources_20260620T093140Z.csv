@@ -1,0 +1,1 @@
+source_group,path,exists,size_mb,read_status,row_count,column_count,columns,identity_columns_found,rainfall_spi_columns,temporal_columns,v2_output_columns,has_pixel_and_month,has_rainfall_or_spi_signal,has_temporal_features,is_possible_v2_feature_source,error

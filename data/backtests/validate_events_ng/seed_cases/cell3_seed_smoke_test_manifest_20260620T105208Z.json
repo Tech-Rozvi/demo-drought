@@ -1,0 +1,67 @@
+{
+  "run_id": "20260620T105208Z",
+  "status": "target_model_seed_smoke_test_completed_with_diagnostics",
+  "purpose": "Observed-seed technical smoke test for SPI3, SPI6, SPI12, and weighted Fusion v2 baseline.",
+  "seed_row_count": 13,
+  "seed_case_count": 5,
+  "target_models": {
+    "spi3": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\package_releases\\rozvidrought_v2\\rozvidrought\\artifacts\\spi3\\v2_20260617\\model.joblib",
+    "spi6": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\package_releases\\rozvidrought_v2\\rozvidrought\\artifacts\\spi6\\v2_20260617\\model.joblib",
+    "spi12": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\package_releases\\rozvidrought_v2\\rozvidrought\\artifacts\\spi12\\v2_20260617\\model.joblib"
+  },
+  "target_feature_contracts": {
+    "spi3": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\package_releases\\rozvidrought_v2\\rozvidrought\\artifacts\\spi3\\v2_20260617\\feature_contract.json",
+    "spi6": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\package_releases\\rozvidrought_v2\\rozvidrought\\artifacts\\spi6\\v2_20260617\\feature_contract.json",
+    "spi12": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\package_releases\\rozvidrought_v2\\rozvidrought\\artifacts\\spi12\\v2_20260617\\feature_contract.json"
+  },
+  "fusion_rules_path": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\package_releases\\rozvidrought_v2\\rozvidrought\\artifacts\\fusion_v2\\v2_20260617\\fusion_rules.json",
+  "fusion_weights": {
+    "spi3": 0.25,
+    "spi6": 0.35,
+    "spi12": 0.4
+  },
+  "technical_checks": {
+    "all_target_probability_sums_valid": true,
+    "weighted_fusion_probability_sums_valid": true,
+    "all_contract_feature_orders_valid": true,
+    "target_model_release_parity_passed": false,
+    "weighted_fusion_matches_release_exactly": false
+  },
+  "target_parity_summary": [
+    {
+      "source_name": "target_models_direct_vs_release",
+      "status": "parity_difference_detected",
+      "expected_seed_rows": 13,
+      "matched_rows": 13,
+      "max_abs_delta": 5.960464477539063e-08,
+      "mean_abs_delta": 3.314741475034493e-09,
+      "tolerance": 1e-08
+    }
+  ],
+  "weighted_fusion_parity_summary": [
+    {
+      "source_name": "weighted_fusion_vs_release_fusion",
+      "status": "parity_difference_detected",
+      "expected_seed_rows": 13,
+      "matched_rows": 13,
+      "max_abs_delta": 3.5762786843029915e-08,
+      "mean_abs_delta": 3.813689334601671e-09,
+      "tolerance": 1e-08
+    }
+  ],
+  "outputs": {
+    "contract_summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_contract_summary_20260620T105208Z.csv",
+    "feature_matrix_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_feature_matrix_validation_20260620T105208Z.csv",
+    "model_status_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_model_status_20260620T105208Z.csv",
+    "target_predictions_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_target_seed_predictions_20260620T105208Z.csv",
+    "weighted_fusion_predictions_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_weighted_fusion_seed_predictions_20260620T105208Z.csv",
+    "seed_direction_results_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_seed_direction_results_20260620T105208Z.csv",
+    "seed_direction_summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_seed_direction_summary_20260620T105208Z.csv",
+    "release_scan_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_release_scan_status_20260620T105208Z.csv",
+    "parity_summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_prediction_parity_summary_20260620T105208Z.csv",
+    "target_parity_detail_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_target_parity_detail_20260620T105208Z.csv",
+    "weighted_fusion_parity_detail_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_weighted_fusion_parity_detail_20260620T105208Z.csv",
+    "label_diagnostics_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_target_label_diagnostics_20260620T105208Z.csv",
+    "manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\seed_cases\\cell3_seed_smoke_test_manifest_20260620T105208Z.json"
+  }
+}

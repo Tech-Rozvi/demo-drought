@@ -1,0 +1,4 @@
+target_key,feature_count,seed_rows,missing_feature_values,feature_order_matches_contract
+spi3,23,13,0,True
+spi6,33,13,40,True
+spi12,111,13,288,True

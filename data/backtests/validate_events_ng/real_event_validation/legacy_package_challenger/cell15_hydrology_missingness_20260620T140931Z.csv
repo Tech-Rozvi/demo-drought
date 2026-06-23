@@ -1,0 +1,9 @@
+column,null_count
+tws_rollmean12,11
+tws_lag6,6
+tws_rollmean6,5
+tws_lag3,3
+tws_lag2,2
+tws_rollmean3,2
+tws_lag1,1
+tws,0

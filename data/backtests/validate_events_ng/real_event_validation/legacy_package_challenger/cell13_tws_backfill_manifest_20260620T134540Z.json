@@ -1,0 +1,66 @@
+{
+  "run_id": "20260620T134540Z",
+  "purpose": "Build a verified legacy challenger context with master TWS used only where predictor TWS is missing.",
+  "master_inputs_used": true,
+  "master_inputs_usage_scope": "tws_only",
+  "predictor_source": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\model_inputs\\temporal_predictors_full_20260614T141118Z.parquet",
+  "master_source": "C:\\Projects\\Infer RozviDrought\\data\\master_inputs\\master_inputs_long_198001_205012.parquet",
+  "master_month_storage_type": "large_string",
+  "master_tws_column": "tws",
+  "join_keys": [
+    "row",
+    "col",
+    "yyyymm"
+  ],
+  "sm_mapping": "sm <- sm_esa_cci",
+  "sm_mapping_transformation": "direct_rename_only",
+  "tws_rule": "Keep non-null predictor TWS; fill only null predictor TWS from master TWS.",
+  "required_history_months": 24,
+  "required_context_month_count": 91,
+  "event_contexts": [
+    {
+      "event_key": "zimbabwe_2015_2016",
+      "excel_event_id": 15,
+      "window_start_yyyymm": 201510,
+      "window_end_yyyymm": 201602,
+      "excel_severity_score": 4,
+      "excel_severity_label": "4 \u2013 Extreme",
+      "source_organisation": "FEWS NET",
+      "context_start_yyyymm": 201310,
+      "context_end_yyyymm": 201602
+    },
+    {
+      "event_key": "zimbabwe_2018_2019",
+      "excel_event_id": 16,
+      "window_start_yyyymm": 201810,
+      "window_end_yyyymm": 201905,
+      "excel_severity_score": 2,
+      "excel_severity_label": "2 \u2013 Moderate",
+      "source_organisation": "ReliefWeb",
+      "context_start_yyyymm": 201610,
+      "context_end_yyyymm": 201905
+    },
+    {
+      "event_key": "zimbabwe_2023_2024",
+      "excel_event_id": 17,
+      "window_start_yyyymm": 202310,
+      "window_end_yyyymm": 202403,
+      "excel_severity_score": 5,
+      "excel_severity_label": "5 \u2013 Catastrophic",
+      "source_organisation": "ACT Alliance",
+      "context_start_yyyymm": 202110,
+      "context_end_yyyymm": 202403
+    }
+  ],
+  "row_counts": {
+    "predictor_rows": 2436525,
+    "master_tws_rows": 2436525,
+    "final_legacy_context_rows": 2436525
+  },
+  "outputs": {
+    "legacy_context_parquet": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_context_tws_backfilled_20260620T134540Z.parquet",
+    "coverage_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_tws_backfill_coverage_20260620T134540Z.csv",
+    "monthly_provenance_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_tws_monthly_provenance_20260620T134540Z.csv",
+    "manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_tws_backfill_manifest_20260620T134540Z.json"
+  }
+}

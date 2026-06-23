@@ -1,0 +1,4 @@
+target_key,model_path,model_type,model_classes,prediction_rows,probability_sum_min,probability_sum_max
+spi3,C:\Projects\ramangwana\risks\data\drought_model\processed\package_releases\rozvidrought_v2\rozvidrought\artifacts\spi3\v2_20260617\model.joblib,XGBClassifier,"0, 1, 2, 3, 4",13,0.9999999463434506,1.0000000436848495
+spi6,C:\Projects\ramangwana\risks\data\drought_model\processed\package_releases\rozvidrought_v2\rozvidrought\artifacts\spi6\v2_20260617\model.joblib,XGBClassifier,"0, 1, 2, 3, 4",13,0.9999999409026259,1.0000000505242497
+spi12,C:\Projects\ramangwana\risks\data\drought_model\processed\package_releases\rozvidrought_v2\rozvidrought\artifacts\spi12\v2_20260617\model.joblib,XGBClassifier,"0, 1, 2, 3, 4",13,0.9999999511492206,1.000000041720341

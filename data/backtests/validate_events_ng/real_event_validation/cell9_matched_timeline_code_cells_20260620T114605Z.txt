@@ -1,0 +1,2331 @@
+Recovered prior event-timeline code evidence
+Run ID: 20260620T114605Z
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\cyclones.ipynb
+Cell: 2
+Terms: Duration
+------------------------------------------------------------------------------------------------
+# CELL 2: Cyclone Track Reconstruction from GEE Data
+# Use ERA5 reanalysis + satellite data to identify and track cyclone signatures
+
+print("🌀 CELL 2: CYCLONE TRACK RECONSTRUCTION FROM GEE")
+print("="*60)
+
+import ee
+import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+import json
+from pathlib import Path
+
+# Load configuration
+metadata_dir = Path('C:/Projects/ramangwana/risks/data/cyclone_model/metadata')
+with open(metadata_dir / 'extraction_config.json', 'r') as f:
+    config = json.load(f)
+
+# Define Zimbabwe bounds and influence zone
+ZIMBABWE_BOUNDS = ee.Geometry.Polygon([
+    [[25.0, -22.5], [33.0, -22.5], [33.0, -15.5], [25.0, -15.5], [25.0, -22.5]]
+])
+
+# Southwest Indian Ocean cyclone region
+SIO_REGION = ee.Geometry.Polygon([
+    [[30.0, -35.0], [90.0, -35.0], [90.0, -5.0], [30.0, -5.0], [30.0, -35.0]]
+])
+
+print("📍 GEE-based cyclone detection region:")
+print(f"   🌊 Southwest Indian Ocean: 30-90°E, 5-35°S")
+print(f"   🎯 Zimbabwe influence zone: 750km radius")
+print(f"   📅 Period: {config['historical_period']['start']} to {config['historical_period']['end']}")
+
+# Define GEE datasets for cyclone identification
+GEE_CYCLONE_DATASETS = {
+    'era5_pressure': 'ECMWF/ERA5_LAND/HOURLY',
+    'era5_wind': 'ECMWF/ERA5_LAND/HOURLY', 
+    'era5_temperature': 'ECMWF/ERA5_LAND/HOURLY',
+    'precipitation': 'UCSB-CHG/CHIRPS/DAILY',
+    'cloud_top': 'NOAA/CDR/GRIDSAT-B1/V2',
+    'sea_surface_temp': 'NOAA/CDR/OISST/V2_1'
+}
+
+# Cyclone identification parameters using GEE data
+CYCLONE_DETECTION = {
+    'pressure_threshold': 1010,  # hPa - low pressure center
+    'wind_threshold': 17.5,      # m/s - tropical storm threshold (34 kt)
+    'pressure_gradient': 2.0,    # hPa per degree - tight pressure gradient
+    'temperature_anomaly': -5,   # °C - cold cloud tops
+    'precipitation_threshold': 20, # mm/day - heavy rainfall signature
+    'sst_threshold': 26.5,       # °C - warm water requirement
+    'search_radius': 500,        # km - maximum storm size
+    'min_duration': 24,          # hours - minimum cyclone lifetime
+}
+
+print(f"\n🌪️ Cyclone detection parameters:")
+print(f"   📉 Min pressure: <{CYCLONE_DETECTION['pressure_threshold']} hPa")
+print(f"   💨 Min wind: >{CYCLONE_DETECTION['wind_threshold']} m/s ({CYCLONE_DETECTION['wind_threshold']*1.94:.0f} kt)")
+print(f"   🌊 Min SST: >{CYCLONE_DETECTION['sst_threshold']}°C")
+print(f"   ⏱️ Min duration: {CYCLONE_DETECTION['min_duration']} hours")
+
+# Create ERA5-based cyclone detection function
+def create_cyclone_detection_task():
+    """
+    Create GEE export task for ERA5-based cyclone identification
+    """
+    
+    # ERA5 pressure level data for cyclone detection
+    era5_pressure = ee.ImageCollection('ECMWF/ERA5_LAND/HOURLY') \
+                     .select(['surface_pressure', 'u_component_of_wind_10m', 'v_component_of_wind_10m']) \
+                     .filterDate(config['historical_period']['start'], config['historical_period']['end']) \
+                     .filterBounds(SIO_REGION)
+    
+    # CHIRPS precipitation for storm signature
+    precipitation = ee.ImageCollection('UCSB-CHG/CHIRPS/DAILY') \
+                     .filterDate(config['historical_period']['start'], config['historical_period']['end']) \
+                     .filterBounds(SIO_REGION)
+    
+    # Sea surface temperature
+    sst = ee.ImageCollection('NOAA/CDR/OISST/V2_1') \
+           .select('sst') \
+           .filterDate(config['historical_period']['start'], config['historical_period']['end']) \
+           .filterBounds(SIO_REGION)
+    
+    print("📊 GEE Collections loaded:")
+    print(f"   📉 ERA5 pressure/wind: {era5_pressure.size().getInfo()} images")
+    print(f"   🌧️ CHIRPS precipitation: {precipitation.size().getInfo()} images")
+    print(f"   🌊 OISST sea temperature: {sst.size().getInfo()} images")
+    
+    return era5_pressure, precipitation, sst
+
+# Cyclone identification algorithm using GEE
+def setup_cyclone_identification():
+    """
+    Setup cyclone identification algorithm using ERA5 and satellite data
+    """
+    
+    identification_algorithm = {
+        'step_1_pressure_centers': {
+            'method': 'Local minima detection',
+            'threshold': f"<{CYCLONE_DETECTION['pressure_threshold']} hPa",
+            'spatial_filter': 'Minimum 200km separation between centers',
+            'temporal_filter': 'Track centers across consecutive time steps'
+        },
+        'step_2_wind_verification': {
+            'method': 'Wind speed calculation from u/v components',
+            'threshold': f">{CYCLONE_DETECTION['wind_threshold']} m/s within 100km radius",
+            'circular_winds': 'Check for cyclonic circulation pattern',
+            'wind_shear': 'Low vertical wind shear (<10 m/s)'
+        },
+        'step_3_thermal_signature': {
+            'method': 'SST and cloud top temperature analysis',
+            'sst_requirement': f">{CYCLONE_DETECTION['sst_threshold']}°C",
+            'cloud_tops': 'Cold cloud tops indicating deep convection',
+            'eye_feature': 'Optional: warm eye signature'
+        },
+        'step_4_precipitation_pattern': {
+            'method': 'Heavy rainfall detection',
+            'threshold': f">{CYCLONE_DETECTION['precipitation_threshold']} mm/day",
+            'spatial_pattern': 'Spiral or asymmetric rainfall bands',
+            'radius': f"Within {CYCLONE_DETECTION['search_radius']}km of center"
+        },
+        'step_5_tracking': {
+            'method': 'Connect centers across time steps',
+            'max_displacement': '150km between 6-hour positions',
+            'min_duration': f"{CYCLONE_DETECTION['min_duration']} hours",
+            'quality_control': 'Remove spurious or incomplete tracks'
+        }
+    }
+    
+    # Save identification algorithm
+    algo_file = metadata_dir / 'cyclone_identification_algorithm.json'
+    with open(algo_file, 'w') as f:
+        json.dump(identification_algorithm, f, indent=2)
+    
+    print(f"🤖 Cyclone identification algorithm saved: {algo_file}")
+    return identification_algorithm
+
+# Create export tasks for cyclone detection components
+def create_detection_export_tasks():
+    """
+    Create multiple export tasks for different cyclone detection components
+    """
+    
+    # Task 1: ERA5 pressure field analysis (monthly composites)
+    pressure_task = {
+        'description': 'zimbabwe_era5_pressure_cyclone_detection_1980_2023',
+        'collection': 'ECMWF/ERA5_LAND/HOURLY',
+        'variables': ['surface_pressure', 'u_component_of_wind_10m', 'v_component_of_wind_10m'],
+        'temporal_resolution': 'monthly_mean',
+        'region': SIO_REGION.getInfo(),
+        'scale': 11132,  # ~10km
+        'folder': 'cyclone_model',
+        'fileNamePrefix': 'era5_pressure_monthly'
+    }
+    
+    # Task 2: CHIRPS precipitation extremes
+    precip_task = {
+        'description': 'zimbabwe_chirps_extreme_precipitation_1981_2023',
+        'collection': 'UCSB-CHG/CHIRPS/DAILY',
+        'variables': ['precipitation'],
+        'threshold': f">{CYCLONE_DETECTION['precipitation_threshold']}",
+        'region': SIO_REGION.getInfo(),
+        'scale': 5566,  # ~5km
+        'folder': 'cyclone_model', 
+        'fileNamePrefix': 'chirps_extreme_precip'
+    }
+    
+    # Task 3: Sea surface temperature
+    sst_task = {
+        'description': 'zimbabwe_oisst_cyclone_environment_1981_2023',
+        'collection': 'NOAA/CDR/OISST/V2_1',
+        'variables': ['sst'],
+        'region': SIO_REGION.getInfo(),
+        'scale': 25000,  # ~25km
+        'folder': 'cyclone_model',
+        'fileNamePrefix': 'oisst_monthly'
+    }
+    
+    export_tasks = {
+        'pressure_analysis': pressure_task,
+        'precipitation_extremes': precip_task,
+        'sea_surface_temperature': sst_task
+    }
+    
+    # Save export tasks configuration
+    tasks_file = metadata_dir / 'gee_export_tasks.json'
+    with open(tasks_file, 'w') as f:
+        json.dump(export_tasks, f, indent=2)
+    
+    print(f"📤 Export tasks configuration saved: {tasks_file}")
+    
+    for task_name, task_config in export_tasks.items():
+        print(f"   📊 {task_name}: {task_config['description']}")
+    
+    return export_tasks
+
+# Setup cyclone seasons for GEE processing
+def setup_seasonal_processing():
+    """
+    Setup seasonal processing framework for cyclone seasons (Nov-Apr)
+    """
+    
+    seasonal_config = {
+        'cyclone_months': [11, 12, 1, 2, 3, 4],
+        'peak_months': [1, 2, 3],  # Jan-Mar peak activity
+        'processing_windows': {
+            'daily': 'High-resolution storm tracking',
+            'weekly': 'Storm development analysis', 
+            'monthly': 'Seasonal pattern identification',
+            'seasonal': 'Annual cyclone activity summary'
+        },
+        'zimbabwe_seasons': []
+    }
+    
+    # Create Zimbabwe-specific cyclone seasons
+    start_year = int(config['historical_period']['start'][:4])
+    end_year = int(config['historical_period']['end'][:4])
+    
+    for year in range(start_year, end_year + 1):
+        season = {
+            'season_name': f"{year}/{year+1}",
+            'start_date': f"{year}-11-01",
+            'end_date': f"{year+1}-04-30",
+            'peak_period': f"{year+1}-01-01 to {year+1}-03-31"
+        }
+        seasonal_config['zimbabwe_seasons'].append(season)
+    
+    # Save seasonal configuration
+    seasonal_file = metadata_dir / 'seasonal_processing_config.json' 
+    with open(seasonal_file, 'w') as f:
+        json.dump(seasonal_config, f, indent=2)
+    
+    print(f"🗓️ Seasonal processing config saved: {seasonal_file}")
+    print(f"   📋 {len(seasonal_config['zimbabwe_seasons'])} cyclone seasons configured")
+    
+    return seasonal_config
+
+# Execute GEE-based cyclone detection setup
+print("\n🚀 Setting up GEE-based cyclone detection...")
+
+# Load GEE collections and verify data availability
+try:
+    era5_pressure, precipitation, sst = create_cyclone_detection_task()
+    print("✅ GEE collections successfully loaded")
+except Exception as e:
+    print(f"❌ Error loading GEE collections: {e}")
+
+# Setup identification algorithm
+identification_algorithm = setup_cyclone_identification()
+
+# Create export tasks
+export_tasks = create_detection_export_tasks()
+
+# Setup seasonal processing
+seasonal_config = setup_seasonal_processing()
+
+print(f"\n✅ GEE-based cyclone detection framework complete!")
+print(f"   🌪️ 5-step identification algorithm configured")
+print(f"   📊 3 export tasks created for different data components")
+print(f"   🗓️ {len(seasonal_config['zimbabwe_seasons'])} cyclone seasons ready")
+print(f"   🎯 Focus on Zimbabwe-affecting systems")
+
+print(f"\n🔄 Next steps:")
+print(f"   1. Run GEE export tasks for ERA5, CHIRPS, and OISST data")
+print(f"   2. Run Cell 3 for cyclone detection algorithm implementation")
+print(f"   3. Validate detected systems against historical records")
+
+print(f"\n📋 GEE Export Instructions:")
+print(f"   • Copy export task descriptions to GEE Code Editor")
+print(f"   • Run tasks to Google Drive folder 'cyclone_model'")
+print(f"   • Download results to data/cyclone_model/01_historical_tracks/")
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\cyclones.ipynb
+Cell: 6
+Terms: event_id
+------------------------------------------------------------------------------------------------
+# DATA EXTRACTION CELL: REPORTED EVENT LABELS (GDIS) EXPORT (GEE TASKS) — FULL CELL (FIXED)
+# Earth Engine only, self-contained.
+# Exports reported storm/cyclone-type disasters to Google Drive for labeling.
+# Saves metadata to: data/cyclone_model/metadata/
+# You manually download the CSV from Drive and place it in:
+#   data/cyclone_model/02_reported_events/raw/
+
+print("🗂️ DATA EXTRACTION: GDIS REPORTED EVENT LABELS EXPORT")
+print("=" * 70)
+
+import ee
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+# ------------------------------------------------------------------
+# Repo-root safe paths (avoid shadow data folders)
+# ------------------------------------------------------------------
+def find_repo_root(start: Path) -> Path:
+    start = start.resolve()
+    for p in [start] + list(start.parents):
+        if (p / "requirements.txt").exists() and (p / "data").exists():
+            return p
+    for p in [start] + list(start.parents):
+        if (p / "data").exists():
+            return p
+    raise RuntimeError("Could not locate repo root with data/")
+
+project_root = find_repo_root(Path.cwd())
+cyclone_root = project_root / "data" / "cyclone_model"
+metadata_dir = cyclone_root / "metadata"
+metadata_dir.mkdir(parents=True, exist_ok=True)
+
+print(f"📌 Repo root: {project_root}")
+print(f"📁 Cyclone root: {cyclone_root}")
+
+# ------------------------------------------------------------------
+# Initialize Earth Engine
+# ------------------------------------------------------------------
+try:
+    ee.Initialize()
+except Exception:
+    ee.Authenticate()
+    ee.Initialize()
+
+print("✅ Earth Engine initialized")
+
+# ------------------------------------------------------------------
+# Geometry: Zimbabwe bounds + influence buffer
+# ------------------------------------------------------------------
+ZIMBABWE_BOUNDS = ee.Geometry.Rectangle([25.2, -22.5, 33.1, -15.5])
+INFLUENCE_KM = 750
+ZIMBABWE_BUFFER = ZIMBABWE_BOUNDS.buffer(INFLUENCE_KM * 1000)
+
+# ------------------------------------------------------------------
+# Load GDIS (reported disasters / EM-DAT geocoded)
+# Community catalog asset id:
+#   projects/sat-io/open-datasets/gdis_1960-2018
+# ------------------------------------------------------------------
+gdis = ee.FeatureCollection("projects/sat-io/open-datasets/gdis_1960-2018")
+print("📦 GDIS loaded")
+
+# ------------------------------------------------------------------
+# Inspect available properties (schema varies)
+# ------------------------------------------------------------------
+props_list = ee.Feature(gdis.first()).propertyNames().getInfo()
+print("🔎 GDIS properties (sample):", props_list[:20], "..." if len(props_list) > 20 else "")
+
+def has_prop(name: str) -> bool:
+    return name in props_list
+
+COUNTRY_FIELDS = ["country", "Country", "iso", "iso3", "ISO3", "adm0_name", "admin0", "cc"]
+TYPE_FIELDS    = ["disastertype", "disaster_type", "hazard", "hazard_type", "type", "event_type"]
+SUBTYPE_FIELDS = ["disastersubtype", "disaster_subtype", "subtype", "event_subtype", "hazard_subtype"]
+
+country_field = next((f for f in COUNTRY_FIELDS if has_prop(f)), None)
+type_field    = next((f for f in TYPE_FIELDS if has_prop(f)), None)
+subtype_field = next((f for f in SUBTYPE_FIELDS if has_prop(f)), None)
+
+print(f"🧾 Detected fields -> country: {country_field}, type: {type_field}, subtype: {subtype_field}")
+
+fc = gdis.filterBounds(ZIMBABWE_BUFFER)
+
+# ------------------------------------------------------------------
+# Country filter (if available)
+# NOTE: Python EE uses ee.Filter.Or(...) not or_()
+# ------------------------------------------------------------------
+if country_field:
+    fc = fc.filter(
+        ee.Filter.Or(
+            ee.Filter.eq(country_field, "Zimbabwe"),
+            ee.Filter.eq(country_field, "ZWE"),
+            ee.Filter.eq(country_field, "ZW")
+        )
+    )
+
+# ------------------------------------------------------------------
+# Storm / cyclone filter (if type/subtype available)
+# ------------------------------------------------------------------
+storm_filters = []
+
+def add_contains_filter(field, text):
+    # Safe helper: only add if field exists
+    return ee.Filter.stringContains(field, text)
+
+if type_field:
+    storm_filters.extend([
+        add_contains_filter(type_field, "Storm"),
+        add_contains_filter(type_field, "storm"),
+        add_contains_filter(type_field, "Tropical cyclone"),
+        add_contains_filter(type_field, "Cyclone"),
+        add_contains_filter(type_field, "Hurricane"),
+        add_contains_filter(type_field, "Typhoon"),
+    ])
+
+if subtype_field:
+    storm_filters.extend([
+        add_contains_filter(subtype_field, "Tropical cyclone"),
+        add_contains_filter(subtype_field, "Cyclone"),
+        add_contains_filter(subtype_field, "Hurricane"),
+        add_contains_filter(subtype_field, "Typhoon"),
+        add_contains_filter(subtype_field, "Storm"),
+        add_contains_filter(subtype_field, "storm"),
+    ])
+
+if len(storm_filters) > 0:
+    fc = fc.filter(ee.Filter.Or(*storm_filters))
+else:
+    print("⚠️ No type/subtype fields detected; exporting geometry-filtered GDIS only.")
+
+# ------------------------------------------------------------------
+# Normalize fields into a stable schema
+# ------------------------------------------------------------------
+DATE_FIELDS = ["startdate", "start_date", "date", "begin", "began", "start", "year"]
+ID_FIELDS   = ["disno", "eventid", "event_id", "id", "disaster_no", "disasterid"]
+
+date_field = next((f for f in DATE_FIELDS if has_prop(f)), None)
+id_field   = next((f for f in ID_FIELDS if has_prop(f)), None)
+
+print(f"🗓️ Detected date field: {date_field}")
+print(f"🆔 Detected id field: {id_field}")
+
+def normalize(f):
+    out = ee.Feature(f.geometry())
+
+    if id_field:
+        out = out.set("event_id", f.get(id_field))
+    else:
+        out = out.set("event_id", None)
+
+    if country_field:
+        out = out.set("country", f.get(country_field))
+    else:
+        out = out.set("country", None)
+
+    if type_field:
+        out = out.set("hazard_type", f.get(type_field))
+    else:
+        out = out.set("hazard_type", None)
+
+    if subtype_field:
+        out = out.set("hazard_subtype", f.get(subtype_field))
+    else:
+        out = out.set("hazard_subtype", None)
+
+    if date_field:
+        out = out.set("event_date_raw", f.get(date_field))
+    else:
+        out = out.set("event_date_raw", None)
+
+    # Always include a centroid for easy H3 join later
+    centroid = f.geometry().centroid(1)
+    out = out.set({
+        "longitude": centroid.coordinates().get(0),
+        "latitude": centroid.coordinates().get(1),
+    })
+
+    return out
+
+labels = fc.map(normalize)
+print("🏷️ Label features prepared")
+
+# ------------------------------------------------------------------
+# Export to Google Drive
+# ------------------------------------------------------------------
+EXPORT_NAME = "gdis_reported_storm_events_zimbabwe_1960_2018"
+DRIVE_FOLDER = "cyclone_reported_event_labels"
+
+task = ee.batch.Export.table.toDrive(
+    collection=labels,
+    description=EXPORT_NAME,
+    folder=DRIVE_FOLDER,
+    fileNamePrefix=EXPORT_NAME,
+    fileFormat="CSV"
+)
+task.start()
+
+print("🚀 Export task submitted")
+print(f"📁 Drive folder: {DRIVE_FOLDER}")
+print(f"📄 File: {EXPORT_NAME}.csv")
+
+# ------------------------------------------------------------------
+# Save local metadata
+# ------------------------------------------------------------------
+meta = {
+    "timestamp": datetime.now(timezone.utc).isoformat(),
+    "dataset": "GDIS (EM-DAT geocoded) via sat-io community catalog",
+    "asset_id": "projects/sat-io/open-datasets/gdis_1960-2018",
+    "filters": {
+        "country_field_used": country_field,
+        "type_field_used": type_field,
+        "subtype_field_used": subtype_field,
+        "date_field_used": date_field,
+        "id_field_used": id_field,
+        "influence_km": INFLUENCE_KM,
+        "geometry_filter": "Zimbabwe bounds buffered"
+    },
+    "export": {
+        "drive_folder": DRIVE_FOLDER,
+        "export_name": EXPORT_NAME,
+        "format": "CSV"
+    },
+    "next_manual_step": (
+        "Download CSV from Drive and place in "
+        "data/cyclone_model/02_reported_events/raw/"
+    )
+}
+
+meta_path = metadata_dir / "gdis_reported_event_export.json"
+meta_path.write_text(json.dumps(meta, indent=2))
+print(f"📝 Metadata saved: {meta_path}")
+
+print("\n📥 NEXT MANUAL STEP")
+print("1) Wait for completion in GEE Tasks tab")
+print("2) Download CSV from Google Drive")
+print("3) Place it in:")
+print("   data/cyclone_model/07_reported_events/raw/")
+
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\hdx_data.ipynb
+Cell: 4
+Terms: pd.read_excel | read_excel
+------------------------------------------------------------------------------------------------
+%pip install openpyxl -q
+
+import openpyxl
+
+# Inspect each file's sheets and columns
+for item in downloaded:
+    path = Path(item["path"])
+    if not path.exists():
+        continue
+    
+    print(f"\n=== {path.name[:60]} ===")
+    xl = pd.ExcelFile(path)
+    print(f"Sheets: {xl.sheet_names}")
+    
+    # Preview first sheet with data
+    for sheet in xl.sheet_names[:2]:
+        df = pd.read_excel(xl, sheet_name=sheet, nrows=3)
+        if len(df.columns) > 0:
+            print(f"  [{sheet}] cols: {list(df.columns)[:8]}...")
+            break
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\hdx_data.ipynb
+Cell: 5
+Terms: pd.read_excel | read_excel
+------------------------------------------------------------------------------------------------
+# Look for spatial data (GIS sheets, lat/lon columns)
+spatial_info = []
+
+for item in downloaded:
+    path = Path(item["path"])
+    if not path.exists():
+        continue
+    
+    xl = pd.ExcelFile(path)
+    
+    for sheet in xl.sheet_names:
+        df = pd.read_excel(xl, sheet_name=sheet, nrows=5)
+        cols_lower = [str(c).lower() for c in df.columns]
+        
+        # Check for coordinate columns
+        has_lat = any("lat" in c for c in cols_lower)
+        has_lon = any("lon" in c or "lng" in c for c in cols_lower)
+        is_gis = "gis" in sheet.lower()
+        
+        if has_lat or has_lon or is_gis:
+            spatial_info.append({
+                "file": path.name[:50],
+                "sheet": sheet,
+                "has_coords": has_lat and has_lon,
+                "cols": [c for c in df.columns if any(x in str(c).lower() for x in ["lat", "lon", "lng", "ward", "district"])]
+            })
+
+pd.DataFrame(spatial_info)
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\hdx_data.ipynb
+Cell: 12
+Terms: pd.read_excel | read_excel
+------------------------------------------------------------------------------------------------
+# CELL 12: EXTRACT ELOISE AND CHALANE IMPACTS FROM EXISTING HDX DATA
+
+print("🧵 CELL 12: EXTRACT MULTI-CYCLONE IMPACTS")
+print("=" * 90)
+
+import pandas as pd
+from pathlib import Path
+
+# Paths
+RAW_DIR = Path("../../data/cyclone_model/07_reported_events/raw")
+
+# Load Round 7 data (has all three cyclones)
+idai_path = RAW_DIR / "DTM_Zimbabwe_Cyclone_IDAI_Baseline_Assessment_Round_7.xlsx"
+df = pd.read_excel(idai_path, sheet_name="Baseline R7")
+
+# Remove HXL row
+df = df[~df.iloc[:, 0].astype(str).str.startswith("#", na=False)].reset_index(drop=True)
+print(f"Total records: {len(df)}")
+
+# Impact columns for each cyclone
+CYCLONE_COLS = {
+    'idai': {
+        'affected': 'Number of Affected Population from Cyclone IDAI',
+        'destroyed': 'Number of totally destroyed homes FROM Cyclone IDAI',
+        'partial': 'Number of Partially destroyed homes Cyclone IDAI'
+    },
+    'chalane': {
+        'affected': 'Number of Affected Population from Cyclone Chalane',
+        'destroyed': 'Number of totally destroyed homes FROM Cyclone Chalane',
+        'partial': 'Number of Partially destroyed homes Cyclone Chalane'
+    },
+    'eloise': {
+        'affected': 'Number of Affected Population from Cyclone Eloise',
+        'destroyed': 'Number of totally destroyed homes FROM Cyclone Eloise',
+        'partial': 'Number of Partially destroyed homes Cyclone Eloise'
+    }
+}
+
+# Check columns exist
+print("\n📋 Checking impact columns:")
+for cyclone, cols in CYCLONE_COLS.items():
+    found = sum(1 for c in cols.values() if c in df.columns)
+    print(f"   {cyclone.upper()}: {found}/3 columns found")
+
+# Extract impacts per cyclone
+ward_pcode_col = "Ward Pcode"
+
+impacts = {}
+for cyclone, cols in CYCLONE_COLS.items():
+    if cols['affected'] in df.columns:
+        temp = df[[ward_pcode_col, cols['affected'], cols['destroyed'], cols['partial']]].copy()
+        temp.columns = ['ward_pcode', 'affected_pop', 'destroyed_homes', 'partial_homes']
+        
+        # Convert to numeric
+        for c in ['affected_pop', 'destroyed_homes', 'partial_homes']:
+            temp[c] = pd.to_numeric(temp[c], errors='coerce').fillna(0)
+        
+        # Add cyclone name
+        temp['cyclone'] = cyclone
+        
+        # Filter to wards with actual damage (Option B - strict labeling)
+        temp_strict = temp[(temp['affected_pop'] > 0) | (temp['destroyed_homes'] > 0)].copy()
+        
+        impacts[cyclone] = temp_strict
+        print(f"\n   {cyclone.upper()}: {len(temp_strict)} wards with damage")
+        print(f"      Total affected: {temp_strict['affected_pop'].sum():,.0f}")
+        print(f"      Destroyed homes: {temp_strict['destroyed_homes'].sum():,.0f}")
+
+# Combine all
+all_impacts = pd.concat(impacts.values(), ignore_index=True)
+print(f"\n✅ Combined: {len(all_impacts)} ward-cyclone records")
+print(f"   By cyclone: {all_impacts['cyclone'].value_counts().to_dict()}")
+
+all_impacts.head()
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\data_extraction_scripts\extreme_rainfall\events.ipynb
+Cell: 3
+Terms: event_id
+------------------------------------------------------------------------------------------------
+# Cell 3: Extract Extreme Rainfall Events (100k Sample - Ultra-Fast)
+"""
+Ultra-fast event extraction using vectorized operations and memory optimization.
+Maintains all statistics while maximizing processing speed.
+"""
+
+import pandas as pd
+import numpy as np
+import rasterio
+from pathlib import Path
+import time
+import gc
+from datetime import datetime, timedelta
+
+print('⚡ ULTRA-FAST EXTREME EVENTS EXTRACTION')
+print('=' * 39)
+
+# Self-contained configuration
+BASE_DIR = Path('C:/Projects/ramangwana/risks/data/extreme_rainfall')
+CHIRPS_DIR = BASE_DIR / '01_climate_baseline'
+EVENTS_OUTPUT_DIR = BASE_DIR / 'preprocessed' / 'events'
+
+# Sample configuration
+SAMPLE_SIZE = 100000
+PERCENTILE_THRESHOLD = 95
+MIN_RAINFALL_THRESHOLD = 10
+RANDOM_STATE = 42
+EVENT_START_YEAR = 2000
+EVENT_END_YEAR = 2024
+
+# Load data
+chirps_files = sorted(CHIRPS_DIR.glob('zimbabwe_chirps_daily_*.tif'))
+relevant_chirps = [f for f in chirps_files if EVENT_START_YEAR <= int(f.stem.split('_')[-1]) <= EVENT_END_YEAR]
+valid_pixels_df = pd.read_parquet(EVENTS_OUTPUT_DIR / 'all_valid_pixels.parquet')
+
+print(f'⚡ Ultra-Fast Configuration:')
+print(f'   Sample size: {SAMPLE_SIZE:,} pixels')
+print(f'   CHIRPS years: {len(relevant_chirps)} files')
+print(f'   Available pixels: {len(valid_pixels_df):,}')
+
+# Output files
+sample_events_file = EVENTS_OUTPUT_DIR / 'sample_extreme_events.parquet'
+
+if sample_events_file.exists():
+    print('✅ Sample events database already exists')
+    sample_events = pd.read_parquet(sample_events_file)
+    print(f'   📊 Events in database: {len(sample_events):,}')
+else:
+    start_time = time.time()
+    
+    # Sample pixels
+    sample_pixels = valid_pixels_df.sample(n=SAMPLE_SIZE, random_state=RANDOM_STATE)
+    
+    # Convert to numpy arrays for vectorized operations
+    pixel_rows = sample_pixels['chirps_row'].values
+    pixel_cols = sample_pixels['chirps_col'].values
+    pixel_h3_ids = sample_pixels['h3_id'].values
+    pixel_lats = sample_pixels['center_lat'].values
+    pixel_lngs = sample_pixels['center_lng'].values
+    
+    print(f'⚡ Processing {len(sample_pixels):,} pixels with vectorized operations...')
+    
+    # Ultra-fast data collection
+    all_pixel_data = np.zeros((len(sample_pixels), len(relevant_chirps) * 365), dtype=np.float32)
+    day_count = 0
+    date_index = []
+    
+    for file_idx, chirps_file in enumerate(relevant_chirps):
+        print(f'   ⚡ {chirps_file.name} ({file_idx+1}/{len(relevant_chirps)})...', end='')
+        file_start = time.time()
+        
+        year = int(chirps_file.stem.split('_')[-1])
+        
+        with rasterio.open(chirps_file) as src:
+            for band_idx in range(1, src.count + 1):
+                # Read entire band once
+                band_data = src.read(band_idx)
+                
+                # Vectorized pixel extraction (all pixels at once)
+                day_values = band_data[pixel_rows, pixel_cols]
+                all_pixel_data[:, day_count] = np.maximum(day_values, 0)
+                
+                # Store date
+                try:
+                    event_date = datetime(year, 1, 1) + timedelta(days=band_idx - 1)
+                    date_index.append(event_date)
+                except:
+                    date_index.append(None)
+                
+                day_count += 1
+                del band_data
+        
+        file_time = time.time() - file_start
+        print(f' ({file_time:.1f}s)')
+    
+    # Trim to actual data
+    all_pixel_data = all_pixel_data[:, :day_count]
+    
+    print(f'   ⚡ Data shape: {all_pixel_data.shape[0]:,} pixels × {all_pixel_data.shape[1]:,} days')
+    
+    # Ultra-fast threshold calculation (vectorized)
+    print('⚡ Calculating thresholds (vectorized)...')
+    
+    # Filter out zero values for threshold calculation
+    valid_data_mask = all_pixel_data > 0
+    thresholds_95 = np.zeros(len(sample_pixels))
+    thresholds_99 = np.zeros(len(sample_pixels))
+    
+    for i in range(len(sample_pixels)):
+        pixel_data = all_pixel_data[i, valid_data_mask[i]]
+        if len(pixel_data) >= 100:
+            thresholds_95[i] = np.percentile(pixel_data, PERCENTILE_THRESHOLD)
+            thresholds_99[i] = np.percentile(pixel_data, 99)
+    
+    # Ultra-fast event detection (vectorized)
+    print('⚡ Detecting events (vectorized)...')
+    
+    events_list = []
+    
+    # Create threshold matrix for broadcasting
+    threshold_95_matrix = np.tile(thresholds_95.reshape(-1, 1), (1, day_count))
+    threshold_99_matrix = np.tile(thresholds_99.reshape(-1, 1), (1, day_count))
+    
+    # Vectorized event detection
+    extreme_mask = (all_pixel_data >= threshold_95_matrix) & (all_pixel_data >= MIN_RAINFALL_THRESHOLD)
+    severe_mask = extreme_mask & (all_pixel_data < threshold_99_matrix)
+    ultra_extreme_mask = extreme_mask & (all_pixel_data >= threshold_99_matrix)
+    
+    # Extract events
+    extreme_pixels, extreme_days = np.where(extreme_mask)
+    
+    print(f'⚡ Creating event records for {len(extreme_pixels):,} events...')
+    
+    for i in range(len(extreme_pixels)):
+        pixel_idx = extreme_pixels[i]
+        day_idx = extreme_days[i]
+        
+        if date_index[day_idx] is not None:
+            rainfall = all_pixel_data[pixel_idx, day_idx]
+            is_ultra_extreme = ultra_extreme_mask[pixel_idx, day_idx]
+            
+            events_list.append({
+                'event_id': i,
+                'h3_id': pixel_h3_ids[pixel_idx],
+                'date': date_index[day_idx],
+                'year': date_index[day_idx].year,
+                'month': date_index[day_idx].month,
+                'day_of_year': date_index[day_idx].timetuple().tm_yday,
+                'rainfall_mm': float(rainfall),
+                'magnitude': 'extreme' if is_ultra_extreme else 'severe',
+                'magnitude_code': 2 if is_ultra_extreme else 1,
+                'threshold_95th': thresholds_95[pixel_idx],
+                'threshold_99th': thresholds_99[pixel_idx],
+                'center_lat': pixel_lats[pixel_idx],
+                'center_lng': pixel_lngs[pixel_idx]
+            })
+    
+    # Create DataFrame
+    sample_events = pd.DataFrame(events_list)
+    sample_events.to_parquet(sample_events_file)
+    
+    total_time = time.time() - start_time
+    
+    print(f'\n⚡ Ultra-fast extraction complete!')
+    print(f'   📊 Total events: {len(sample_events):,}')
+    print(f'   📍 Pixels with events: {sample_events["h3_id"].nunique():,}')
+    print(f'   📅 Date range: {sample_events["date"].min()} to {sample_events["date"].max()}')
+    print(f'   🌩️ Extreme events: {len(sample_events[sample_events["magnitude"] == "extreme"]):,}')
+    print(f'   ⛈️ Severe events: {len(sample_events[sample_events["magnitude"] == "severe"]):,}')
+    print(f'   ⚡ Total time: {total_time/60:.1f} minutes')
+    
+    # Yearly breakdown
+    yearly_events = sample_events.groupby('year').size()
+    print(f'\n📅 Events by year (top 10):')
+    for year, count in yearly_events.head(10).items():
+        print(f'   {year}: {count:,} events')
+
+# Clean up
+del all_pixel_data
+gc.collect()
+
+print(f'\n⚡ Ultra-fast processing complete - ready for atmospheric signatures!')
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\data_extraction_scripts\extreme_rainfall\events.ipynb
+Cell: 4
+Terms: event_id
+------------------------------------------------------------------------------------------------
+# Cell 4: Ultra-Fast Atmospheric Signatures (Vectorized)
+"""
+Ultra-fast atmospheric extraction using vectorized operations and batch processing.
+Optimized for maximum speed while maintaining all signature data.
+"""
+
+import pandas as pd
+import numpy as np
+import rasterio
+from pathlib import Path
+import time
+import gc
+
+print('⚡ ULTRA-FAST ATMOSPHERIC SIGNATURE EXTRACTION')
+print('=' * 45)
+
+# Configuration
+BASE_DIR = Path('C:/Projects/ramangwana/risks/data/extreme_rainfall')
+ATMOSPHERIC_DIR = BASE_DIR / '05_atmospheric_factors'
+EVENTS_OUTPUT_DIR = BASE_DIR / 'preprocessed' / 'events'
+
+# Load events
+events_df = pd.read_parquet(EVENTS_OUTPUT_DIR / 'sample_extreme_events.parquet')
+atmospheric_files = sorted(ATMOSPHERIC_DIR.glob('zimbabwe_atmospheric_*.tif'))
+
+print(f'⚡ Ultra-Fast Configuration:')
+print(f'   Events to process: {len(events_df):,}')
+print(f'   Atmospheric files: {len(atmospheric_files)}')
+
+# Output file
+signatures_file = EVENTS_OUTPUT_DIR / 'event_atmospheric_signatures.parquet'
+
+if signatures_file.exists():
+    print('✅ Signatures already exist')
+    signatures_df = pd.read_parquet(signatures_file)
+    print(f'   📊 Signatures: {len(signatures_df):,}')
+else:
+    start_time = time.time()
+    
+    # Create year-file mapping
+    atm_year_files = {int(f.stem.split('_')[-1]): f for f in atmospheric_files}
+    available_years = set(atm_year_files.keys())
+    
+    # Filter events to years with atmospheric data
+    events_with_atm = events_df[events_df['year'].isin(available_years)].copy()
+    print(f'⚡ Events with atmospheric data: {len(events_with_atm):,}')
+    
+    # Get atmospheric coordinate system
+    with rasterio.open(atmospheric_files[0]) as src:
+        atm_transform = src.transform
+        atm_height, atm_width = src.height, src.width
+        n_bands = src.count
+    
+    # Ultra-fast coordinate conversion (vectorized)
+    print('⚡ Converting coordinates (vectorized)...')
+    
+    # Vectorized coordinate transformation
+    coords = np.column_stack((events_with_atm['center_lng'].values, events_with_atm['center_lat'].values))
+    
+    # Transform all coordinates at once
+    cols, rows = rasterio.transform.xy(atm_transform, coords[:, 1], coords[:, 0], offset='center')
+    atm_rows = np.array([~atm_transform * (lng, lat) for lng, lat in coords])[:, 1].astype(int)
+    atm_cols = np.array([~atm_transform * (lng, lat) for lng, lat in coords])[:, 0].astype(int)
+    
+    # Filter valid atmospheric pixels
+    valid_mask = (atm_rows >= 0) & (atm_rows < atm_height) & (atm_cols >= 0) & (atm_cols < atm_width)
+    events_valid = events_with_atm[valid_mask].copy()
+    events_valid['atm_row'] = atm_rows[valid_mask]
+    events_valid['atm_col'] = atm_cols[valid_mask]
+    
+    print(f'   📍 Valid events: {len(events_valid):,}')
+    
+    # Process by year with ultra-fast vectorized extraction
+    print('⚡ Processing events by year (vectorized)...')
+    
+    all_signatures = []
+    
+    # Group events by year
+    events_by_year = events_valid.groupby('year')
+    
+    for year, year_events in events_by_year:
+        print(f'   ⚡ {year}: {len(year_events):,} events...', end='')
+        year_start = time.time()
+        
+        atm_file = atm_year_files[year]
+        
+        with rasterio.open(atm_file) as src:
+            # Read entire atmospheric data once
+            atm_data = src.read()  # Shape: (bands, height, width)
+            
+            # Ultra-fast vectorized extraction for all events in year
+            event_rows = year_events['atm_row'].values
+            event_cols = year_events['atm_col'].values
+            
+            # Extract atmospheric values for all events at once (vectorized)
+            event_atm_values = atm_data[:, event_rows, event_cols]  # Shape: (bands, n_events)
+            
+            # Create signatures for this year
+            year_signatures = []
+            
+            for i, (_, event) in enumerate(year_events.iterrows()):
+                signature = {
+                    'event_id': event['event_id'],
+                    'h3_id': event['h3_id'],
+                    'date': event['date'],
+                    'year': year,
+                    'month': event['month'],
+                    'rainfall_mm': event['rainfall_mm'],
+                    'magnitude': event['magnitude'],
+                    'center_lat': event['center_lat'],
+                    'center_lng': event['center_lng']
+                }
+                
+                # Add atmospheric variables (vectorized access)
+                atm_values = event_atm_values[:, i]
+                
+                # Standard atmospheric variables
+                atm_vars = [
+                    'temperature_2m', 'dewpoint_temperature_2m', 
+                    'u_component_of_wind_10m', 'v_component_of_wind_10m',
+                    'surface_pressure', 'relative_humidity',
+                    'wind_speed', 'wind_direction', 'atmospheric_moisture',
+                    'temperature_2m_max', 'dewpoint_temperature_2m_max',
+                    'u_component_of_wind_10m_max', 'v_component_of_wind_10m_max', 
+                    'surface_pressure_max', 'relative_humidity_max',
+                    'wind_speed_max', 'wind_direction_max', 'atmospheric_moisture_max'
+                ]
+                
+                # Add all available atmospheric variables
+                for j, var_name in enumerate(atm_vars[:min(len(atm_values), len(atm_vars))]):
+                    signature[f'atm_{var_name}'] = float(atm_values[j])
+                
+                # Derived atmospheric features
+                if len(atm_values) >= 6:
+                    temp = atm_values[0]
+                    pressure = atm_values[4]
+                    humidity = atm_values[5]
+                    wind_u = atm_values[2]
+                    wind_v = atm_values[3]
+                    
+                    signature['atm_wind_speed_calc'] = float(np.sqrt(wind_u**2 + wind_v**2))
+                    signature['atm_temp_celsius'] = float(temp - 273.15)
+                    signature['atm_pressure_hpa'] = float(pressure / 100)
+                    signature['atm_humidity_percent'] = float(humidity)
+                
+                year_signatures.append(signature)
+            
+            all_signatures.extend(year_signatures)
+            del atm_data, event_atm_values
+        
+        year_time = time.time() - year_start
+        print(f' {len(year_signatures):,} signatures ({year_time:.1f}s)')
+    
+    # Create final dataframe
+    signatures_df = pd.DataFrame(all_signatures)
+    signatures_df.to_parquet(signatures_file)
+    
+    total_time = time.time() - start_time
+    
+    print(f'\n⚡ Ultra-fast atmospheric extraction complete!')
+    print(f'   📊 Event signatures: {len(signatures_df):,}')
+    print(f'   📍 Unique locations: {signatures_df["h3_id"].nunique():,}')
+    print(f'   🌡️ Atmospheric variables: {len([col for col in signatures_df.columns if col.startswith("atm_")])}')
+    print(f'   ⚡ Total time: {total_time/60:.1f} minutes')
+    print(f'   💾 Saved: {signatures_file}')
+    
+    # Statistics
+    print(f'\n📊 Signature Statistics:')
+    print(f'   🌩️ Extreme events: {len(signatures_df[signatures_df["magnitude"] == "extreme"]):,}')
+    print(f'   ⛈️ Severe events: {len(signatures_df[signatures_df["magnitude"] == "severe"]):,}')
+    
+    if 'atm_temp_celsius' in signatures_df.columns:
+        temp_range = signatures_df['atm_temp_celsius']
+        print(f'   🌡️ Temperature: {temp_range.min():.1f}°C to {temp_range.max():.1f}°C')
+
+# Clean up
+gc.collect()
+print(f'\n🎯 Ready for complete signature integration!')
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\data_extraction_scripts\floods\v0\dartmouth.ipynb
+Cell: 2
+Terms: event_id
+------------------------------------------------------------------------------------------------
+# Cell 2: Extract GFD Floods Actually IN Zimbabwe
+
+import ee
+import numpy as np
+import pandas as pd
+import h3
+from pathlib import Path
+from tqdm import tqdm
+import warnings
+warnings.filterwarnings('ignore')
+
+print("🌊 EXTRACT GFD FLOOD MASKS → H3 LABELS (REVISED)")
+print("="*60)
+
+# ============================================================
+# LOAD DATA
+# ============================================================
+
+BASE_DIR = Path('C:/Projects/ramangwana/risks')
+DATA_DIR = BASE_DIR / 'data/flood_model'
+H3_DIR = BASE_DIR / 'data/h3_cells'
+OUTPUT_DIR = DATA_DIR / 'validation/gfd'
+
+# Load H3 grid
+print(f"\n📥 Loading H3 grid...")
+h3_grid = pd.read_parquet(H3_DIR / 'zimbabwe_h3_res10.parquet')
+print(f"✅ Loaded {len(h3_grid):,} H3 cells")
+
+# Define Zimbabwe AOI (tighter bounds)
+zimbabwe = ee.Geometry.Rectangle([25.24, -22.42, 33.05, -15.61])
+
+print(f"\n🇿🇼 Zimbabwe bounds: [25.24, -22.42, 33.05, -15.61]")
+
+# ============================================================
+# LOAD AND FILTER GFD EVENTS
+# ============================================================
+
+print(f"\n{'='*60}")
+print(f"🌊 LOADING GLOBAL FLOOD DATABASE")
+print(f"{'='*60}")
+
+# Load GFD
+gfd = ee.ImageCollection('GLOBAL_FLOOD_DB/MODIS_EVENTS/V1')
+
+# Filter for events that intersect Zimbabwe
+zimbabwe_floods = gfd.filterBounds(zimbabwe)
+potential_events = zimbabwe_floods.size().getInfo()
+
+print(f"\n✅ Found {potential_events} events with footprints intersecting Zimbabwe")
+
+# ============================================================
+# CHECK EACH EVENT FOR ACTUAL ZIMBABWE FLOODS
+# ============================================================
+
+print(f"\n{'='*60}")
+print(f"🔄 CHECKING EVENTS FOR ZIMBABWE FLOOD DATA")
+print(f"{'='*60}")
+
+events_list = zimbabwe_floods.toList(potential_events)
+
+valid_events = []
+all_flooded_h3 = set()
+
+for i in tqdm(range(potential_events), desc="📊 Events"):
+    event = ee.Image(events_list.get(i))
+    event_props = event.toDictionary().getInfo()
+    event_id = event_props.get('id', f'event_{i}')
+    
+    try:
+        # Clip flood band to Zimbabwe
+        flood_band = event.select('flooded').clip(zimbabwe)
+        
+        # Check if there's any flood data in Zimbabwe
+        stats = flood_band.reduceRegion(
+            reducer=ee.Reducer.minMax(),
+            geometry=zimbabwe,
+            scale=500,
+            maxPixels=1e9,
+            bestEffort=True
+        ).getInfo()
+        
+        flood_min = stats.get('flooded_min')
+        flood_max = stats.get('flooded_max')
+        
+        # If we have valid flood data (not None and has positive values)
+        if flood_max is not None and flood_max > 0:
+            print(f"\n   ✅ Event {event_id}: Has Zimbabwe floods")
+            print(f"      Flood values: {flood_min} to {flood_max}")
+            
+            # Sample flooded pixels
+            flooded_pixels = flood_band.gt(0)  # Pixels > 0 are flooded
+            
+            # Sample at H3 resolution (~1km)
+            sample = flooded_pixels.sample(
+                region=zimbabwe,
+                scale=1000,
+                numPixels=50000,
+                seed=42
+            )
+            
+            coords_list = sample.aggregate_array('.geo').getInfo()
+            
+            # Convert to H3
+            event_h3 = set()
+            for coord_info in coords_list:
+                if coord_info and 'coordinates' in coord_info:
+                    coords = coord_info['coordinates']
+                    lng, lat = coords[0], coords[1]
+                    
+                    # Check if actually in Zimbabwe
+                    if 25.24 <= lng <= 33.05 and -22.42 <= lat <= -15.61:
+                        h3_id = h3.latlng_to_cell(lat, lng, 10)
+                        event_h3.add(h3_id)
+            
+            if event_h3:
+                print(f"      Flooded H3 cells: {len(event_h3):,}")
+                all_flooded_h3.update(event_h3)
+                valid_events.append({
+                    'event_id': event_id,
+                    'flooded_h3_count': len(event_h3),
+                    'countries': event_props.get('countries', 'Unknown'),
+                    'dead': event_props.get('dfo_dead', 'Unknown'),
+                    'displaced': event_props.get('dfo_displaced', 'Unknown')
+                })
+        
+    except Exception as e:
+        # Skip events with no data
+        pass
+
+print(f"\n{'='*60}")
+print(f"📊 RESULTS")
+print(f"{'='*60}")
+
+print(f"\n✅ Valid events with Zimbabwe floods: {len(valid_events)}/{potential_events}")
+print(f"✅ Total unique flooded H3 cells: {len(all_flooded_h3):,}")
+
+if valid_events:
+    print(f"\n📋 Valid events:")
+    for evt in valid_events:
+        print(f"   • Event {evt['event_id']}: {evt['flooded_h3_count']:,} cells")
+        print(f"     Deaths: {evt['dead']}, Displaced: {evt['displaced']}")
+
+# ============================================================
+# CREATE LABELS
+# ============================================================
+
+print(f"\n{'='*60}")
+print(f"🏷️ CREATING H3 LABELS")
+print(f"{'='*60}")
+
+# Create labels
+h3_grid['gfd_flooded'] = 0
+
+if all_flooded_h3:
+    h3_grid.loc[h3_grid['h3_id'].isin(all_flooded_h3), 'gfd_flooded'] = 1
+
+flooded_count = h3_grid['gfd_flooded'].sum()
+print(f"\n📊 Label distribution:")
+print(f"   Not flooded (0): {(h3_grid['gfd_flooded']==0).sum():,} ({(h3_grid['gfd_flooded']==0).sum()/len(h3_grid)*100:.1f}%)")
+print(f"   Flooded (1): {flooded_count:,} ({flooded_count/len(h3_grid)*100:.3f}%)")
+
+# ============================================================
+# SAVE RESULTS
+# ============================================================
+
+if all_flooded_h3:
+    print(f"\n{'='*60}")
+    print(f"💾 SAVING RESULTS")
+    print(f"{'='*60}")
+    
+    # Save valid events
+    if valid_events:
+        valid_df = pd.DataFrame(valid_events)
+        valid_file = OUTPUT_DIR / 'gfd_valid_events.csv'
+        valid_df.to_csv(valid_file, index=False)
+        print(f"✅ Valid events saved: {valid_file.name}")
+    
+    # Save H3 labels
+    labels_file = OUTPUT_DIR / 'gfd_flood_labels.parquet'
+    h3_grid[['h3_id', 'center_lat', 'center_lng', 'gfd_flooded']].to_parquet(
+        labels_file, 
+        compression='snappy'
+    )
+    
+    size_mb = labels_file.stat().st_size / (1024**2)
+    print(f"✅ H3 labels saved: {labels_file.name}")
+    print(f"   Size: {size_mb:.1f} MB")
+    
+    # Comparison with Sentinel-1
+    print(f"\n{'='*60}")
+    print(f"📊 COMPARISON WITH SENTINEL-1 IDAI")
+    print(f"{'='*60}")
+    
+    sentinel1_file = DATA_DIR / 'sentinel1_idai/idai_flood_labels.parquet'
+    if sentinel1_file.exists():
+        sentinel1_df = pd.read_parquet(sentinel1_file)
+        sentinel1_flooded = set(sentinel1_df[sentinel1_df['idai_flooded']==1]['h3_id'])
+        
+        gfd_flooded_set = set(h3_grid[h3_grid['gfd_flooded']==1]['h3_id'])
+        overlap = gfd_flooded_set & sentinel1_flooded
+        
+        print(f"\n📊 Dataset comparison:")
+        print(f"   GFD flooded cells: {len(gfd_flooded_set):,}")
+        print(f"   Sentinel-1 flooded cells: {len(sentinel1_flooded):,}")
+        print(f"   Overlap: {len(overlap):,} cells")
+
+else:
+    print(f"\n⚠️  No valid Zimbabwe flood data found in GFD")
+    print(f"   Recommendation: Use only Sentinel-1 Idai labels for training")
+
+print(f"\n✅ Cell 2 complete")
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\preprocessing_scripts\cyclones.ipynb
+Cell: 2
+Terms: pd.read_excel | read_excel
+------------------------------------------------------------------------------------------------
+# CELL 6 (PREPROCESSING): JOIN IDAI IMPACT TO WARD CENTROIDS
+
+print("🧵 CELL 6: JOIN IDAI IMPACT TO WARD CENTROIDS")
+print("=" * 90)
+
+import pandas as pd
+from pathlib import Path
+
+# Paths
+def find_repo_root(start: Path) -> Path:
+    start = start.resolve()
+    for p in [start] + list(start.parents):
+        if (p / "requirements.txt").exists() and (p / "data").exists():
+            return p
+    raise RuntimeError("Could not locate repo root")
+
+project_root = find_repo_root(Path.cwd())
+cyclone_root = project_root / "data" / "cyclone_model"
+raw_dir = cyclone_root / "07_reported_events" / "raw"
+events_out = cyclone_root / "preprocessed" / "events"
+events_out.mkdir(parents=True, exist_ok=True)
+
+# Load ward centroids
+centroids = pd.read_csv(raw_dir / "zimbabwe_ward_centroids.csv")
+print(f"Ward centroids: {len(centroids)}")
+
+# Load Idai impact data (no skiprows, filter HXL row after)
+idai_path = raw_dir / "DTM_Zimbabwe_Cyclone_IDAI_Baseline_Assessment_Round_7.xlsx"
+idai = pd.read_excel(idai_path, sheet_name="Baseline R7")
+
+# Remove HXL tag row (starts with #)
+idai = idai[~idai.iloc[:, 0].astype(str).str.startswith("#", na=False)].reset_index(drop=True)
+print(f"Idai records: {len(idai)}")
+
+# Find ward pcode column
+pcode_col = [c for c in idai.columns if "ward" in c.lower() and "pcode" in c.lower()][0]
+print(f"Ward pcode column: {pcode_col}")
+
+# Standardize pcode columns
+idai["ward_pcode"] = idai[pcode_col].astype(str).str.strip().str.upper()
+centroids["ward_pcode"] = centroids["ward_pcode"].astype(str).str.strip().str.upper()
+
+# Join
+merged = idai.merge(centroids[["ward_pcode", "latitude", "longitude"]], on="ward_pcode", how="inner")
+print(f"Matched wards: {len(merged)}")
+
+# Key impact columns
+impact_cols = [c for c in merged.columns if any(x in c.lower() for x in ["affected", "destroyed", "idp"])]
+print(f"Impact columns: {len(impact_cols)}")
+
+merged[["ward_pcode", "District", "Province", "latitude", "longitude"]].head()
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\preprocessing_scripts\extreme_rainfall.ipynb
+Cell: 2
+Terms: Duration
+------------------------------------------------------------------------------------------------
+# Cell 2: Identify Extreme Rainfall Events from CHIRPS
+"""
+Process CHIRPS daily rainfall data to identify extreme events.
+Uses objective thresholds and merges consecutive wet days into events.
+"""
+
+import rasterio
+import numpy as np
+from datetime import datetime, timedelta
+import pandas as pd
+from pathlib import Path
+
+print('🌧️ EXTREME RAINFALL EVENT IDENTIFICATION')
+print('=' * 45)
+
+# Configuration
+EVENTS_DIR = PREPROCESSED_DIR / 'events'
+CHIRPS_FILES = sorted(CLIMATE_DIR.glob('zimbabwe_chirps_daily_*.tif'))
+
+print(f'📊 Processing {len(CHIRPS_FILES)} CHIRPS files...')
+print(f'🎯 Thresholds: {EXTREME_PERCENTILES}th percentiles + {MIN_EVENT_RAINFALL}mm/day')
+
+# Check if events already processed
+events_file = EVENTS_DIR / 'extreme_events_catalog.parquet'
+if events_file.exists():
+    print('✅ Extreme events catalog already exists')
+    events_df = pd.read_parquet(events_file)
+    print(f'   📋 Found {len(events_df)} extreme events')
+    print(f'   📅 Period: {events_df.start_date.min()} to {events_df.end_date.max()}')
+else:
+    print('🔍 Identifying extreme rainfall events...')
+    
+    all_events = []
+    processed_years = 0
+    
+    # Process each CHIRPS file (annual)
+    for chirps_file in CHIRPS_FILES:
+        try:
+            # Extract year from filename
+            year = int(chirps_file.stem.split('_')[-1])
+            print(f'   Processing {year}...', end=' ')
+            
+            with rasterio.open(chirps_file) as src:
+                # Read all bands (daily data for the year)
+                rainfall_data = src.read()  # Shape: (days, height, width)
+                transform = src.transform
+                crs = src.crs
+                
+                # Get spatial dimensions
+                n_days, height, width = rainfall_data.shape
+                
+                # Calculate percentile thresholds for this year
+                # Flatten spatial data but keep temporal dimension
+                flat_data = rainfall_data.reshape(n_days, -1)
+                
+                # Remove no-data values (typically 0 or negative)
+                valid_mask = flat_data > 0
+                
+                # Calculate spatial percentiles for each day
+                daily_percentiles = {}
+                for pct in EXTREME_PERCENTILES:
+                    daily_p = []
+                    for day in range(n_days):
+                        day_data = flat_data[day][valid_mask[day]]
+                        if len(day_data) > 0:
+                            daily_p.append(np.percentile(day_data, pct))
+                        else:
+                            daily_p.append(0)
+                    daily_percentiles[pct] = np.array(daily_p)
+                
+                # Find extreme events for each pixel
+                events_this_year = []
+                
+                # Sample processing on subset of pixels for speed
+                sample_step = max(1, height * width // 10000)  # Sample ~10k pixels
+                
+                for i in range(0, height * width, sample_step):
+                    row = i // width
+                    col = i % width
+                    
+                    pixel_series = rainfall_data[:, row, col]
+                    
+                    # Skip if mostly no-data
+                    if np.sum(pixel_series > 0) < n_days * 0.1:
+                        continue
+                    
+                    # Identify extreme days
+                    extreme_days = []
+                    for day in range(n_days):
+                        rainfall = pixel_series[day]
+                        
+                        # Check if meets any threshold
+                        is_extreme = (rainfall >= MIN_EVENT_RAINFALL and 
+                                    any(rainfall >= daily_percentiles[pct][day] 
+                                        for pct in EXTREME_PERCENTILES))
+                        
+                        if is_extreme:
+                            extreme_days.append({
+                                'day': day,
+                                'date': datetime(year, 1, 1) + timedelta(days=day),
+                                'rainfall': rainfall,
+                                'row': row,
+                                'col': col
+                            })
+                    
+                    # Group consecutive days into events
+                    if extreme_days:
+                        current_event = [extreme_days[0]]
+                        
+                        for extreme_day in extreme_days[1:]:
+                            # Check if consecutive (within 2 days)
+                            if extreme_day['day'] - current_event[-1]['day'] <= 2:
+                                current_event.append(extreme_day)
+                            else:
+                                # Save current event
+                                if len(current_event) > 0:
+                                    events_this_year.append({
+                                        'year': year,
+                                        'start_date': current_event[0]['date'],
+                                        'end_date': current_event[-1]['date'],
+                                        'duration_days': len(current_event),
+                                        'total_rainfall': sum(d['rainfall'] for d in current_event),
+                                        'peak_intensity': max(d['rainfall'] for d in current_event),
+                                        'center_row': current_event[0]['row'],
+                                        'center_col': current_event[0]['col']
+                                    })
+                                
+                                # Start new event
+                                current_event = [extreme_day]
+                        
+                        # Don't forget last event
+                        if len(current_event) > 0:
+                            events_this_year.append({
+                                'year': year,
+                                'start_date': current_event[0]['date'],
+                                'end_date': current_event[-1]['date'], 
+                                'duration_days': len(current_event),
+                                'total_rainfall': sum(d['rainfall'] for d in current_event),
+                                'peak_intensity': max(d['rainfall'] for d in current_event),
+                                'center_row': current_event[0]['row'],
+                                'center_col': current_event[0]['col']
+                            })
+                
+                all_events.extend(events_this_year)
+                processed_years += 1
+                print(f'{len(events_this_year)} events')
+                
+        except Exception as e:
+            print(f'❌ Error processing {year}: {e}')
+            continue
+    
+    # Convert to DataFrame and save
+    if all_events:
+        events_df = pd.DataFrame(all_events)
+        events_df.to_parquet(events_file)
+        
+        print(f'\n✅ Event identification complete!')
+        print(f'   📋 Total events: {len(events_df)}')
+        print(f'   📅 Years processed: {processed_years}')
+        print(f'   💾 Saved: {events_file}')
+        
+        # Event statistics
+        print(f'\n📊 Event Statistics:')
+        print(f'   Duration: {events_df.duration_days.mean():.1f} ± {events_df.duration_days.std():.1f} days')
+        print(f'   Peak intensity: {events_df.peak_intensity.mean():.1f} ± {events_df.peak_intensity.std():.1f} mm/day')
+        print(f'   Total rainfall: {events_df.total_rainfall.mean():.1f} ± {events_df.total_rainfall.std():.1f} mm')
+    else:
+        print('❌ No extreme events identified')
+
+print(f'\n📁 Output: {events_file}')
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\preprocessing_scripts\extreme_rainfall.ipynb
+Cell: 5
+Terms: event_month
+------------------------------------------------------------------------------------------------
+# Cell 5: Condition Events by Climate Phases (ENSO/IOD)
+"""
+Link extreme rainfall events to climate indices for frequency modeling.
+Determines which climate phase each event occurred during.
+"""
+
+import pandas as pd
+import numpy as np
+from datetime import datetime
+
+print('🌍 CLIMATE PHASE CONDITIONING')
+print('=' * 32)
+
+# File paths
+events_file = EVENTS_DIR / 'extreme_events_catalog.parquet'
+climate_file = INDICES_DIR / 'zimbabwe_climate_indices.csv'
+conditioned_events_file = PREPROCESSED_DIR / 'events' / 'climate_conditioned_events.parquet'
+
+# Load data
+print('📊 Loading events and climate indices...')
+events_df = pd.read_parquet(events_file)
+climate_df = pd.read_csv(climate_file)
+
+print(f'   Events: {len(events_df):,}')
+print(f'   Climate records: {len(climate_df):,}')
+
+# Check if conditioning already done
+if conditioned_events_file.exists():
+    print('✅ Climate conditioning already completed')
+    conditioned_df = pd.read_parquet(conditioned_events_file)
+    print(f'   📋 Conditioned events: {len(conditioned_df):,}')
+else:
+    print('🔗 Linking events to climate phases...')
+    
+    # Prepare climate data for merging
+    climate_df['date'] = pd.to_datetime(climate_df['date'])
+    climate_df['year'] = climate_df['date'].dt.year
+    climate_df['month'] = climate_df['date'].dt.month
+    
+    # Define climate phases
+    def classify_enso_phase(nino34_sst):
+        if pd.isna(nino34_sst) or nino34_sst == -999:
+            return 'Unknown'
+        elif nino34_sst >= 0.5:
+            return 'El Niño'
+        elif nino34_sst <= -0.5:
+            return 'La Niña'
+        else:
+            return 'Neutral'
+    
+    def classify_iod_phase(dmi):
+        if pd.isna(dmi) or dmi == -999:
+            return 'Unknown'
+        elif dmi >= 0.4:
+            return 'Positive IOD'
+        elif dmi <= -0.4:
+            return 'Negative IOD'
+        else:
+            return 'Neutral'
+    
+    climate_df['enso_phase'] = climate_df['nino34_sst'].apply(classify_enso_phase)
+    climate_df['iod_phase'] = climate_df['dmi'].apply(classify_iod_phase)
+    
+    # Add event timing info
+    events_df['start_date'] = pd.to_datetime(events_df['start_date'])
+    events_df['start_month'] = events_df['start_date'].dt.month
+    
+    # Merge events with climate data
+    conditioned_events = []
+    
+    for _, event in events_df.iterrows():
+        event_year = event['year']
+        event_month = event['start_month']
+        
+        # Find matching climate record
+        climate_match = climate_df[
+            (climate_df['year'] == event_year) & 
+            (climate_df['month'] == event_month)
+        ]
+        
+        if len(climate_match) > 0:
+            climate_record = climate_match.iloc[0]
+            
+            # Create conditioned event record
+            conditioned_event = {
+                **event.to_dict(),
+                'nino34_sst': climate_record['nino34_sst'],
+                'dmi': climate_record['dmi'],
+                'enso_phase': climate_record['enso_phase'],
+                'iod_phase': climate_record['iod_phase'],
+                'climate_composite': f"{climate_record['enso_phase']}_{climate_record['iod_phase']}"
+            }
+            conditioned_events.append(conditioned_event)
+    
+    # Save conditioned events
+    if conditioned_events:
+        conditioned_df = pd.DataFrame(conditioned_events)
+        conditioned_df.to_parquet(conditioned_events_file)
+        
+        print(f'✅ Climate conditioning complete!')
+        print(f'   📋 Conditioned events: {len(conditioned_df):,}')
+        print(f'   💾 Saved: {conditioned_events_file}')
+        
+        # Climate phase statistics
+        print(f'\n📊 Events by Climate Phase:')
+        print(f'   ENSO phases:')
+        for phase, count in conditioned_df['enso_phase'].value_counts().items():
+            print(f'     {phase}: {count:,} events ({count/len(conditioned_df)*100:.1f}%)')
+        
+        print(f'   IOD phases:')
+        for phase, count in conditioned_df['iod_phase'].value_counts().items():
+            print(f'     {phase}: {count:,} events ({count/len(conditioned_df)*100:.1f}%)')
+        
+        # Most active climate combinations
+        print(f'\n🎯 Top climate combinations:')
+        top_combos = conditioned_df['climate_composite'].value_counts().head()
+        for combo, count in top_combos.items():
+            print(f'   {combo}: {count:,} events')
+    
+    else:
+        print('❌ No events could be conditioned')
+
+print(f'\n📁 Output: {conditioned_events_file}')
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\1_define_fusion_v2_rules_from_release_bundles.ipynb
+Cell: 1
+Terms: Severity Ranking
+------------------------------------------------------------------------------------------------
+# 1_define_fusion_v2_rules_from_release_bundles.ipynb — Cell 1
+# Goal:
+# - Read staged RozviDrought v2 release bundles
+# - Validate bundle contracts/checksums exist
+# - Define hybrid probabilistic Fusion v2 rules
+# - Write fusion rule contracts for shadow validation
+#
+# This cell does NOT generate predictions.
+# This cell does NOT replace legacy fusion.
+# This cell defines the fusion-v2 rule contract only.
+
+from pathlib import Path
+from datetime import datetime, timezone
+import json
+import hashlib
+import pandas as pd
+import numpy as np
+
+# ------------------------------------------------------------
+# Paths
+# ------------------------------------------------------------
+PROJECT_ROOT = Path(r"C:\Projects\ramangwana\risks")
+DROUGHT_DATA_DIR = PROJECT_ROOT / "data" / "drought_model"
+
+RELEASE_MANIFEST_DIR = (
+    DROUGHT_DATA_DIR
+    / "processed"
+    / "metadata"
+    / "manifests"
+    / "release_v2_package_handoff"
+)
+
+RELEASE_STAGING_ROOT = (
+    DROUGHT_DATA_DIR
+    / "processed"
+    / "package_releases"
+    / "rozvidrought_v2"
+)
+
+ARTIFACTS_ROOT = RELEASE_STAGING_ROOT / "rozvidrought" / "artifacts"
+
+FUSION_RULES_OUT_DIR = RELEASE_MANIFEST_DIR / "fusion_v2_rules"
+FUSION_RULES_OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+print("=== Define Fusion v2 rules from release bundles ===")
+print("Run ID:", run_id)
+print("Release manifests:", RELEASE_MANIFEST_DIR)
+print("Artifacts root:", ARTIFACTS_ROOT)
+print("Fusion rules out:", FUSION_RULES_OUT_DIR)
+
+# ------------------------------------------------------------
+# Helpers
+# ------------------------------------------------------------
+def latest_required(folder: Path, pattern: str) -> Path:
+    paths = sorted(folder.glob(pattern))
+    assert paths, f"No file found for pattern: {folder / pattern}"
+    return paths[-1]
+
+
+def read_json(path: Path) -> dict:
+    assert path.exists(), f"Missing JSON: {path}"
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def write_json(path: Path, payload: dict):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
+def sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+
+    return h.hexdigest()
+
+
+def validate_checksums(bundle_dir: Path, checksums_payload: dict):
+    rows = []
+    ok = True
+
+    for rec in checksums_payload.get("files", []):
+        rel = rec["relative_path"]
+        expected = rec["sha256"]
+        path = bundle_dir / rel
+
+        exists = path.exists()
+        actual = sha256_file(path) if exists else None
+        match = bool(exists and actual == expected)
+
+        if not match:
+            ok = False
+
+        rows.append({
+            "relative_path": rel,
+            "exists": exists,
+            "sha256_match": match,
+            "expected_sha256": expected,
+            "actual_sha256": actual,
+        })
+
+    return ok, rows
+
+
+def json_records(df_part: pd.DataFrame):
+    return json.loads(df_part.replace({np.nan: None}).to_json(orient="records"))
+
+
+# ------------------------------------------------------------
+# Load latest release closeout / checksum / validation
+# ------------------------------------------------------------
+release_closeout_json = latest_required(
+    RELEASE_MANIFEST_DIR,
+    "rozvidrought_v2_release_contract_closeout_*.json",
+)
+
+checksum_index_json = latest_required(
+    RELEASE_MANIFEST_DIR,
+    "rozvidrought_v2_global_checksum_index_*.json",
+)
+
+validation_json = latest_required(
+    RELEASE_MANIFEST_DIR,
+    "rozvidrought_v2_inference_contract_validation_*.json",
+)
+
+release_closeout = read_json(release_closeout_json)
+checksum_index = read_json(checksum_index_json)
+validation = read_json(validation_json)
+
+release_version = release_closeout["release_version"]
+
+assert release_closeout["closeout_status"] == "release_contract_closed_ready_for_package_copy_and_shadow_validation"
+assert checksum_index["overall_status"] == "release_checksums_generated_complete"
+assert validation["overall_status"] == "inference_contract_validation_passed"
+
+print("Release closeout:", release_closeout_json)
+print("Checksum index  :", checksum_index_json)
+print("Validation JSON :", validation_json)
+print("Release version :", release_version)
+
+# ------------------------------------------------------------
+# Load bundle contracts
+# ------------------------------------------------------------
+target_keys = ["spi3", "spi6", "spi12"]
+
+target_contracts = {}
+feature_contracts = {}
+preprocessing_contracts = {}
+threshold_contracts = {}
+model_manifests = {}
+bundle_summary_rows = []
+
+for target_key in target_keys:
+    bundle_info = checksum_index["bundles"][target_key]
+    bundle_dir = Path(bundle_info["bundle_dir"])
+
+    assert bundle_dir.exists(), bundle_dir
+
+    model_manifest = read_json(bundle_dir / "model_manifest.json")
+    feature_contract = read_json(bundle_dir / "feature_contract.json")
+    preprocessing_contract = read_json(bundle_dir / "preprocessing_contract.json")
+    target_contract = read_json(bundle_dir / "target_contract.json")
+    threshold_contract = read_json(bundle_dir / "thresholds.json")
+    checksums = read_json(bundle_dir / "checksums.json")
+
+    checksum_ok, checksum_rows = validate_checksums(bundle_dir, checksums)
+
+    assert checksum_ok, f"Checksum failed for {target_key}"
+
+    model_manifests[target_key] = model_manifest
+    feature_contracts[target_key] = feature_contract
+    preprocessing_contracts[target_key] = preprocessing_contract
+    target_contracts[target_key] = target_contract
+    threshold_contracts[target_key] = threshold_contract
+
+    bundle_summary_rows.append({
+        "target_key": target_key,
+        "bundle_dir": str(bundle_dir),
+        "selected_model_family": model_manifest["selected_model_family"],
+        "model_role": model_manifest["model_role"],
+        "model_file": model_manifest["model_file"],
+        "model_feature_count": feature_contract["model_feature_count"],
+        "temporal_reconstruction_required": preprocessing_contract["temporal_reconstruction_required"],
+        "class4_threshold": threshold_contract["thresholds"]["class4_probability_warning_threshold"],
+        "checksum_ok": checksum_ok,
+    })
+
+bundle_summary_df = pd.DataFrame(bundle_summary_rows)
+
+# ------------------------------------------------------------
+# Fusion v2 input schema
+# ------------------------------------------------------------
+fusion_input_columns = []
+
+for target_key in target_keys:
+    fusion_input_columns.extend([
+        f"{target_key}_pred_class",
+        f"{target_key}_p0",
+        f"{target_key}_p1",
+        f"{target_key}_p2",
+        f"{target_key}_p3",
+        f"{target_key}_p4",
+        f"{target_key}_confidence",
+        f"{target_key}_class4_warning_flag",
+    ])
+
+fusion_input_columns.extend([
+    "row",
+    "col",
+    "yyyymm",
+])
+
+# ------------------------------------------------------------
+# Hybrid probabilistic fusion rules
+# ------------------------------------------------------------
+# These are transparent shadow rules.
+# They will be validated later against event evidence.
+# They are not final production replacement rules.
+
+target_weights = {
+    "spi3": 0.25,
+    "spi6": 0.35,
+    "spi12": 0.40,
+}
+
+class_mapping = {
+    "0": "no_drought",
+    "1": "mild_drought",
+    "2": "moderate_drought",
+    "3": "severe_drought",
+    "4": "extreme_drought",
+}
+
+fusion_output_columns = [
+    "fusion_v2_pred_class",
+    "fusion_v2_p0",
+    "fusion_v2_p1",
+    "fusion_v2_p2",
+    "fusion_v2_p3",
+    "fusion_v2_p4",
+    "fusion_v2_expected_severity",
+    "fusion_v2_expected_severity_norm",
+    "fusion_v2_confidence",
+    "fusion_v2_agreement_score",
+    "fusion_v2_class4_warning_flag",
+    "fusion_v2_short_term_warning_flag",
+    "fusion_v2_seasonal_confirmed_flag",
+    "fusion_v2_persistent_drought_flag",
+    "fusion_v2_warning_reason",
+]
+
+fusion_rules = {
+    "fusion_key": "fusion_v2",
+    "release_version": release_version,
+    "run_id": run_id,
+    "fusion_type": "hybrid_rule_assisted_probabilistic_fusion",
+    "status": "rules_defined_pending_shadow_validation",
+
+    "important_status": {
+        "replacement_for_legacy_fusion": False,
+        "shadow_validation_required": True,
+        "learned_latent_gated_fusion_used": False,
+        "reason_not_latent_gated": (
+            "Current corrected release bundles are target-horizon models: SPI3, SPI6, SPI12. "
+            "Latent-gated fusion was designed for older subsystem probability vectors. "
+            "Fusion v2 starts as transparent hybrid probabilistic fusion before any learned meta-fusion."
+        ),
+    },
+
+    "target_roles": {
+        "spi3": "short_term_drought_signal",
+        "spi6": "seasonal_drought_signal",
+        "spi12": "long_memory_persistent_drought_signal",
+    },
+
+    "target_weights": target_weights,
+
+    "probability_fusion_rule": {
+        "formula": (
+            "fusion_pK = 0.25*spi3_pK + 0.35*spi6_pK + 0.40*spi12_pK "
+            "for K in [0,1,2,3,4]"
+        ),
+        "final_class_rule": "argmax([fusion_p0, fusion_p1, fusion_p2, fusion_p3, fusion_p4])",
+        "note": "This is a shadow rule. It must be compared with drought-event evidence before replacement use.",
+    },
+
+    "expected_severity_rule": {
+        "formula": (
+            "expected_severity = sum(K * fusion_pK for K in [0,1,2,3,4]); "
+            "expected_severity_norm = expected_severity / 4"
+        ),
+        "use": "continuous drought severity ranking and map smoothing support",
+    },
+
+    "agreement_rule": {
+        "formula": (
+            "agreement_score = 1 - min(std([spi3_expected, spi6_expected, spi12_expected]) / 2, 1)"
+        ),
+        "use": "confidence adjustment and disagreement diagnostics",
+    },
+
+    "confidence_rule": {
+        "formula": "fusion_confidence = max(fusion_probabilities) * agreement_score",
+        "note": "High class probability with low target agreement is penalized.",
+    },
+
+    "warning_logic": {
+        "class4_warning_layer": {
+            "hard_override_allowed": False,
+            "usage": "warning_support_only",
+            "rule": (
+                "class4_warning_flag is true if any target class4 warning flag is true, "
+                "or if fusion_p4 exceeds the provisional fusion class4 warning threshold."
+            ),
+            "provisional_fusion_class4_probability_threshold": 0.15,
+            "spi12_class4_probability_threshold": threshold_contracts["spi12"]["thresholds"]["class4_probability_warning_threshold"],
+            "note": (
+                "SPI12 class-4 threshold is available as 0.01 from the lock. "
+                "SPI3/SPI6 class-4 thresholds are currently unset and should not be invented as final thresholds."
+            ),
+        },
+
+        "short_term_warning": {
+            "rule": (
+                "short_term_warning_flag is true when SPI3 indicates moderate-or-worse probability "
+                "but SPI6/SPI12 are not yet strong."
+            ),
+            "formula": "spi3_p2 + spi3_p3 + spi3_p4 >= 0.50 and spi6_expected < 2 and spi12_expected < 2",
+        },
+
+        "seasonal_confirmed": {
+            "rule": (
+                "seasonal_confirmed_flag is true when SPI6 and at least one of SPI3/SPI12 agree "
+                "on moderate-or-worse drought."
+            ),
+            "formula": "(spi6_p2 + spi6_p3 + spi6_p4 >= 0.50) and ((spi3_p2+spi3_p3+spi3_p4 >= 0.50) or (spi12_p2+spi12_p3+spi12_p4 >= 0.50))",
+        },
+
+        "persistent_drought": {
+            "rule": (
+                "persistent_drought_flag is true when SPI12 indicates moderate-or-worse drought "
+                "and SPI6 also supports drought."
+            ),
+            "formula": "(spi12_p2 + spi12_p3 + spi12_p4 >= 0.50) and (spi6_p2 + spi6_p3 + spi6_p4 >= 0.40)",
+        },
+    },
+}
+
+# ------------------------------------------------------------
+# Fusion feature contract
+# ------------------------------------------------------------
+fusion_feature_contract = {
+    "fusion_key": "fusion_v2",
+    "release_version": release_version,
+    "run_id": run_id,
+
+    "input_type": "target_model_probability_outputs",
+    "required_input_columns": fusion_input_columns,
+    "required_targets": target_keys,
+
+    "target_probability_columns": {
+        target_key: [f"{target_key}_p{i}" for i in range(5)]
+        for target_key in target_keys
+    },
+
+    "target_class_columns": {
+        target_key: f"{target_key}_pred_class"
+        for target_key in target_keys
+    },
+
+    "target_confidence_columns": {
+        target_key: f"{target_key}_confidence"
+        for target_key in target_keys
+    },
+
+    "target_warning_columns": {
+        target_key: f"{target_key}_class4_warning_flag"
+        for target_key in target_keys
+    },
+
+    "output_columns": fusion_output_columns,
+
+    "feature_source_policy": {
+        "uses_raw_environmental_features": False,
+        "uses_spi_labels": False,
+        "uses_target_model_outputs": True,
+        "uses_legacy_subsystem_probabilities": False,
+    },
+}
+
+# ------------------------------------------------------------
+# Fusion threshold policy
+# ------------------------------------------------------------
+fusion_threshold_policy = {
+    "fusion_key": "fusion_v2",
+    "release_version": release_version,
+    "run_id": run_id,
+
+    "class4_policy": {
+        "class4_is_warning_layer_only": True,
+        "hard_override_allowed": False,
+
+        "target_thresholds": {
+            target_key: threshold_contracts[target_key]["thresholds"]["class4_probability_warning_threshold"]
+            for target_key in target_keys
+        },
+
+        "provisional_fusion_class4_probability_threshold": 0.15,
+
+        "status": "provisional_pending_shadow_validation",
+
+        "notes": [
+            "SPI12 has a class-4 warning threshold from the lock.",
+            "SPI3 and SPI6 thresholds are currently unset in release locks.",
+            "Fusion threshold is provisional and must be validated against event evidence.",
+            "Do not use class-4 warning as hard class override.",
+        ],
+    }
+}
+
+# ------------------------------------------------------------
+# Fusion release contract
+# ------------------------------------------------------------
+fusion_release_contract = {
+    "run_id": run_id,
+    "created_utc": datetime.now(timezone.utc).isoformat(),
+
+    "notebook": (
+        "processing_scripts/drought/subsystems/"
+        "release_v2_package_handoff/1_define_fusion_v2_rules_from_release_bundles.ipynb"
+    ),
+    "cell": 1,
+    "stage": "define_fusion_v2_rules_from_release_bundles",
+
+    "release_version": release_version,
+    "fusion_key": "fusion_v2",
+    "fusion_type": "hybrid_rule_assisted_probabilistic_fusion",
+    "fusion_status": "rules_defined_pending_shadow_validation",
+
+    "inputs": {
+        "release_closeout_json": str(release_closeout_json),
+        "checksum_index_json": str(checksum_index_json),
+        "validation_json": str(validation_json),
+        "artifacts_root": str(ARTIFACTS_ROOT),
+    },
+
+    "bundle_summary": json_records(bundle_summary_df),
+
+    "rules": fusion_rules,
+    "feature_contract": fusion_feature_contract,
+    "threshold_policy": fusion_threshold_policy,
+
+    "next_cell_goal": (
+        "Implement a pure Python function that applies these fusion rules to a dataframe "
+        "of SPI3/SPI6/SPI12 prediction probabilities, then run a small synthetic smoke test."
+    ),
+}
+
+# ------------------------------------------------------------
+# Save outputs
+# ------------------------------------------------------------
+fusion_rules_json = FUSION_RULES_OUT_DIR / f"fusion_rules_v2_{run_id}.json"
+fusion_feature_contract_json = FUSION_RULES_OUT_DIR / f"fusion_feature_contract_v2_{run_id}.json"
+fusion_threshold_policy_json = FUSION_RULES_OUT_DIR / f"fusion_threshold_policy_v2_{run_id}.json"
+fusion_release_contract_json = FUSION_RULES_OUT_DIR / f"fusion_release_contract_v2_{run_id}.json"
+bundle_summary_csv = FUSION_RULES_OUT_DIR / f"fusion_v2_input_bundle_summary_{run_id}.csv"
+
+write_json(fusion_rules_json, fusion_rules)
+write_json(fusion_feature_contract_json, fusion_feature_contract)
+write_json(fusion_threshold_policy_json, fusion_threshold_policy)
+write_json(fusion_release_contract_json, fusion_release_contract)
+bundle_summary_df.to_csv(bundle_summary_csv, index=False)
+
+# Also update staged fusion_v2 bundle with draft rules for later package use.
+fusion_bundle_dir = Path(checksum_index["bundles"]["fusion_v2"]["bundle_dir"])
+assert fusion_bundle_dir.exists(), fusion_bundle_dir
+
+write_json(fusion_bundle_dir / "fusion_rules.json", fusion_rules)
+write_json(fusion_bundle_dir / "fusion_feature_contract.json", fusion_feature_contract)
+write_json(fusion_bundle_dir / "thresholds.json", fusion_threshold_policy)
+
+# ------------------------------------------------------------
+# Print report
+# ------------------------------------------------------------
+print("\n=== Input bundle summary ===")
+print(bundle_summary_df.to_string(index=False))
+
+print("\n=== Fusion v2 rule summary ===")
+print("Fusion type:", fusion_rules["fusion_type"])
+print("Legacy replacement:", fusion_rules["important_status"]["replacement_for_legacy_fusion"])
+print("Latent-gated used:", fusion_rules["important_status"]["learned_latent_gated_fusion_used"])
+print("Target weights:", fusion_rules["target_weights"])
+print("Fusion class-4 threshold:", fusion_threshold_policy["class4_policy"]["provisional_fusion_class4_probability_threshold"])
+print("SPI12 class-4 threshold:", fusion_threshold_policy["class4_policy"]["target_thresholds"]["spi12"])
+
+print("\n=== Fusion v2 required inputs ===")
+print(pd.Series(fusion_input_columns).to_string(index=False))
+
+print("\nSaved fusion rules JSON            ->", fusion_rules_json)
+print("Saved fusion feature contract JSON ->", fusion_feature_contract_json)
+print("Saved fusion threshold policy JSON ->", fusion_threshold_policy_json)
+print("Saved fusion release contract JSON ->", fusion_release_contract_json)
+print("Saved bundle summary CSV          ->", bundle_summary_csv)
+
+print("\nCell 1 complete. Next: Cell 2 should implement the fusion function and run a synthetic smoke test.")
+
+================================================================================================
+
+Notebook: C:\Projects\ramangwana\risks\processing_scripts\extreme_rainfall\extreme_rain_model_signature.ipynb
+Cell: 1
+Terms: event_id
+------------------------------------------------------------------------------------------------
+# Cell 1: Initialize Signature-Based Extreme Rainfall Prediction System
+"""
+Initialize physics-informed signature matching system for extreme rainfall prediction.
+Loads verified event signatures and sets up pattern recognition framework.
+"""
+
+import pandas as pd
+import numpy as np
+from pathlib import Path
+import warnings
+warnings.filterwarnings('ignore')
+
+# ML libraries for signature matching
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.neighbors import NearestNeighbors
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import classification_report, confusion_matrix
+import xgboost as xgb
+
+print('🌩️ SIGNATURE-BASED EXTREME RAINFALL PREDICTION SYSTEM')
+print('=' * 56)
+
+# Configuration
+BASE_DIR = Path('C:/Projects/ramangwana/risks/data/extreme_rainfall')
+EVENTS_DIR = BASE_DIR / 'preprocessed' / 'events'
+MODELS_DIR = Path('C:/Projects/ramangwana/risks/models/signature_prediction')
+MODELS_DIR.mkdir(parents=True, exist_ok=True)
+
+# Prediction system parameters
+SIGNATURE_MATCH_THRESHOLD = 0.8  # Similarity threshold for pattern matching
+N_NEIGHBORS = 50                 # Number of similar signatures to consider
+PHYSICS_WEIGHTING = True         # Use physically-informed feature weights
+RANDOM_STATE = 42
+
+print(f'🎯 Prediction System Configuration:')
+print(f'   Approach: Physics-informed signature matching')
+print(f'   Similarity threshold: {SIGNATURE_MATCH_THRESHOLD}')
+print(f'   Neighbor signatures: {N_NEIGHBORS}')
+print(f'   Physics weighting: {PHYSICS_WEIGHTING}')
+
+# Load complete signature database
+signatures_file = EVENTS_DIR / 'complete_event_signatures.parquet'
+
+if signatures_file.exists():
+    print('\n📊 Loading signature database...')
+    signatures_df = pd.read_parquet(signatures_file)
+    
+    print(f'✅ Signature database loaded successfully!')
+    print(f'   📋 Total signatures: {len(signatures_df):,}')
+    print(f'   📍 Geographic locations: {signatures_df["h3_id"].nunique():,}')
+    print(f'   📅 Temporal range: {signatures_df["date"].min()} to {signatures_df["date"].max()}')
+    print(f'   🌩️ Extreme events: {len(signatures_df[signatures_df["magnitude"] == "extreme"]):,}')
+    print(f'   ⛈️ Severe events: {len(signatures_df[signatures_df["magnitude"] == "severe"]):,}')
+    
+    # Data quality assessment
+    print(f'\n🔍 Database Quality Assessment:')
+    complete_records = signatures_df.dropna().shape[0]
+    completeness = complete_records / len(signatures_df) * 100
+    print(f'   Complete records: {complete_records:,} ({completeness:.1f}%)')
+    
+    # Feature categories for physics-informed weighting
+    physics_features = {
+        # Primary atmospheric drivers (high importance)
+        'moisture_transport': [
+            'atm_atmospheric_moisture', 'atm_atmospheric_moisture_max',
+            'atm_relative_humidity', 'atm_relative_humidity_max',
+            'atm_dewpoint_temperature_2m', 'atm_dewpoint_temperature_2m_max'
+        ],
+        'pressure_dynamics': [
+            'atm_surface_pressure', 'atm_surface_pressure_max'
+        ],
+        'wind_patterns': [
+            'atm_u_component_of_wind_10m', 'atm_v_component_of_wind_10m',
+            'atm_u_component_of_wind_10m_max', 'atm_v_component_of_wind_10m_max',
+            'atm_wind_speed', 'atm_wind_speed_max', 'atm_wind_speed_calc'
+        ],
+        'thermal_structure': [
+            'atm_temperature_2m', 'atm_temperature_2m_max',
+            'atm_temp_celsius'
+        ],
+        # Orographic forcing (medium-high importance)
+        'terrain_forcing': [
+            'terrain_elevation', 'terrain_slope', 'terrain_aspect',
+            'terrain_ruggedness', 'orographic_potential', 'wind_terrain_alignment'
+        ],
+        # Seasonal/temporal context (medium importance)
+        'temporal_context': [
+            'month', 'season', 'day_of_year'
+        ],
+        # Secondary terrain factors (medium importance)
+        'terrain_context': [
+            'terrain_elevation_bands', 'terrain_distance_to_border',
+            'terrain_se_wind_exposure', 'terrain_flow_direction'
+        ]
+    }
+    
+    # Physics-informed feature importance weights
+    feature_weights = {}
+    if PHYSICS_WEIGHTING:
+        weight_mapping = {
+            'moisture_transport': 3.0,    # Highest - moisture is fuel for rainfall
+            'pressure_dynamics': 2.8,    # Very high - drives convergence/lift
+            'wind_patterns': 2.5,        # High - transport and forcing
+            'thermal_structure': 2.2,    # High - instability driver
+            'terrain_forcing': 2.0,      # Medium-high - orographic effects
+            'temporal_context': 1.5,     # Medium - seasonal patterns
+            'terrain_context': 1.2       # Medium-low - background influence
+        }
+        
+        for category, features in physics_features.items():
+            weight = weight_mapping.get(category, 1.0)
+            for feature in features:
+                if feature in signatures_df.columns:
+                    feature_weights[feature] = weight
+        
+        print(f'\n⚖️ Physics-Informed Feature Weighting:')
+        for category, weight in weight_mapping.items():
+            features_in_cat = [f for f in physics_features[category] if f in signatures_df.columns]
+            print(f'   {category}: {weight:.1f}x weight ({len(features_in_cat)} features)')
+    
+    # Available features for prediction
+    exclude_features = [
+        'event_id', 'h3_id', 'date', 'center_lat', 'center_lng',
+        'rainfall_mm', 'magnitude', 'magnitude_numeric',  # Target variables
+        'signature_type'
+    ]
+    
+    prediction_features = [col for col in signatures_df.columns if col not in exclude_features]
+    
+    print(f'\n📊 Prediction Features:')
+    print(f'   Total features: {len(prediction_features)}')
+    
+    # Categorize available features
+    for category, features in physics_features.items():
+        available = [f for f in features if f in prediction_features]
+        print(f'   {category}: {len(available)} features')
+    
+    # Sample preview of signature data
+    print(f'\n📄 Sample Signature Preview:')
+    sample_cols = ['date', 'rainfall_mm', 'magnitude', 'atm_temp_celsius', 'terrain_elevation', 'orographic_potential']
+    available_sample_cols = [col for col in sample_cols if col in signatures_df.columns]
+    
+    for _, row in signatures_df[available_sample_cols].head(3).iterrows():
+        row_str = ' | '.join([f'{col}: {row[col]:.1f}' if isinstance(row[col], (int, float)) 
+                            else f'{col}: {row[col]}' for col in available_sample_cols])
+        print(f'   {row_str}')
+    
+    # Summary statistics for key physical variables
+    print(f'\n🌡️ Key Physical Variable Ranges:')
+    if 'atm_temp_celsius' in signatures_df.columns:
+        temp_stats = signatures_df['atm_temp_celsius']
+        print(f'   Temperature: {temp_stats.min():.1f}°C to {temp_stats.max():.1f}°C (μ={temp_stats.mean():.1f}°C)')
+    
+    if 'atm_pressure_hpa' in signatures_df.columns:
+        pressure_stats = signatures_df['atm_pressure_hpa'] 
+        print(f'   Pressure: {pressure_stats.min():.0f} to {pressure_stats.max():.0f} hPa')
+    
+    if 'atm_wind_speed_calc' in signatures_df.columns:
+        wind_stats = signatures_df['atm_wind_speed_calc']
+        print(f'   Wind speed: {wind_stats.min():.1f} to {wind_stats.max():.1f} m/s')
+    
+    if 'terrain_elevation' in signatures_df.columns:
+        elev_stats = signatures_df['terrain_elevation']
+        print(f'   Elevation: {elev_stats.min():.0f} to {elev_stats.max():.0f} m')
+    
+    print(f'\n🚀 Signature-based prediction system initialized!')
+    print(f'🎯 Ready for physics-informed pattern matching model development!')
+    
+else:
+    print(f'❌ Signature database not found: {signatures_file}')
+    print(f'   Please run the event signature extraction pipeline first.')
+    signatures_df = None
+
+print(f'\n📋 Next steps:')
+print(f'   1. Prepare signature features with physics weighting')
+print(f'   2. Build pattern matching models (similarity + ML)')
+print(f'   3. Validate prediction performance')
+print(f'   4. Deploy real-time prediction system')
+
+================================================================================================
+

@@ -1,0 +1,61 @@
+{
+  "run_id": "20260620T112540Z",
+  "status": "excel_event_reference_and_source_coverage_audited",
+  "event_workbook_path": "C:\\Projects\\Infer RozviDrought\\data\\events\\Zimbabwe_Drought_Timeline_1902_2024.xlsx",
+  "selected_sheet_name": "Chronological Timeline",
+  "selected_header_excel_row": 3,
+  "candidate_event_count": 17,
+  "fully_ready_event_count": 1,
+  "months_requiring_reconstruction_count": 364,
+  "source_ready_for_all_targets": {
+    "release_feature_frame": true,
+    "full_predictor_source": false,
+    "full_training_source": false
+  },
+  "candidate_field_mapping": [
+    {
+      "field_role": "event_name",
+      "selected_excel_column": "Event Period"
+    },
+    {
+      "field_role": "reported_severity",
+      "selected_excel_column": "Severity\nScore (1\u20135)"
+    },
+    {
+      "field_role": "start_year",
+      "selected_excel_column": NaN
+    },
+    {
+      "field_role": "end_year",
+      "selected_excel_column": NaN
+    },
+    {
+      "field_role": "year_or_period",
+      "selected_excel_column": "Event Period"
+    },
+    {
+      "field_role": "geography",
+      "selected_excel_column": NaN
+    },
+    {
+      "field_role": "source_reference",
+      "selected_excel_column": "Key Notes / Sources"
+    }
+  ],
+  "notes": [
+    "Event dates are expanded to every calendar month between the parsed inclusive start and end years.",
+    "This is an availability ledger, not a final scientific event-duration determination.",
+    "Raw reconstruction is needed only where no checked source contains the required month with all v2 contract features."
+  ],
+  "outputs": {
+    "sheet_audit_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell5_excel_sheet_audit_20260620T112540Z.csv",
+    "field_mapping_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell5_excel_field_mapping_20260620T112540Z.csv",
+    "candidate_rows_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell5_excel_candidate_rows_20260620T112540Z.csv",
+    "event_ledger_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell5_excel_event_ledger_20260620T112540Z.csv",
+    "source_contract_compatibility_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell5_source_contract_compatibility_20260620T112540Z.csv",
+    "event_month_source_ledger_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell5_event_month_source_ledger_20260620T112540Z.csv",
+    "event_source_coverage_summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell5_event_source_coverage_summary_20260620T112540Z.csv",
+    "months_requiring_reconstruction_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell5_months_requiring_reconstruction_20260620T112540Z.csv",
+    "manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell5_excel_source_audit_manifest_20260620T112540Z.json"
+  }
+}

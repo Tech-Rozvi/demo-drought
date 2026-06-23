@@ -1,0 +1,221 @@
+file_path,matched_line_number,matched_line,context_start_line,context_end_line,context
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,6,"load_runtime_model,",3,12,"    3: import pandas as pd
+    4: 
+    5: from rozvidrought_subsystems.loaders import (
+    6:     load_runtime_model,
+    7:     load_runtime_scaler,
+    8:     load_subsystem_spec,
+    9: )
+   10: from rozvidrought_subsystems.hydrology_windows import build_hydrology_sequences
+   11: 
+   12: "
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,7,"load_runtime_scaler,",4,13,"    4: 
+    5: from rozvidrought_subsystems.loaders import (
+    6:     load_runtime_model,
+    7:     load_runtime_scaler,
+    8:     load_subsystem_spec,
+    9: )
+   10: from rozvidrought_subsystems.hydrology_windows import build_hydrology_sequences
+   11: 
+   12: 
+   13: def predict_hydrology_proba(sequence_array):"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,10,from rozvidrought_subsystems.hydrology_windows import build_hydrology_sequences,7,16,"    7:     load_runtime_scaler,
+    8:     load_subsystem_spec,
+    9: )
+   10: from rozvidrought_subsystems.hydrology_windows import build_hydrology_sequences
+   11: 
+   12: 
+   13: def predict_hydrology_proba(sequence_array):
+   14:     """"""
+   15:     Predict hydrology probabilities from a prebuilt 3D sequence array.
+   16: "
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,13,def predict_hydrology_proba(sequence_array):,10,19,"   10: from rozvidrought_subsystems.hydrology_windows import build_hydrology_sequences
+   11: 
+   12: 
+   13: def predict_hydrology_proba(sequence_array):
+   14:     """"""
+   15:     Predict hydrology probabilities from a prebuilt 3D sequence array.
+   16: 
+   17:     Expected shape:
+   18:         (n_samples, seq_len, n_features)
+   19:     """""""
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,15,Predict hydrology probabilities from a prebuilt 3D sequence array.,12,21,"   12: 
+   13: def predict_hydrology_proba(sequence_array):
+   14:     """"""
+   15:     Predict hydrology probabilities from a prebuilt 3D sequence array.
+   16: 
+   17:     Expected shape:
+   18:         (n_samples, seq_len, n_features)
+   19:     """"""
+   20:     spec = load_subsystem_spec(""hydrology"")
+   21:     model = load_runtime_model(""hydrology"")"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,18,"(n_samples, seq_len, n_features)",15,24,"   15:     Predict hydrology probabilities from a prebuilt 3D sequence array.
+   16: 
+   17:     Expected shape:
+   18:         (n_samples, seq_len, n_features)
+   19:     """"""
+   20:     spec = load_subsystem_spec(""hydrology"")
+   21:     model = load_runtime_model(""hydrology"")
+   22: 
+   23:     expected_seq_len = spec.sequence_config[""seq_len""]
+   24:     expected_feat_count = len(spec.feature_list)"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,21,"model = load_runtime_model(""hydrology"")",18,27,"   18:         (n_samples, seq_len, n_features)
+   19:     """"""
+   20:     spec = load_subsystem_spec(""hydrology"")
+   21:     model = load_runtime_model(""hydrology"")
+   22: 
+   23:     expected_seq_len = spec.sequence_config[""seq_len""]
+   24:     expected_feat_count = len(spec.feature_list)
+   25: 
+   26:     if len(sequence_array.shape) != 3:
+   27:         raise ValueError("
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,23,"expected_seq_len = spec.sequence_config[""seq_len""]",20,29,"   20:     spec = load_subsystem_spec(""hydrology"")
+   21:     model = load_runtime_model(""hydrology"")
+   22: 
+   23:     expected_seq_len = spec.sequence_config[""seq_len""]
+   24:     expected_feat_count = len(spec.feature_list)
+   25: 
+   26:     if len(sequence_array.shape) != 3:
+   27:         raise ValueError(
+   28:             f""hydrology: expected 3D array (n, seq_len, feat), got shape {sequence_array.shape}""
+   29:         )"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,24,expected_feat_count = len(spec.feature_list),21,30,"   21:     model = load_runtime_model(""hydrology"")
+   22: 
+   23:     expected_seq_len = spec.sequence_config[""seq_len""]
+   24:     expected_feat_count = len(spec.feature_list)
+   25: 
+   26:     if len(sequence_array.shape) != 3:
+   27:         raise ValueError(
+   28:             f""hydrology: expected 3D array (n, seq_len, feat), got shape {sequence_array.shape}""
+   29:         )
+   30: "
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,26,if len(sequence_array.shape) != 3:,23,32,"   23:     expected_seq_len = spec.sequence_config[""seq_len""]
+   24:     expected_feat_count = len(spec.feature_list)
+   25: 
+   26:     if len(sequence_array.shape) != 3:
+   27:         raise ValueError(
+   28:             f""hydrology: expected 3D array (n, seq_len, feat), got shape {sequence_array.shape}""
+   29:         )
+   30: 
+   31:     if sequence_array.shape[1] != expected_seq_len:
+   32:         raise ValueError("
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,28,"f""hydrology: expected 3D array (n, seq_len, feat), got shape {sequence_array.shape}""",25,34,"   25: 
+   26:     if len(sequence_array.shape) != 3:
+   27:         raise ValueError(
+   28:             f""hydrology: expected 3D array (n, seq_len, feat), got shape {sequence_array.shape}""
+   29:         )
+   30: 
+   31:     if sequence_array.shape[1] != expected_seq_len:
+   32:         raise ValueError(
+   33:             f""hydrology: expected seq_len={expected_seq_len}, got {sequence_array.shape[1]}""
+   34:         )"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,31,if sequence_array.shape[1] != expected_seq_len:,28,37,"   28:             f""hydrology: expected 3D array (n, seq_len, feat), got shape {sequence_array.shape}""
+   29:         )
+   30: 
+   31:     if sequence_array.shape[1] != expected_seq_len:
+   32:         raise ValueError(
+   33:             f""hydrology: expected seq_len={expected_seq_len}, got {sequence_array.shape[1]}""
+   34:         )
+   35: 
+   36:     if sequence_array.shape[2] != expected_feat_count:
+   37:         raise ValueError("
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,33,"f""hydrology: expected seq_len={expected_seq_len}, got {sequence_array.shape[1]}""",30,39,"   30: 
+   31:     if sequence_array.shape[1] != expected_seq_len:
+   32:         raise ValueError(
+   33:             f""hydrology: expected seq_len={expected_seq_len}, got {sequence_array.shape[1]}""
+   34:         )
+   35: 
+   36:     if sequence_array.shape[2] != expected_feat_count:
+   37:         raise ValueError(
+   38:             f""hydrology: expected feature count={expected_feat_count}, got {sequence_array.shape[2]}""
+   39:         )"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,36,if sequence_array.shape[2] != expected_feat_count:,33,42,"   33:             f""hydrology: expected seq_len={expected_seq_len}, got {sequence_array.shape[1]}""
+   34:         )
+   35: 
+   36:     if sequence_array.shape[2] != expected_feat_count:
+   37:         raise ValueError(
+   38:             f""hydrology: expected feature count={expected_feat_count}, got {sequence_array.shape[2]}""
+   39:         )
+   40: 
+   41:     proba = model.predict(sequence_array, verbose=0)
+   42:     cols = [f""p{i}"" for i in range(proba.shape[1])]"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,38,"f""hydrology: expected feature count={expected_feat_count}, got {sequence_array.shape[2]}""",35,44,"   35: 
+   36:     if sequence_array.shape[2] != expected_feat_count:
+   37:         raise ValueError(
+   38:             f""hydrology: expected feature count={expected_feat_count}, got {sequence_array.shape[2]}""
+   39:         )
+   40: 
+   41:     proba = model.predict(sequence_array, verbose=0)
+   42:     cols = [f""p{i}"" for i in range(proba.shape[1])]
+   43:     return pd.DataFrame(proba, columns=cols)
+   44: "
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,41,"proba = model.predict(sequence_array, verbose=0)",38,47,"   38:             f""hydrology: expected feature count={expected_feat_count}, got {sequence_array.shape[2]}""
+   39:         )
+   40: 
+   41:     proba = model.predict(sequence_array, verbose=0)
+   42:     cols = [f""p{i}"" for i in range(proba.shape[1])]
+   43:     return pd.DataFrame(proba, columns=cols)
+   44: 
+   45: 
+   46: def predict_hydrology_proba_from_long_df(
+   47:     df: pd.DataFrame,"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,53,for rows whose end-timestep has a valid sequence.,50,59,"   50: ) -> pd.DataFrame:
+   51:     """"""
+   52:     Build valid hydrology windows from a long dataframe and return probabilities
+   53:     for rows whose end-timestep has a valid sequence.
+   54: 
+   55:     Required columns:
+   56:       - pixel_col
+   57:       - time_col
+   58:       - hydrology feature columns from packaged init manifest
+   59:     """""""
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,58,- hydrology feature columns from packaged init manifest,55,64,"   55:     Required columns:
+   56:       - pixel_col
+   57:       - time_col
+   58:       - hydrology feature columns from packaged init manifest
+   59:     """"""
+   60:     X_seq, valid_index = build_hydrology_sequences(
+   61:         df=df,
+   62:         pixel_col=pixel_col,
+   63:         time_col=time_col,
+   64:     )"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,60,"X_seq, valid_index = build_hydrology_sequences(",57,66,"   57:       - time_col
+   58:       - hydrology feature columns from packaged init manifest
+   59:     """"""
+   60:     X_seq, valid_index = build_hydrology_sequences(
+   61:         df=df,
+   62:         pixel_col=pixel_col,
+   63:         time_col=time_col,
+   64:     )
+   65: 
+   66:     if len(valid_index) == 0:"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,76,"scaler = load_runtime_scaler(""hydrology"")",73,82,"   73: 
+   74: def get_hydrology_runtime_components():
+   75:     spec = load_subsystem_spec(""hydrology"")
+   76:     scaler = load_runtime_scaler(""hydrology"")
+   77:     model = load_runtime_model(""hydrology"")
+   78:     return {
+   79:         ""spec"": spec,
+   80:         ""scaler"": scaler,
+   81:         ""model"": model,
+   82:     }"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,77,"model = load_runtime_model(""hydrology"")",74,82,"   74: def get_hydrology_runtime_components():
+   75:     spec = load_subsystem_spec(""hydrology"")
+   76:     scaler = load_runtime_scaler(""hydrology"")
+   77:     model = load_runtime_model(""hydrology"")
+   78:     return {
+   79:         ""spec"": spec,
+   80:         ""scaler"": scaler,
+   81:         ""model"": model,
+   82:     }"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,80,"""scaler"": scaler,",77,82,"   77:     model = load_runtime_model(""hydrology"")
+   78:     return {
+   79:         ""spec"": spec,
+   80:         ""scaler"": scaler,
+   81:         ""model"": model,
+   82:     }"
+c:\Projects\Infer RozviDrought\.venv\Lib\site-packages\rozvidrought_subsystems\hydrology_pipeline.py,81,"""model"": model,",78,82,"   78:     return {
+   79:         ""spec"": spec,
+   80:         ""scaler"": scaler,
+   81:         ""model"": model,
+   82:     }"

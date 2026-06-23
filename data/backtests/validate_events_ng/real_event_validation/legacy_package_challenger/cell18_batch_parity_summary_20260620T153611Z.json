@@ -1,0 +1,53 @@
+{
+  "run_id": "20260620T153611Z",
+  "status": "batch_parity_passed_ready_for_national_runner",
+  "target_yyyymm": 201510,
+  "batch_size": 32,
+  "candidate_pool_size": 512,
+  "reference_pixel_id": "0_101",
+  "atol": 1e-06,
+  "rtol": 1e-06,
+  "cell13_context": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell13_legacy_context_tws_backfilled_20260620T145557Z.parquet",
+  "master_inputs_read": false,
+  "predictor_source_read": false,
+  "national_inference_run": false,
+  "hydrology_contract": {
+    "feature_list": [
+      "tws",
+      "tws_lag1",
+      "tws_lag2",
+      "tws_lag3",
+      "tws_lag6",
+      "tws_rollmean3",
+      "tws_rollmean6",
+      "tws_rollmean12"
+    ],
+    "warmup_months": 11,
+    "seq_len": 24,
+    "required_raw_months": 35
+  },
+  "candidate_counts": {
+    "raw_history_eligible": 16970,
+    "atmospheric_valid": 512,
+    "soil_valid": 512,
+    "vegetation_valid": 512,
+    "hydrology_valid": 512,
+    "full_hybrid_eligible": 512
+  },
+  "batch_exception": null,
+  "batch_traceback": null,
+  "single_exception": null,
+  "single_traceback": null,
+  "parity_passed": true,
+  "outputs": {
+    "candidate_audit_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell18_batch_candidate_audit_20260620T153611Z.csv",
+    "selected_batch_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell18_selected_batch_20260620T153611Z.csv",
+    "batch_components_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell18_batch_component_probabilities_20260620T153611Z.csv",
+    "single_components_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell18_single_component_probabilities_20260620T153611Z.csv",
+    "batch_fusion_payloads_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell18_batch_fusion_payloads_20260620T153611Z.csv",
+    "single_fusion_payloads_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell18_single_fusion_payloads_20260620T153611Z.csv",
+    "fusion_flattened_fields_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell18_fusion_flattened_fields_20260620T153611Z.csv",
+    "parity_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell18_batch_parity_results_20260620T153611Z.csv",
+    "summary_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell18_batch_parity_summary_20260620T153611Z.json"
+  }
+}

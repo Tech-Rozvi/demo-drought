@@ -1,0 +1,5 @@
+scenario,month_count,min_pixel_count,max_pixel_count,mean_pixel_count,incomplete_month_count
+historical,555,26775,26775,26775.0,0
+ssp245,300,26775,26775,26775.0,0
+ssp370,300,26775,26775,26775.0,0
+ssp585,300,26775,26775,26775.0,0

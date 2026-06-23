@@ -1,0 +1,206 @@
+path,status,term,line_number,context
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,__is_missing,207.0,"[cell 1, line 205] 
+[cell 1, line 206] def missingness_indicator_names(features):
+[cell 1, line 207]     return [f""{c}__is_missing"" for c in features]
+[cell 1, line 208] 
+[cell 1, line 209] # ------------------------------------------------------------"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,__is_missing,921.0,"[cell 2, line 223] 
+[cell 2, line 224] def indicator_source_col(indicator_col):
+[cell 2, line 225]     suffix = ""__is_missing""
+[cell 2, line 226]     assert indicator_col.endswith(suffix), f""Bad missingness indicator name: {indicator_col}""
+[cell 2, line 227]     return indicator_col[:-len(suffix)]"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,__is_missing,1212.0,"[cell 2, line 514]                 ""feature"": feature_name,
+[cell 2, line 515]                 ""importance"": float(importance),
+[cell 2, line 516]                 ""is_missingness_indicator"": bool(feature_name.endswith(""__is_missing"")),
+[cell 2, line 517]             })
+[cell 2, line 518] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,__is_missing,2257.0,"[cell 4, line 168] 
+[cell 4, line 169] hydrology_missingness_indicators = [
+[cell 4, line 170]     f""{c}__is_missing""
+[cell 4, line 171]     for c in hydrology_features
+[cell 4, line 172] ]"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,__is_missing,2320.0,"[cell 4, line 231] # ------------------------------------------------------------
+[cell 4, line 232] for c in hydrology_features:
+[cell 4, line 233]     ind = f""{c}__is_missing""
+[cell 4, line 234]     df[ind] = df[c].isna().astype(""int8"")
+[cell 4, line 235] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_lag12,2338.0,"[cell 4, line 249] 
+[cell 4, line 250] for c in iterator:
+[cell 4, line 251]     lag12_col = f""{c}_seq_lag12""
+[cell 4, line 252]     lag24_col = f""{c}_seq_lag24""
+[cell 4, line 253]     rollmean24_col = f""{c}_seq_rollmean24"""
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_lag24,2339.0,"[cell 4, line 250] for c in iterator:
+[cell 4, line 251]     lag12_col = f""{c}_seq_lag12""
+[cell 4, line 252]     lag24_col = f""{c}_seq_lag24""
+[cell 4, line 253]     rollmean24_col = f""{c}_seq_rollmean24""
+[cell 4, line 254]     rollstd24_col = f""{c}_seq_rollstd24"""
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_rollmean24,2340.0,"[cell 4, line 251]     lag12_col = f""{c}_seq_lag12""
+[cell 4, line 252]     lag24_col = f""{c}_seq_lag24""
+[cell 4, line 253]     rollmean24_col = f""{c}_seq_rollmean24""
+[cell 4, line 254]     rollstd24_col = f""{c}_seq_rollstd24""
+[cell 4, line 255]     delta12_col = f""{c}_seq_delta12"""
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_rollstd24,2341.0,"[cell 4, line 252]     lag24_col = f""{c}_seq_lag24""
+[cell 4, line 253]     rollmean24_col = f""{c}_seq_rollmean24""
+[cell 4, line 254]     rollstd24_col = f""{c}_seq_rollstd24""
+[cell 4, line 255]     delta12_col = f""{c}_seq_delta12""
+[cell 4, line 256]     delta24_col = f""{c}_seq_delta24"""
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_delta12,2342.0,"[cell 4, line 253]     rollmean24_col = f""{c}_seq_rollmean24""
+[cell 4, line 254]     rollstd24_col = f""{c}_seq_rollstd24""
+[cell 4, line 255]     delta12_col = f""{c}_seq_delta12""
+[cell 4, line 256]     delta24_col = f""{c}_seq_delta24""
+[cell 4, line 257] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_delta24,2343.0,"[cell 4, line 254]     rollstd24_col = f""{c}_seq_rollstd24""
+[cell 4, line 255]     delta12_col = f""{c}_seq_delta12""
+[cell 4, line 256]     delta24_col = f""{c}_seq_delta24""
+[cell 4, line 257] 
+[cell 4, line 258]     # Prefer existing lag12 if available; otherwise compute it."
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,__is_missing,2689.0,"[cell 4, line 600]                 ""importance"": float(importance),
+[cell 4, line 601]                 ""is_hydrology_feature"": bool(feature_name.startswith(""tws"")),
+[cell 4, line 602]                 ""is_missingness_indicator"": bool(feature_name.endswith(""__is_missing"")),
+[cell 4, line 603]                 ""is_engineered_temporal_feature"": bool(""_seq_"" in feature_name),
+[cell 4, line 604]             })"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,__is_missing,3839.0,"[cell 6, line 167] # ------------------------------------------------------------
+[cell 6, line 168] for c in hydrology_features:
+[cell 6, line 169]     ind = f""{c}__is_missing""
+[cell 6, line 170]     df[ind] = df[c].isna().astype(""int8"")
+[cell 6, line 171] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_lag12,3858.0,"[cell 6, line 186] 
+[cell 6, line 187] for c in iterator:
+[cell 6, line 188]     lag12_col = f""{c}_seq_lag12""
+[cell 6, line 189]     lag24_col = f""{c}_seq_lag24""
+[cell 6, line 190]     rollmean24_col = f""{c}_seq_rollmean24"""
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_lag24,3859.0,"[cell 6, line 187] for c in iterator:
+[cell 6, line 188]     lag12_col = f""{c}_seq_lag12""
+[cell 6, line 189]     lag24_col = f""{c}_seq_lag24""
+[cell 6, line 190]     rollmean24_col = f""{c}_seq_rollmean24""
+[cell 6, line 191]     rollstd24_col = f""{c}_seq_rollstd24"""
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_rollmean24,3860.0,"[cell 6, line 188]     lag12_col = f""{c}_seq_lag12""
+[cell 6, line 189]     lag24_col = f""{c}_seq_lag24""
+[cell 6, line 190]     rollmean24_col = f""{c}_seq_rollmean24""
+[cell 6, line 191]     rollstd24_col = f""{c}_seq_rollstd24""
+[cell 6, line 192]     delta12_col = f""{c}_seq_delta12"""
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_rollstd24,3861.0,"[cell 6, line 189]     lag24_col = f""{c}_seq_lag24""
+[cell 6, line 190]     rollmean24_col = f""{c}_seq_rollmean24""
+[cell 6, line 191]     rollstd24_col = f""{c}_seq_rollstd24""
+[cell 6, line 192]     delta12_col = f""{c}_seq_delta12""
+[cell 6, line 193]     delta24_col = f""{c}_seq_delta24"""
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_delta12,3862.0,"[cell 6, line 190]     rollmean24_col = f""{c}_seq_rollmean24""
+[cell 6, line 191]     rollstd24_col = f""{c}_seq_rollstd24""
+[cell 6, line 192]     delta12_col = f""{c}_seq_delta12""
+[cell 6, line 193]     delta24_col = f""{c}_seq_delta24""
+[cell 6, line 194] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\model_selection\3_corrected_spi12_model_family_test.ipynb,match,seq_delta24,3863.0,"[cell 6, line 191]     rollstd24_col = f""{c}_seq_rollstd24""
+[cell 6, line 192]     delta12_col = f""{c}_seq_delta12""
+[cell 6, line 193]     delta24_col = f""{c}_seq_delta24""
+[cell 6, line 194] 
+[cell 6, line 195]     existing_lag12 = f""{c}_lag12"""
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,__is_missing,1125.0,"[cell 3, line 269] missingness_features = [
+[cell 3, line 270]     f for f in spi12_features
+[cell 3, line 271]     if f.endswith(""__is_missing"")
+[cell 3, line 272] ]
+[cell 3, line 273] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,__is_missing,1129.0,"[cell 3, line 273] 
+[cell 3, line 274] missingness_source_features = sorted(
+[cell 3, line 275]     set(f.replace(""__is_missing"", """") for f in missingness_features)
+[cell 3, line 276] )
+[cell 3, line 277] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_lag12,1147.0,"[cell 3, line 291] for c in sequence_base_cols:
+[cell 3, line 292]     engineered_sequence_features.extend([
+[cell 3, line 293]         f""{c}_seq_lag12"",
+[cell 3, line 294]         f""{c}_seq_lag24"",
+[cell 3, line 295]         f""{c}_seq_rollmean24"","
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_lag24,1148.0,"[cell 3, line 292]     engineered_sequence_features.extend([
+[cell 3, line 293]         f""{c}_seq_lag12"",
+[cell 3, line 294]         f""{c}_seq_lag24"",
+[cell 3, line 295]         f""{c}_seq_rollmean24"",
+[cell 3, line 296]         f""{c}_seq_rollstd24"","
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_rollmean24,1149.0,"[cell 3, line 293]         f""{c}_seq_lag12"",
+[cell 3, line 294]         f""{c}_seq_lag24"",
+[cell 3, line 295]         f""{c}_seq_rollmean24"",
+[cell 3, line 296]         f""{c}_seq_rollstd24"",
+[cell 3, line 297]         f""{c}_seq_delta12"","
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_rollstd24,1150.0,"[cell 3, line 294]         f""{c}_seq_lag24"",
+[cell 3, line 295]         f""{c}_seq_rollmean24"",
+[cell 3, line 296]         f""{c}_seq_rollstd24"",
+[cell 3, line 297]         f""{c}_seq_delta12"",
+[cell 3, line 298]         f""{c}_seq_delta24"","
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_delta12,1151.0,"[cell 3, line 295]         f""{c}_seq_rollmean24"",
+[cell 3, line 296]         f""{c}_seq_rollstd24"",
+[cell 3, line 297]         f""{c}_seq_delta12"",
+[cell 3, line 298]         f""{c}_seq_delta24"",
+[cell 3, line 299]     ])"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_delta24,1152.0,"[cell 3, line 296]         f""{c}_seq_rollstd24"",
+[cell 3, line 297]         f""{c}_seq_delta12"",
+[cell 3, line 298]         f""{c}_seq_delta24"",
+[cell 3, line 299]     ])
+[cell 3, line 300] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,__is_missing,1246.0,"[cell 3, line 390] 
+[cell 3, line 391] for raw_col in missingness_source_features:
+[cell 3, line 392]     out_col = f""{raw_col}__is_missing""
+[cell 3, line 393]     new_feature_parts[out_col] = df_context[raw_col].isna().astype(""int8"")
+[cell 3, line 394] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_lag12,1258.0,"[cell 3, line 402] 
+[cell 3, line 403]     if existing_lag12 in df_context.columns:
+[cell 3, line 404]         seq_lag12 = df_context[existing_lag12].astype(""float32"")
+[cell 3, line 405]     else:
+[cell 3, line 406]         seq_lag12 = grouped[c].shift(12).astype(""float32"")"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_lag12,1260.0,"[cell 3, line 404]         seq_lag12 = df_context[existing_lag12].astype(""float32"")
+[cell 3, line 405]     else:
+[cell 3, line 406]         seq_lag12 = grouped[c].shift(12).astype(""float32"")
+[cell 3, line 407] 
+[cell 3, line 408]     seq_lag24 = grouped[c].shift(24).astype(""float32"")"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_lag24,1262.0,"[cell 3, line 406]         seq_lag12 = grouped[c].shift(12).astype(""float32"")
+[cell 3, line 407] 
+[cell 3, line 408]     seq_lag24 = grouped[c].shift(24).astype(""float32"")
+[cell 3, line 409] 
+[cell 3, line 410]     seq_rollmean24 = ("
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_rollmean24,1264.0,"[cell 3, line 408]     seq_lag24 = grouped[c].shift(24).astype(""float32"")
+[cell 3, line 409] 
+[cell 3, line 410]     seq_rollmean24 = (
+[cell 3, line 411]         grouped[c]
+[cell 3, line 412]         .rolling(window=24, min_periods=3)"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_rollstd24,1272.0,"[cell 3, line 416]     )
+[cell 3, line 417] 
+[cell 3, line 418]     seq_rollstd24 = (
+[cell 3, line 419]         grouped[c]
+[cell 3, line 420]         .rolling(window=24, min_periods=3)"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_lag12,1280.0,"[cell 3, line 424]     )
+[cell 3, line 425] 
+[cell 3, line 426]     new_feature_parts[f""{c}_seq_lag12""] = seq_lag12
+[cell 3, line 427]     new_feature_parts[f""{c}_seq_lag24""] = seq_lag24
+[cell 3, line 428]     new_feature_parts[f""{c}_seq_rollmean24""] = seq_rollmean24"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_lag24,1281.0,"[cell 3, line 425] 
+[cell 3, line 426]     new_feature_parts[f""{c}_seq_lag12""] = seq_lag12
+[cell 3, line 427]     new_feature_parts[f""{c}_seq_lag24""] = seq_lag24
+[cell 3, line 428]     new_feature_parts[f""{c}_seq_rollmean24""] = seq_rollmean24
+[cell 3, line 429]     new_feature_parts[f""{c}_seq_rollstd24""] = seq_rollstd24"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_rollmean24,1282.0,"[cell 3, line 426]     new_feature_parts[f""{c}_seq_lag12""] = seq_lag12
+[cell 3, line 427]     new_feature_parts[f""{c}_seq_lag24""] = seq_lag24
+[cell 3, line 428]     new_feature_parts[f""{c}_seq_rollmean24""] = seq_rollmean24
+[cell 3, line 429]     new_feature_parts[f""{c}_seq_rollstd24""] = seq_rollstd24
+[cell 3, line 430]     new_feature_parts[f""{c}_seq_delta12""] = (df_context[c].astype(""float32"") - seq_lag12).astype(""float32"")"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_rollstd24,1283.0,"[cell 3, line 427]     new_feature_parts[f""{c}_seq_lag24""] = seq_lag24
+[cell 3, line 428]     new_feature_parts[f""{c}_seq_rollmean24""] = seq_rollmean24
+[cell 3, line 429]     new_feature_parts[f""{c}_seq_rollstd24""] = seq_rollstd24
+[cell 3, line 430]     new_feature_parts[f""{c}_seq_delta12""] = (df_context[c].astype(""float32"") - seq_lag12).astype(""float32"")
+[cell 3, line 431]     new_feature_parts[f""{c}_seq_delta24""] = (df_context[c].astype(""float32"") - seq_lag24).astype(""float32"")"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_lag12,1284.0,"[cell 3, line 428]     new_feature_parts[f""{c}_seq_rollmean24""] = seq_rollmean24
+[cell 3, line 429]     new_feature_parts[f""{c}_seq_rollstd24""] = seq_rollstd24
+[cell 3, line 430]     new_feature_parts[f""{c}_seq_delta12""] = (df_context[c].astype(""float32"") - seq_lag12).astype(""float32"")
+[cell 3, line 431]     new_feature_parts[f""{c}_seq_delta24""] = (df_context[c].astype(""float32"") - seq_lag24).astype(""float32"")
+[cell 3, line 432] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_delta12,1284.0,"[cell 3, line 428]     new_feature_parts[f""{c}_seq_rollmean24""] = seq_rollmean24
+[cell 3, line 429]     new_feature_parts[f""{c}_seq_rollstd24""] = seq_rollstd24
+[cell 3, line 430]     new_feature_parts[f""{c}_seq_delta12""] = (df_context[c].astype(""float32"") - seq_lag12).astype(""float32"")
+[cell 3, line 431]     new_feature_parts[f""{c}_seq_delta24""] = (df_context[c].astype(""float32"") - seq_lag24).astype(""float32"")
+[cell 3, line 432] "
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_lag24,1285.0,"[cell 3, line 429]     new_feature_parts[f""{c}_seq_rollstd24""] = seq_rollstd24
+[cell 3, line 430]     new_feature_parts[f""{c}_seq_delta12""] = (df_context[c].astype(""float32"") - seq_lag12).astype(""float32"")
+[cell 3, line 431]     new_feature_parts[f""{c}_seq_delta24""] = (df_context[c].astype(""float32"") - seq_lag24).astype(""float32"")
+[cell 3, line 432] 
+[cell 3, line 433] engineered_df = pd.DataFrame(new_feature_parts, index=df_context.index)"
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\2_generate_release_bundle_predictions.ipynb,match,seq_delta24,1285.0,"[cell 3, line 429]     new_feature_parts[f""{c}_seq_rollstd24""] = seq_rollstd24
+[cell 3, line 430]     new_feature_parts[f""{c}_seq_delta12""] = (df_context[c].astype(""float32"") - seq_lag12).astype(""float32"")
+[cell 3, line 431]     new_feature_parts[f""{c}_seq_delta24""] = (df_context[c].astype(""float32"") - seq_lag24).astype(""float32"")
+[cell 3, line 432] 
+[cell 3, line 433] engineered_df = pd.DataFrame(new_feature_parts, index=df_context.index)"

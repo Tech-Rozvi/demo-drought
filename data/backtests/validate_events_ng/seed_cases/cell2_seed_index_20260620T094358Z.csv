@@ -1,0 +1,14 @@
+seed_case,seed_rank,selection_mode,expected_behavior,row,col,yyyymm,drought_class_spi3,drought_class_spi6,drought_class_spi12,__source_record_id,_label_sum
+observed_multi_horizon_drought,1,preferred_rule,"SPI3, SPI6, SPI12, and Fusion v2 should all show a strong drought response.",58,29,201905,2,2,2,692208,6
+observed_multi_horizon_drought,2,preferred_rule,"SPI3, SPI6, SPI12, and Fusion v2 should all show a strong drought response.",43,18,201512,2,2,2,512935,6
+observed_multi_horizon_drought,3,preferred_rule,"SPI3, SPI6, SPI12, and Fusion v2 should all show a strong drought response.",71,24,202404,3,3,3,846597,9
+observed_normal_all_horizons,1,preferred_rule,All target models and Fusion v2 should favour the lowest drought class.,15,11,201806,0,0,0,179273,0
+observed_normal_all_horizons,2,preferred_rule,All target models and Fusion v2 should favour the lowest drought class.,101,47,202010,0,0,0,1205143,0
+observed_normal_all_horizons,3,preferred_rule,All target models and Fusion v2 should favour the lowest drought class.,38,136,201805,0,0,0,461472,0
+observed_persistent_drought,2,preferred_rule,SPI12 should show the strongest persistent drought response and Fusion v2 should reflect persistence.,105,104,201903,0,2,2,1256606,4
+observed_seasonal_drought,1,preferred_rule,SPI6 should show a strong seasonal drought response; SPI12 may remain lower if drought is not persistent.,19,68,201601,2,2,1,230736,5
+observed_seasonal_drought,2,preferred_rule,SPI6 should show a strong seasonal drought response; SPI12 may remain lower if drought is not persistent.,66,143,201511,3,3,1,795134,7
+observed_seasonal_drought,3,preferred_rule,SPI6 should show a strong seasonal drought response; SPI12 may remain lower if drought is not persistent.,47,74,202407,0,3,1,564398,4
+observed_short_term_drought,1,preferred_rule,SPI3 should show the strongest drought response; SPI6/SPI12 may remain lower if the signal is recent.,109,161,201610,2,1,1,1308069,4
+observed_short_term_drought,2,preferred_rule,SPI3 should show the strongest drought response; SPI6/SPI12 may remain lower if the signal is recent.,150,163,201905,2,1,1,1796120,4
+observed_short_term_drought,3,preferred_rule,SPI3 should show the strongest drought response; SPI6/SPI12 may remain lower if the signal is recent.,25,165,202307,3,0,0,308778,3

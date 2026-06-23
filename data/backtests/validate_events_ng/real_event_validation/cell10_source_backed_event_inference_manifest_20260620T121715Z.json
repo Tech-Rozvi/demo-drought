@@ -1,0 +1,102 @@
+{
+  "run_id": "20260620T121715Z",
+  "status": "source_backed_event_inference_completed_for_2015_2016_2018_2019_2023_2024",
+  "purpose": "National v2 inference across three source-backed Zimbabwe drought windows with descriptive comparison to Excel severity.",
+  "cell8_formula_parity_manifest": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell8_spi12_formula_parity_manifest_20260620T114337Z.json",
+  "cell8_formula_parity_passed": true,
+  "excel_reference_cache_path": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell9_excel_season_aligned_event_ledger_20260620T115347Z.csv",
+  "excel_fields_used": [
+    "excel_event_id",
+    "event_period_raw",
+    "excel_severity_score",
+    "excel_severity_label"
+  ],
+  "cell9_generated_dates_used": false,
+  "full_predictor_source": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\model_inputs\\temporal_predictors_full_20260614T141118Z.parquet",
+  "required_history_months": 24,
+  "national_grid_cell_count": 26775,
+  "source_backed_events": [
+    {
+      "event_key": "zimbabwe_2015_2016",
+      "excel_event_id": 15,
+      "expected_excel_period_years": [
+        2015,
+        2016
+      ],
+      "window_start_yyyymm": "201510",
+      "window_end_yyyymm": "201602",
+      "source_organisation": "FEWS NET",
+      "source_window_type": "national_rainfall_and_spi_period",
+      "source_title": "Drought conditions to significantly reduce 2015/16 harvests",
+      "source_url": "https://fews.net/southern-africa/zimbabwe/food-security-outlook/february-2016",
+      "source_month_statement": "October 2015 to February 2016",
+      "excel_event_period": "2015\u20132016",
+      "excel_severity_score": 4,
+      "excel_severity_label": "4 \u2013 Extreme",
+      "event_month_count": 5,
+      "event_months_pipe_delimited": "201510 | 201511 | 201512 | 201601 | 201602",
+      "excel_reference_rule": "Direct Excel event ID, period, score, and label only; Cell 9 generated dates ignored."
+    },
+    {
+      "event_key": "zimbabwe_2018_2019",
+      "excel_event_id": 16,
+      "expected_excel_period_years": [
+        2018,
+        2019
+      ],
+      "window_start_yyyymm": "201810",
+      "window_end_yyyymm": "201905",
+      "source_organisation": "ReliefWeb",
+      "source_window_type": "poor_rain_and_harvest_impact_period",
+      "source_title": "Zimbabwe: Drought Emergency, 19 September 2019",
+      "source_url": "https://reliefweb.int/report/zimbabwe/zimbabwe-drought-emergency-19-september-2019",
+      "source_month_statement": "October 2018 to May 2019",
+      "excel_event_period": "2018\u20132019",
+      "excel_severity_score": 2,
+      "excel_severity_label": "2 \u2013 Moderate",
+      "event_month_count": 8,
+      "event_months_pipe_delimited": "201810 | 201811 | 201812 | 201901 | 201902 | 201903 | 201904 | 201905",
+      "excel_reference_rule": "Direct Excel event ID, period, score, and label only; Cell 9 generated dates ignored."
+    },
+    {
+      "event_key": "zimbabwe_2023_2024",
+      "excel_event_id": 17,
+      "expected_excel_period_years": [
+        2023,
+        2024
+      ],
+      "window_start_yyyymm": "202310",
+      "window_end_yyyymm": "202403",
+      "source_organisation": "ACT Alliance",
+      "source_window_type": "national_rainy_season_rainfall_period",
+      "source_title": "RRF 07 2024 \u2013 Zimbabwe Responding to Drought",
+      "source_url": "https://actalliance.org/appeals-rapid-response-funds/rrf-07-2024-zimbabwe-drought/",
+      "source_month_statement": "October 2023 to March 2024",
+      "excel_event_period": "2023\u20132024",
+      "excel_severity_score": 5,
+      "excel_severity_label": "5 \u2013 Catastrophic",
+      "event_month_count": 6,
+      "event_months_pipe_delimited": "202310 | 202311 | 202312 | 202401 | 202402 | 202403",
+      "excel_reference_rule": "Direct Excel event ID, period, score, and label only; Cell 9 generated dates ignored."
+    }
+  ],
+  "fusion_weights": {
+    "spi3": 0.25,
+    "spi6": 0.35,
+    "spi12": 0.4
+  },
+  "fusion_rules_path": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\package_releases\\rozvidrought_v2\\rozvidrought\\artifacts\\fusion_v2\\v2_20260617\\fusion_rules.json",
+  "ordinal_rank_correlation": 0.5,
+  "score_mapping_applied": false,
+  "outputs": {
+    "source_evidence_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell10_source_backed_event_evidence_20260620T121715Z.csv",
+    "required_source_coverage_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell10_required_source_coverage_20260620T121715Z.csv",
+    "model_bundle_audit_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell10_model_bundle_audit_20260620T121715Z.csv",
+    "fusion_weight_audit_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell10_fusion_weight_audit_20260620T121715Z.csv",
+    "event_run_audit_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell10_event_inference_run_audit_20260620T121715Z.csv",
+    "national_event_month_summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell10_national_event_month_summary_20260620T121715Z.csv",
+    "national_event_window_summary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell10_national_event_window_summary_20260620T121715Z.csv",
+    "ordinal_diagnostic_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell10_ordinal_cross_event_diagnostic_20260620T121715Z.csv",
+    "manifest_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\cell10_source_backed_event_inference_manifest_20260620T121715Z.json"
+  }
+}

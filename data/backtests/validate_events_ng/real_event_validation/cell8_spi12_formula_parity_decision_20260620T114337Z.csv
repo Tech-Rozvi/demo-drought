@@ -1,0 +1,6 @@
+check,result
+release_formula_source_found,True
+all_68_missing_features_recreated,True
+all_parity_months_matched,True
+all_feature_values_pass_parity,True
+full_predictor_ready_for_spi12_event_inference,True

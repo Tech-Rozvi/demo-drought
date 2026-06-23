@@ -1,0 +1,6 @@
+seed_case,selection_mode,preferred_candidate_count,selected_row_count,expected_behavior
+observed_normal_all_horizons,preferred_rule,559448,3,All target models and Fusion v2 should favour the lowest drought class.
+observed_short_term_drought,preferred_rule,65535,3,SPI3 should show the strongest drought response; SPI6/SPI12 may remain lower if the signal is recent.
+observed_seasonal_drought,preferred_rule,164891,3,SPI6 should show a strong seasonal drought response; SPI12 may remain lower if drought is not persistent.
+observed_persistent_drought,preferred_rule,354087,3,SPI12 should show the strongest persistent drought response and Fusion v2 should reflect persistence.
+observed_multi_horizon_drought,preferred_rule,178445,3,"SPI3, SPI6, SPI12, and Fusion v2 should all show a strong drought response."

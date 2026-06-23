@@ -1,0 +1,4 @@
+horizon,weight,fusion_rules_path,weight_object_path
+spi3,0.25,C:\Projects\ramangwana\risks\data\drought_model\processed\package_releases\rozvidrought_v2\rozvidrought\artifacts\fusion_v2\v2_20260617\fusion_rules.json,root.target_weights
+spi6,0.35,C:\Projects\ramangwana\risks\data\drought_model\processed\package_releases\rozvidrought_v2\rozvidrought\artifacts\fusion_v2\v2_20260617\fusion_rules.json,root.target_weights
+spi12,0.4,C:\Projects\ramangwana\risks\data\drought_model\processed\package_releases\rozvidrought_v2\rozvidrought\artifacts\fusion_v2\v2_20260617\fusion_rules.json,root.target_weights

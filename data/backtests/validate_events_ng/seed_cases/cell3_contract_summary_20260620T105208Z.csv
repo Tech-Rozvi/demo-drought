@@ -1,0 +1,4 @@
+target_key,feature_count,label_column
+spi3,23,drought_class_spi3
+spi6,33,drought_class_spi6
+spi12,111,drought_class_spi12

@@ -1,0 +1,5 @@
+subsystem,object_type,row_count,columns
+atmospheric,DataFrame,1,p0 | p1 | p2 | p3
+soil,DataFrame,1,p0 | p1 | p2 | p3
+vegetation,DataFrame,1,p0 | p1 | p2 | p3
+hydrology,DataFrame,0,p0 | p1 | p2 | p3

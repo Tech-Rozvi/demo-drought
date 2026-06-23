@@ -1,0 +1,16 @@
+target_key,label_column,class_value,row_count
+spi3,drought_class_spi3,0,961976
+spi3,drought_class_spi3,1,487190
+spi3,drought_class_spi3,2,258526
+spi3,drought_class_spi3,3,90399
+spi3,drought_class_spi3,4,22609
+spi6,drought_class_spi6,0,943187
+spi6,drought_class_spi6,1,441123
+spi6,drought_class_spi6,2,284913
+spi6,drought_class_spi6,3,122016
+spi6,drought_class_spi6,4,29461
+spi12,drought_class_spi12,0,953558
+spi12,drought_class_spi12,1,446795
+spi12,drought_class_spi12,2,257124
+spi12,drought_class_spi12,3,127357
+spi12,drought_class_spi12,4,35866

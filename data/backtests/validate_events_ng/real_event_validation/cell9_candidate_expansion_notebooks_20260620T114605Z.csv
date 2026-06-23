@@ -1,0 +1,9 @@
+notebook_path,notebook_name,matched_code_cell_count,matched_terms,contains_event_period,contains_growing_season,contains_duration,contains_timeline_severity,contains_event_month_logic,candidate_score
+C:\Projects\ramangwana\risks\preprocessing_scripts\extreme_rainfall.ipynb,extreme_rainfall.ipynb,2,Duration | event_month,False,False,True,False,True,82
+C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\cyclones.ipynb,cyclones.ipynb,2,Duration | event_id,False,False,True,False,False,22
+C:\Projects\ramangwana\risks\processing_scripts\drought\subsystems\release_v2_package_handoff\1_define_fusion_v2_rules_from_release_bundles.ipynb,1_define_fusion_v2_rules_from_release_bundles.ipynb,1,Severity Ranking,False,False,False,False,False,21
+C:\Projects\ramangwana\risks\data_extraction_scripts\cyclones\hdx_data.ipynb,hdx_data.ipynb,3,pd.read_excel | read_excel,False,False,False,False,False,3
+C:\Projects\ramangwana\risks\data_extraction_scripts\extreme_rainfall\events.ipynb,events.ipynb,2,event_id,False,False,False,False,False,2
+C:\Projects\ramangwana\risks\data_extraction_scripts\floods\v0\dartmouth.ipynb,dartmouth.ipynb,1,event_id,False,False,False,False,False,1
+C:\Projects\ramangwana\risks\preprocessing_scripts\cyclones.ipynb,cyclones.ipynb,1,pd.read_excel | read_excel,False,False,False,False,False,1
+C:\Projects\ramangwana\risks\processing_scripts\extreme_rainfall\extreme_rain_model_signature.ipynb,extreme_rain_model_signature.ipynb,1,event_id,False,False,False,False,False,1

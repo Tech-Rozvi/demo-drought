@@ -1,0 +1,4 @@
+target_key,required_feature_count,source_feature_count,missing_feature_count,all_required_feature_columns_present,missing_features_preview
+spi3,23,23,0,True,
+spi6,33,33,0,True,
+spi12,111,111,0,True,

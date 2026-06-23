@@ -1,0 +1,26 @@
+{
+  "run_id": "20260620T130907Z",
+  "status": "legacy_hybrid_blocked_selected_hydrology_output_empty",
+  "master_inputs_used": false,
+  "input_source": "C:\\Projects\\ramangwana\\risks\\data\\drought_model\\processed\\model_inputs\\temporal_predictors_full_20260614T141118Z.parquet",
+  "legacy_sm_mapping": "sm <- sm_esa_cci",
+  "mapping_transformation": "direct_rename_only",
+  "probe_pixel_id": "0_0",
+  "target_yyyymm": 201510,
+  "context_start_yyyymm": 201310,
+  "context_month_count": 25,
+  "probe_tws_null_count": 25,
+  "probe_sm_null_count": 0,
+  "unexpected_exception": null,
+  "unexpected_traceback": null,
+  "prepared_summary": {
+    "prepared_object_type": "dict",
+    "prepared_attribute_names": null
+  },
+  "outputs": {
+    "subsystem_boundary_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell12_legacy_subsystem_boundary_20260620T130907Z.csv",
+    "probe_feature_history_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell12_legacy_probe_feature_history_20260620T130907Z.csv",
+    "context_month_counts_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell12_legacy_context_month_counts_20260620T130907Z.csv",
+    "summary_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell12_legacy_preflight_summary_20260620T130907Z.json"
+  }
+}

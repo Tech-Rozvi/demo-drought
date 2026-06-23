@@ -1,0 +1,16 @@
+{
+  "run_id": "20260620T142324Z",
+  "purpose": "Inspect the exact legacy hydrology prediction implementation without running inference.",
+  "master_inputs_read": false,
+  "predictor_source_read": false,
+  "resolved_subsystems_object": "subs",
+  "hydrology_function_source": "c:\\Projects\\Infer RozviDrought\\.venv\\Lib\\site-packages\\rozvidrought_subsystems\\api.py",
+  "hydrology_function_signature": "(df: 'pd.DataFrame', pixel_col: 'str' = 'pixel_key', time_col: 'str' = 'yyyymm') -> 'pd.DataFrame'",
+  "outputs": {
+    "function_source_py": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell16_hydrology_predict_function_20260620T142324Z.py",
+    "runtime_config_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell16_hydrology_runtime_config_20260620T142324Z.csv",
+    "source_contexts_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell16_hydrology_source_contexts_20260620T142324Z.csv",
+    "requirement_clues_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell16_hydrology_requirement_clues_20260620T142324Z.csv",
+    "summary_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell16_hydrology_code_inspection_summary_20260620T142324Z.json"
+  }
+}

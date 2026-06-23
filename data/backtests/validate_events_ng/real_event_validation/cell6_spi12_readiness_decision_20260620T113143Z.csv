@@ -1,0 +1,6 @@
+check,result
+all_missing_features_classified,True
+all_indicator_bases_exist_in_predictor,True
+all_temporal_bases_exist_in_predictor,True
+SPI12_ready_for_direct_full_predictor_inference,False
+next_step_is_formula_validation_not_reconstruction,True

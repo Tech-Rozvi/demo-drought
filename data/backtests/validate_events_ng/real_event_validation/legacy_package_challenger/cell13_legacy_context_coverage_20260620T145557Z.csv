@@ -1,0 +1,3 @@
+segment_id,event_ids,start_yyyymm,end_yyyymm,month_count,grid_rows_per_month,final_rows,predictor_tws_rows,master_tws_backfill_rows,final_tws_missing_rows,t2m_null_rows,d2m_null_rows,pet_null_rows,sm_null_rows,ndvi_null_rows
+segment_01_201212_201905,zimbabwe_2015_2016|zimbabwe_2018_2019,201212,201905,78,26775,2088450,780758,1307692,0,764556,764556,764556,0,764736
+segment_02_202012_202403,zimbabwe_2023_2024,202012,202403,40,26775,1071000,678920,392080,0,392080,392080,392080,0,392158

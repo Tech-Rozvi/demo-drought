@@ -1,0 +1,50 @@
+{
+  "run_id": "20260620T150752Z",
+  "probe_pixel_id": "0_101",
+  "target_yyyymm": 201510,
+  "fusion_output": {
+    "fusion_input": {
+      "object_type": "DataFrame",
+      "row_count": 1,
+      "columns": [
+        "atm_p0",
+        "atm_p1",
+        "atm_p2",
+        "atm_p3",
+        "soil_p0",
+        "soil_p1",
+        "soil_p2",
+        "soil_p3",
+        "veg_p0",
+        "veg_p1",
+        "veg_p2",
+        "veg_p3",
+        "hyd_p0",
+        "hyd_p1",
+        "hyd_p2",
+        "hyd_p3"
+      ],
+      "rows": [
+        {
+          "atm_p0": 8.316625462612137e-05,
+          "atm_p1": 0.9934418201446533,
+          "atm_p2": 0.006473029963672161,
+          "atm_p3": 1.9734686702577164e-06,
+          "soil_p0": 2.5143019229290076e-05,
+          "soil_p1": 0.19141699373722076,
+          "soil_p2": 0.3369719386100769,
+          "soil_p3": 0.4715859293937683,
+          "veg_p0": 0.0021793583873659372,
+          "veg_p1": 0.017711976543068886,
+          "veg_p2": 0.5381796360015869,
+          "veg_p3": 0.4419289827346802,
+          "hyd_p0": 6.107434870339379e-12,
+          "hyd_p1": 0.0004404461942613125,
+          "hyd_p2": 0.28383874893188477,
+          "hyd_p3": 0.7157208323478699
+        }
+      ]
+    },
+    "fusion_result": "PredictionResult(model='hybrid', drought_class_spi3_pred=array([1], dtype=int32), probs=array([[8.5891836e-05, 9.9319237e-01, 6.7196530e-03, 2.1220515e-06]],\n      dtype=float32), confidence=array([0.9931924], dtype=float32), gate_weights=None, gate_ranked=None)"
+  }
+}

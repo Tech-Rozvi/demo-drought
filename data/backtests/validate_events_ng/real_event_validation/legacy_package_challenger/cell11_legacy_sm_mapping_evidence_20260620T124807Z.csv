@@ -1,0 +1,3 @@
+file_path,line_number,contains_exact_sm,contains_sm_esa_cci,line_text
+C:\Projects\Infer RozviDrought\RozviDrought\inspections\inspect_datasets.py,46,True,False,"cols = [""yyyymm"", ""t2m"", ""d2m"", ""sm"", ""pet"", ""ndvi"", ""tws""]"
+C:\Projects\Infer RozviDrought\RozviDrought\inspections\inspect_datasets.py,59,True,False,"value_cols = [""t2m"", ""d2m"", ""sm"", ""pet"", ""ndvi"", ""tws""]"

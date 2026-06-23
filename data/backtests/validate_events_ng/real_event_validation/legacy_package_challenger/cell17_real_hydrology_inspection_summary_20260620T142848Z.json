@@ -1,0 +1,25 @@
+{
+  "run_id": "20260620T142848Z",
+  "purpose": "Inspect the real hydrology implementation behind predict_hydrology_proba_df without running inference.",
+  "master_inputs_read": false,
+  "predictor_source_read": false,
+  "model_inference_run": false,
+  "function_name": "predict_hydrology_proba_from_long_df",
+  "function_signature": "(df: 'pd.DataFrame', pixel_col: 'str' = 'pixel_key', time_col: 'str' = 'yyyymm') -> 'pd.DataFrame'",
+  "function_source": "c:\\Projects\\Infer RozviDrought\\.venv\\Lib\\site-packages\\rozvidrought_subsystems\\hydrology_pipeline.py",
+  "direct_callable_names": [
+    "DataFrame",
+    "Index",
+    "build_hydrology_sequences",
+    "len",
+    "predict_hydrology_proba"
+  ],
+  "outputs": {
+    "function_source_py": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell17_real_hydrology_function_20260620T142848Z.py",
+    "referenced_globals_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell17_real_hydrology_referenced_globals_20260620T142848Z.csv",
+    "dependencies_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell17_real_hydrology_dependencies_20260620T142848Z.csv",
+    "dependency_sources_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell17_real_hydrology_dependency_sources_20260620T142848Z.json",
+    "source_rules_csv": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell17_real_hydrology_source_rules_20260620T142848Z.csv",
+    "summary_json": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\validate_events_ng\\real_event_validation\\legacy_package_challenger\\cell17_real_hydrology_inspection_summary_20260620T142848Z.json"
+  }
+}

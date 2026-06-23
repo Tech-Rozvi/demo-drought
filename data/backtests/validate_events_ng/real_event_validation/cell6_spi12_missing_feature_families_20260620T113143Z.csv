@@ -1,0 +1,3 @@
+feature_family,feature_count,bases_present_in_predictor,bases_present_in_training,bases_present_in_release
+missingness_indicator,20,20,20,20
+temporal_engineered,48,48,48,48

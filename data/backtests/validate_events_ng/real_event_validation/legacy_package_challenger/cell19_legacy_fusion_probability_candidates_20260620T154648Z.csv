@@ -1,0 +1,2 @@
+path,candidate_type,keys,values,sum,sums_to_one
+root.fusion_result.probs[0],numeric_list_4,,"[8.58918356243521e-05, 0.9931923747062683, 0.006719653028994799, 2.122051455444307e-06]",1.000000041622343,True

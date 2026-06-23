@@ -1,0 +1,3 @@
+global_name,value_type,value_compact
+predict_hydrology_proba_df,builtins.function,"{""type"": ""builtins.function""}"
+predict_hydrology_proba_from_long_df,builtins.function,"{""type"": ""builtins.function""}"
