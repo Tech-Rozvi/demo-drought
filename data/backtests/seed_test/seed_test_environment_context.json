@@ -1,0 +1,52 @@
+{
+  "project_root": "C:\\Projects\\Infer RozviDrought\\RozviDrought",
+  "data_root": "C:\\Projects\\Infer RozviDrought\\data",
+  "out_dir": "C:\\Projects\\Infer RozviDrought\\data\\backtests\\seed_test",
+  "python_executable": "c:\\Projects\\Infer RozviDrought\\.venv\\Scripts\\python.exe",
+  "service_exists": false,
+  "usable_admin_df_exists": false,
+  "matched_distributions": [
+    {
+      "name": "rozvidrought",
+      "version": "1.0.6"
+    },
+    {
+      "name": "rozvidrought-datasets",
+      "version": "0.0.1"
+    },
+    {
+      "name": "rozvidrought-inputs",
+      "version": "0.0.1"
+    },
+    {
+      "name": "rozvidrought-subsystems",
+      "version": "0.1.0"
+    }
+  ],
+  "matched_modules": [
+    {
+      "name": "benchmark_inference_latency",
+      "is_package": false
+    },
+    {
+      "name": "farm_inference_script",
+      "is_package": false
+    },
+    {
+      "name": "rozvidrought",
+      "is_package": true
+    },
+    {
+      "name": "rozvidrought_datasets",
+      "is_package": true
+    },
+    {
+      "name": "rozvidrought_inputs",
+      "is_package": true
+    },
+    {
+      "name": "rozvidrought_subsystems",
+      "is_package": true
+    }
+  ]
+}

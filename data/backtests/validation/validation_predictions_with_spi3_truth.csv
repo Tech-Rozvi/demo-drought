@@ -1,0 +1,101 @@
+adm1_name,adm2_name,adm2_code,pixel_count,yyyymm,scenario,model,status,cells_inferred,mean_confidence,dominant_class,elapsed_seconds,error,truth_status,spi3_truth_class,spi3_truth_label,spi3_valid_pixels,spi3_class_counts,model_severity,comparison
+Mashonaland Central,Bindura,33060,96,202310,historical,hybrid,success,96,0.4678639319414894,severe,139.77,,success,0,normal,96,{0: np.int64(96)},2,overestimated
+Mashonaland Central,Bindura,33060,96,202311,historical,hybrid,success,96,0.9057021588087082,normal,142.45,,success,0,normal,96,{0: np.int64(96)},0,matched
+Mashonaland Central,Bindura,33060,96,202312,historical,hybrid,success,96,0.9697127137333156,normal,142.77,,success,0,normal,96,{0: np.int64(96)},0,matched
+Mashonaland Central,Bindura,33060,96,202401,historical,hybrid,success,96,0.9873292713115612,normal,174.62,,success,0,normal,96,"{0: np.int64(49), 1: np.int64(44), 2: np.int64(3)}",0,matched
+Mashonaland Central,Bindura,33060,96,202402,historical,hybrid,success,96,0.9956311012307802,normal,185.08,,success,1,moderate,96,"{1: np.int64(59), 2: np.int64(37)}",0,underestimated
+Mashonaland Central,Bindura,33060,96,202403,historical,hybrid,success,96,0.9980733320116996,normal,181.03,,success,2,severe,96,"{2: np.int64(58), 3: np.int64(38)}",0,underestimated
+Mashonaland Central,Bindura,33060,96,202404,historical,hybrid,success,96,0.9841308351606132,normal,189.76,,success,3,extreme,96,{3: np.int64(96)},0,underestimated
+Mashonaland Central,Bindura,33060,96,202207,historical,hybrid,success,96,0.9763575127969184,severe,189.84,,success,0,normal,96,"{0: np.int64(49), 1: np.int64(19), 2: np.int64(28)}",2,overestimated
+Mashonaland Central,Bindura,33060,96,202208,historical,hybrid,success,96,0.9800415839999914,severe,197.17,,success,0,normal,96,{0: np.int64(96)},2,overestimated
+Mashonaland Central,Bindura,33060,96,202209,historical,hybrid,success,96,0.9897787508865198,severe,198.97,,success,1,moderate,96,"{0: np.int64(15), 1: np.int64(42), 2: np.int64(25), 3: np.int64(14)}",2,overestimated
+Mashonaland Central,Rushinga,33065,97,202310,historical,hybrid,success,97,0.89491836373339,severe,203.35,,success,0,normal,97,{0: np.int64(97)},2,overestimated
+Mashonaland Central,Rushinga,33065,97,202311,historical,hybrid,success,97,0.6307414333844922,normal,193.01,,success,1,moderate,97,"{0: np.int64(44), 1: np.int64(50), 2: np.int64(3)}",0,underestimated
+Mashonaland Central,Rushinga,33065,97,202312,historical,hybrid,success,97,0.963034431958936,normal,199.73,,success,0,normal,97,{0: np.int64(97)},0,matched
+Mashonaland Central,Rushinga,33065,97,202401,historical,hybrid,success,97,0.9872390547978508,normal,192.95,,success,0,normal,97,"{0: np.int64(93), 1: np.int64(4)}",0,matched
+Mashonaland Central,Rushinga,33065,97,202402,historical,hybrid,success,97,0.9960596069847184,normal,208.84,,success,1,moderate,97,"{0: np.int64(42), 1: np.int64(54), 2: np.int64(1)}",0,underestimated
+Mashonaland Central,Rushinga,33065,97,202403,historical,hybrid,success,97,0.9835272240884524,normal,198.01,,success,1,moderate,97,"{0: np.int64(14), 1: np.int64(78), 2: np.int64(5)}",0,underestimated
+Mashonaland Central,Rushinga,33065,97,202404,historical,hybrid,success,97,0.8920205960568693,normal,190.27,,success,2,severe,97,"{1: np.int64(32), 2: np.int64(46), 3: np.int64(19)}",0,underestimated
+Mashonaland Central,Rushinga,33065,97,202207,historical,hybrid,success,97,0.9905400835361676,severe,203.01,,success,0,normal,97,{0: np.int64(97)},2,overestimated
+Mashonaland Central,Rushinga,33065,97,202208,historical,hybrid,success,97,0.9612994624167374,severe,191.18,,success,0,normal,97,{0: np.int64(97)},2,overestimated
+Mashonaland Central,Rushinga,33065,97,202209,historical,hybrid,success,97,0.9918665142403436,severe,178.35,,success,0,normal,97,"{0: np.int64(94), 1: np.int64(3)}",2,overestimated
+Midlands,Zvishavane,33107,105,202310,historical,hybrid,success,105,0.3885402046498798,severe,165.01,,success,0,normal,105,{0: np.int64(105)},2,overestimated
+Midlands,Zvishavane,33107,105,202311,historical,hybrid,success,105,0.8111680774461656,normal,163.97,,success,0,normal,105,{0: np.int64(105)},0,matched
+Midlands,Zvishavane,33107,105,202312,historical,hybrid,success,105,0.9473506291707356,normal,164.3,,success,0,normal,105,{0: np.int64(105)},0,matched
+Midlands,Zvishavane,33107,105,202401,historical,hybrid,success,105,0.9831779394830976,normal,165.1,,success,0,normal,105,{0: np.int64(105)},0,matched
+Midlands,Zvishavane,33107,105,202402,historical,hybrid,success,105,0.9953821193604242,normal,164.74,,success,0,normal,105,{0: np.int64(105)},0,matched
+Midlands,Zvishavane,33107,105,202403,historical,hybrid,success,105,0.9980585552397228,normal,171.15,,success,2,severe,105,"{1: np.int64(37), 2: np.int64(68)}",0,underestimated
+Midlands,Zvishavane,33107,105,202404,historical,hybrid,success,105,0.9939945022265116,normal,290.52,,success,2,severe,105,"{1: np.int64(29), 2: np.int64(76)}",0,underestimated
+Midlands,Zvishavane,33107,105,202207,historical,hybrid,success,105,0.9714482596942356,severe,379.53,,success,0,normal,105,"{0: np.int64(103), 1: np.int64(2)}",2,overestimated
+Midlands,Zvishavane,33107,105,202208,historical,hybrid,success,105,0.9877765706607272,severe,372.83,,success,0,normal,105,"{0: np.int64(103), 1: np.int64(2)}",2,overestimated
+Midlands,Zvishavane,33107,105,202209,historical,hybrid,success,105,0.9901749644960676,severe,157.97,,success,0,normal,105,"{0: np.int64(57), 1: np.int64(45), 2: np.int64(3)}",2,overestimated
+Manicaland,Mutasa,33058,107,202310,historical,hybrid,success,107,0.4818732902825435,moderate,251.33,,success,0,normal,107,{0: np.int64(107)},1,overestimated
+Manicaland,Mutasa,33058,107,202311,historical,hybrid,success,107,0.7691049703927798,normal,326.57,,success,0,normal,107,"{0: np.int64(70), 1: np.int64(37)}",0,matched
+Manicaland,Mutasa,33058,107,202312,historical,hybrid,success,107,0.967396096091404,normal,221.76,,success,0,normal,107,{0: np.int64(107)},0,matched
+Manicaland,Mutasa,33058,107,202401,historical,hybrid,success,107,0.982870735854746,normal,184.24,,success,0,normal,107,"{0: np.int64(93), 1: np.int64(14)}",0,matched
+Manicaland,Mutasa,33058,107,202402,historical,hybrid,success,107,0.9904452462062656,normal,326.87,,success,1,moderate,107,"{0: np.int64(7), 1: np.int64(100)}",0,underestimated
+Manicaland,Mutasa,33058,107,202403,historical,hybrid,success,107,0.9846104511590762,normal,325.93,,success,3,extreme,107,"{2: np.int64(53), 3: np.int64(54)}",0,underestimated
+Manicaland,Mutasa,33058,107,202404,historical,hybrid,success,107,0.9695313667582576,normal,324.77,,success,2,severe,107,"{1: np.int64(16), 2: np.int64(64), 3: np.int64(27)}",0,underestimated
+Manicaland,Mutasa,33058,107,202207,historical,hybrid,success,107,0.9912290233317936,severe,323.71,,success,0,normal,107,"{0: np.int64(106), 1: np.int64(1)}",2,overestimated
+Manicaland,Mutasa,33058,107,202208,historical,hybrid,success,107,0.9221494025159104,severe,321.35,,success,0,normal,107,{0: np.int64(107)},2,overestimated
+Manicaland,Mutasa,33058,107,202209,historical,hybrid,success,107,0.993332640032902,severe,326.47,,success,0,normal,107,"{0: np.int64(101), 1: np.int64(6)}",2,overestimated
+Mashonaland East,Hwedza,33068,109,202310,historical,hybrid,success,109,0.4594194057884566,severe,345.51,,success,0,normal,109,{0: np.int64(109)},2,overestimated
+Mashonaland East,Hwedza,33068,109,202311,historical,hybrid,success,109,0.8445999737179607,normal,385.63,,success,0,normal,109,"{0: np.int64(87), 1: np.int64(22)}",0,matched
+Mashonaland East,Hwedza,33068,109,202312,historical,hybrid,success,109,0.9541812429734328,normal,399.94,,success,0,normal,109,{0: np.int64(109)},0,matched
+Mashonaland East,Hwedza,33068,109,202401,historical,hybrid,success,109,0.9872524497705862,normal,399.38,,success,0,normal,109,{0: np.int64(109)},0,matched
+Mashonaland East,Hwedza,33068,109,202402,historical,hybrid,success,109,0.9967043908364184,normal,399.07,,success,0,normal,109,"{0: np.int64(99), 1: np.int64(10)}",0,matched
+Mashonaland East,Hwedza,33068,109,202403,historical,hybrid,success,109,0.9955957061653836,normal,399.07,,success,2,severe,109,"{2: np.int64(107), 3: np.int64(2)}",0,underestimated
+Mashonaland East,Hwedza,33068,109,202404,historical,hybrid,success,109,0.9815261014010928,normal,245.8,,success,2,severe,109,"{1: np.int64(2), 2: np.int64(86), 3: np.int64(21)}",0,underestimated
+Mashonaland East,Hwedza,33068,109,202207,historical,hybrid,success,109,0.9850124738631992,severe,208.94,,success,0,normal,109,"{0: np.int64(108), 1: np.int64(1)}",2,overestimated
+Mashonaland East,Hwedza,33068,109,202208,historical,hybrid,success,109,0.9650351514510058,severe,206.92,,success,0,normal,109,{0: np.int64(109)},2,overestimated
+Mashonaland East,Hwedza,33068,109,202209,historical,hybrid,success,109,0.9923599838116848,severe,206.28,,success,0,normal,109,{0: np.int64(109)},2,overestimated
+Mashonaland East,Seke,33073,112,202310,historical,hybrid,success,112,0.5261455976537296,severe,211.61,,success,0,normal,112,{0: np.int64(112)},2,overestimated
+Mashonaland East,Seke,33073,112,202311,historical,hybrid,success,112,0.675051884991782,normal,210.97,,success,0,normal,112,{0: np.int64(112)},0,matched
+Mashonaland East,Seke,33073,112,202312,historical,hybrid,success,112,0.8911483053650174,normal,210.94,,success,0,normal,112,{0: np.int64(112)},0,matched
+Mashonaland East,Seke,33073,112,202401,historical,hybrid,success,112,0.9793498164841108,normal,212.73,,success,0,normal,112,{0: np.int64(112)},0,matched
+Mashonaland East,Seke,33073,112,202402,historical,hybrid,success,112,0.9965732587235314,normal,211.22,,success,0,normal,112,"{0: np.int64(99), 1: np.int64(13)}",0,matched
+Mashonaland East,Seke,33073,112,202403,historical,hybrid,success,112,0.9953142308763095,normal,211.98,,success,2,severe,112,"{2: np.int64(72), 3: np.int64(40)}",0,underestimated
+Mashonaland East,Seke,33073,112,202404,historical,hybrid,success,112,0.9759239123335908,normal,213.13,,success,3,extreme,112,"{2: np.int64(48), 3: np.int64(64)}",0,underestimated
+Mashonaland East,Seke,33073,112,202207,historical,hybrid,success,112,0.960867019104106,severe,212.76,,success,0,normal,112,"{0: np.int64(42), 1: np.int64(34), 2: np.int64(23), 3: np.int64(13)}",2,overestimated
+Mashonaland East,Seke,33073,112,202208,historical,hybrid,success,112,0.966470703482628,severe,209.11,,success,0,normal,112,{0: np.int64(112)},2,overestimated
+Mashonaland East,Seke,33073,112,202209,historical,hybrid,success,112,0.9910936451384,severe,210.95,,success,0,normal,112,"{0: np.int64(91), 1: np.int64(19), 2: np.int64(2)}",2,overestimated
+Matabeleland South,Umzingwane,33100,118,202310,historical,hybrid,success,118,0.5276342423285468,moderate,224.12,,success,0,normal,118,{0: np.int64(118)},1,overestimated
+Matabeleland South,Umzingwane,33100,118,202311,historical,hybrid,success,118,0.4564112359184329,severe,224.25,,success,0,normal,118,"{0: np.int64(47), 1: np.int64(37), 2: np.int64(22), 3: np.int64(12)}",2,overestimated
+Matabeleland South,Umzingwane,33100,118,202312,historical,hybrid,success,118,0.853183738761029,normal,221.92,,success,0,normal,118,{0: np.int64(118)},0,matched
+Matabeleland South,Umzingwane,33100,118,202401,historical,hybrid,success,118,0.9851863424656756,normal,222.93,,success,0,normal,118,{0: np.int64(118)},0,matched
+Matabeleland South,Umzingwane,33100,118,202402,historical,hybrid,success,118,0.995035334158752,normal,221.52,,success,0,normal,118,"{0: np.int64(110), 1: np.int64(8)}",0,matched
+Matabeleland South,Umzingwane,33100,118,202403,historical,hybrid,success,118,0.9955182181576552,normal,222.39,,success,2,severe,118,"{0: np.int64(1), 1: np.int64(14), 2: np.int64(103)}",0,underestimated
+Matabeleland South,Umzingwane,33100,118,202404,historical,hybrid,success,118,0.991172128309638,normal,222.11,,success,2,severe,118,"{1: np.int64(2), 2: np.int64(116)}",0,underestimated
+Matabeleland South,Umzingwane,33100,118,202207,historical,hybrid,success,118,0.97878967149783,severe,222.6,,success,0,normal,118,"{0: np.int64(59), 1: np.int64(59)}",2,overestimated
+Matabeleland South,Umzingwane,33100,118,202208,historical,hybrid,success,118,0.909669068910308,severe,220.03,,success,0,normal,118,"{0: np.int64(116), 1: np.int64(2)}",2,overestimated
+Matabeleland South,Umzingwane,33100,118,202209,historical,hybrid,success,118,0.980231994794587,severe,235.78,,success,1,moderate,118,"{0: np.int64(1), 1: np.int64(110), 2: np.int64(6), 3: np.int64(1)}",2,overestimated
+Masvingo,Zaka,33087,138,202310,historical,hybrid,success,138,0.4467518189247104,severe,278.59,,success,0,normal,138,{0: np.int64(138)},2,overestimated
+Masvingo,Zaka,33087,138,202311,historical,hybrid,success,138,0.6373529127542523,normal,261.91,,success,0,normal,138,{0: np.int64(138)},0,matched
+Masvingo,Zaka,33087,138,202312,historical,hybrid,success,138,0.9488289541956308,normal,259.82,,success,0,normal,138,{0: np.int64(138)},0,matched
+Masvingo,Zaka,33087,138,202401,historical,hybrid,success,138,0.9881222377652708,normal,259.3,,success,0,normal,138,{0: np.int64(138)},0,matched
+Masvingo,Zaka,33087,138,202402,historical,hybrid,success,138,0.9966969706010128,normal,260.9,,success,0,normal,138,{0: np.int64(138)},0,matched
+Masvingo,Zaka,33087,138,202403,historical,hybrid,success,138,0.9943291186422542,normal,259.46,,success,2,severe,138,"{1: np.int64(7), 2: np.int64(131)}",0,underestimated
+Masvingo,Zaka,33087,138,202404,historical,hybrid,success,138,0.9908742209275564,normal,260.44,,success,1,moderate,138,"{1: np.int64(72), 2: np.int64(61), 3: np.int64(5)}",0,underestimated
+Masvingo,Zaka,33087,138,202207,historical,hybrid,success,138,0.9095898508161738,severe,256.36,,success,0,normal,138,{0: np.int64(138)},2,overestimated
+Masvingo,Zaka,33087,138,202208,historical,hybrid,success,138,0.9744836549828018,severe,259.06,,success,0,normal,138,{0: np.int64(138)},2,overestimated
+Masvingo,Zaka,33087,138,202209,historical,hybrid,success,138,0.9905330676963364,severe,260.15,,success,0,normal,138,"{0: np.int64(133), 1: np.int64(5)}",2,overestimated
+Masvingo,Chivi,33083,154,202310,historical,hybrid,success,154,0.4463182968365681,severe,289.41,,success,0,normal,154,{0: np.int64(154)},2,overestimated
+Masvingo,Chivi,33083,154,202311,historical,hybrid,success,154,0.7353239283933268,normal,356.98,,success,0,normal,154,{0: np.int64(154)},0,matched
+Masvingo,Chivi,33083,154,202312,historical,hybrid,success,154,0.9587231069416194,normal,557.92,,success,0,normal,154,{0: np.int64(154)},0,matched
+Masvingo,Chivi,33083,154,202401,historical,hybrid,success,154,0.9867479507025186,normal,490.64,,success,0,normal,154,{0: np.int64(154)},0,matched
+Masvingo,Chivi,33083,154,202402,historical,hybrid,success,154,0.9965167533267628,normal,541.43,,success,0,normal,154,{0: np.int64(154)},0,matched
+Masvingo,Chivi,33083,154,202403,historical,hybrid,success,154,0.9969886483310104,normal,540.56,,success,2,severe,154,"{1: np.int64(66), 2: np.int64(88)}",0,underestimated
+Masvingo,Chivi,33083,154,202404,historical,hybrid,success,154,0.990603352134878,normal,398.9,,success,1,moderate,154,"{0: np.int64(30), 1: np.int64(74), 2: np.int64(50)}",0,underestimated
+Masvingo,Chivi,33083,154,202207,historical,hybrid,success,154,0.9443821922525184,severe,275.09,,success,0,normal,154,{0: np.int64(154)},2,overestimated
+Masvingo,Chivi,33083,154,202208,historical,hybrid,success,154,0.983161846925686,severe,270.15,,success,0,normal,154,{0: np.int64(154)},2,overestimated
+Masvingo,Chivi,33083,154,202209,historical,hybrid,success,154,0.9903049728313048,severe,270.13,,success,1,moderate,154,"{0: np.int64(71), 1: np.int64(83)}",2,overestimated
+Manicaland,Buhera,33053,230,202310,historical,hybrid,success,230,0.3982440213794294,severe,422.08,,success,0,normal,230,{0: np.int64(230)},2,overestimated
+Manicaland,Buhera,33053,230,202311,historical,hybrid,success,230,0.860751107464666,normal,505.21,,success,0,normal,230,"{0: np.int64(130), 1: np.int64(99), 2: np.int64(1)}",0,matched
+Manicaland,Buhera,33053,230,202312,historical,hybrid,success,230,0.9727065837901572,normal,465.75,,success,0,normal,230,{0: np.int64(230)},0,matched
+Manicaland,Buhera,33053,230,202401,historical,hybrid,success,230,0.9903472690478616,normal,501.74,,success,0,normal,230,{0: np.int64(230)},0,matched
+Manicaland,Buhera,33053,230,202402,historical,hybrid,success,230,0.9963418320469234,normal,479.39,,success,0,normal,230,{0: np.int64(230)},0,matched
+Manicaland,Buhera,33053,230,202403,historical,hybrid,success,230,0.9941152984681336,normal,472.74,,success,2,severe,230,"{1: np.int64(13), 2: np.int64(193), 3: np.int64(24)}",0,underestimated
+Manicaland,Buhera,33053,230,202404,historical,hybrid,success,230,0.974789352779803,normal,485.04,,success,2,severe,230,"{1: np.int64(73), 2: np.int64(140), 3: np.int64(17)}",0,underestimated
+Manicaland,Buhera,33053,230,202207,historical,hybrid,success,230,0.9646660833255104,severe,467.83,,success,0,normal,230,{0: np.int64(230)},2,overestimated
+Manicaland,Buhera,33053,230,202208,historical,hybrid,success,230,0.9787897325080374,severe,465.56,,success,0,normal,230,{0: np.int64(230)},2,overestimated
+Manicaland,Buhera,33053,230,202209,historical,hybrid,success,230,0.9906964068827422,severe,473.56,,success,0,normal,230,"{0: np.int64(217), 1: np.int64(13)}",2,overestimated

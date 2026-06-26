@@ -1,0 +1,23 @@
+{
+  "schema_name": "model_aligned_spi3_4class",
+  "nodata": -1,
+  "classes": {
+    "0": {
+      "name": "no_drought",
+      "rule": "SPI > -0.5"
+    },
+    "1": {
+      "name": "mild_drought",
+      "rule": "-1.0 < SPI <= -0.5"
+    },
+    "2": {
+      "name": "moderate_drought",
+      "rule": "-1.5 < SPI <= -1.0"
+    },
+    "3": {
+      "name": "severe_or_worse",
+      "rule": "SPI <= -1.5"
+    }
+  },
+  "reason": "Validation truth aligned to operational SPI3 fusion model, which uses observed classes [0,1,2,3]. Extreme SPI3 class 4 was empty in the usable fusion training dataset."
+}

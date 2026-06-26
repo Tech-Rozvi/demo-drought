@@ -1,0 +1,276 @@
+{
+  "rozvidrought": {
+    "import_ok": true,
+    "package_file": "c:\\Projects\\Infer RozviDrought\\.venv\\Lib\\site-packages\\rozvidrought\\__init__.py",
+    "submodules": [
+      {
+        "name": "rozvidrought.models",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought.models.fusion_hybrid",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought.models.fusion_logit",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought.pipeline.predict",
+        "is_package": false
+      }
+    ],
+    "top_level_functions": [],
+    "top_level_classes": [],
+    "errors": []
+  },
+  "rozvidrought_inputs": {
+    "import_ok": true,
+    "package_file": "c:\\Projects\\Infer RozviDrought\\.venv\\Lib\\site-packages\\rozvidrought_inputs\\__init__.py",
+    "submodules": [
+      {
+        "name": "rozvidrought_inputs.bridge",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.context",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_inputs.context.time_context",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.datasets",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_inputs.datasets.standardize",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.extract",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_inputs.features",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_inputs.features.temporal",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.io",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_inputs.io.loaders",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.pipeline",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.pipeline_full",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.prepare",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_inputs.prepare.atmospheric",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.prepare.feature_lists",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.prepare.hooks",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.prepare.hydrology",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.prepare.soil",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.prepare.vegetation",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.sources",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_inputs.sources.canonical",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.sources.mappings",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.sources.prepare_raw",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_inputs.validate",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_inputs.validate.schema",
+        "is_package": false
+      }
+    ],
+    "top_level_functions": [
+      {
+        "name": "prepare_from_raw",
+        "signature": "(atmospheric_df: pandas.DataFrame | None = None, soil_df: pandas.DataFrame | None = None, vegetation_df: pandas.DataFrame | None = None, hydrology_df: pandas.DataFrame | None = None, run_yyyymm: int | None = None) -> dict[str, pandas.DataFrame]"
+      },
+      {
+        "name": "prepare_subsystem_inputs",
+        "signature": "(atmospheric_df: pandas.DataFrame | None = None, soil_df: pandas.DataFrame | None = None, vegetation_df: pandas.DataFrame | None = None, hydrology_df: pandas.DataFrame | None = None) -> dict[str, pandas.DataFrame]"
+      }
+    ],
+    "top_level_classes": [],
+    "errors": []
+  },
+  "rozvidrought_subsystems": {
+    "import_ok": true,
+    "package_file": "c:\\Projects\\Infer RozviDrought\\.venv\\Lib\\site-packages\\rozvidrought_subsystems\\__init__.py",
+    "submodules": [
+      {
+        "name": "rozvidrought_subsystems.api",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.artifacts",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_subsystems.artifacts.io",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.artifacts.paths",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.artifacts.registry",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_subsystems.artifacts.registry.registry",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.artifacts.validator",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.hydrology_pipeline",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.hydrology_windows",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.loaders",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_subsystems.loaders.model_loader",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.loaders.subsystem_loader",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.manifests",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_subsystems.manifests.features",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.manifests.resolver",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.manifests.runtime_registry",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.pipeline",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_subsystems.subsystems",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_subsystems.subsystems.atmospheric",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_subsystems.subsystems.hydrology",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_subsystems.subsystems.soil",
+        "is_package": true
+      },
+      {
+        "name": "rozvidrought_subsystems.subsystems.vegetation",
+        "is_package": true
+      }
+    ],
+    "top_level_functions": [
+      {
+        "name": "predict_atmospheric_proba",
+        "signature": "(X: 'pd.DataFrame') -> 'pd.DataFrame'"
+      },
+      {
+        "name": "predict_hydrology_proba_df",
+        "signature": "(df: 'pd.DataFrame', pixel_col: 'str' = 'pixel_key', time_col: 'str' = 'yyyymm') -> 'pd.DataFrame'"
+      },
+      {
+        "name": "predict_soil_proba",
+        "signature": "(X: 'pd.DataFrame') -> 'pd.DataFrame'"
+      },
+      {
+        "name": "predict_vegetation_proba",
+        "signature": "(X: 'pd.DataFrame') -> 'pd.DataFrame'"
+      }
+    ],
+    "top_level_classes": [],
+    "errors": []
+  },
+  "rozvidrought_datasets": {
+    "import_ok": true,
+    "package_file": "c:\\Projects\\Infer RozviDrought\\.venv\\Lib\\site-packages\\rozvidrought_datasets\\__init__.py",
+    "submodules": [
+      {
+        "name": "rozvidrought_datasets.locator.multipolygons",
+        "is_package": false
+      },
+      {
+        "name": "rozvidrought_datasets.locator.polygons",
+        "is_package": false
+      }
+    ],
+    "top_level_functions": [],
+    "top_level_classes": [],
+    "errors": []
+  }
+}

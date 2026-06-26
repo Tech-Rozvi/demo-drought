@@ -1,0 +1,6 @@
+adm1_name,adm2_name,matched,overestimated,underestimated,missing,total,match_rate
+Manicaland,Buhera,3.0,1.0,3.0,0,7.0,0.42857142857142855
+Masvingo,Chivi,4.0,1.0,2.0,0,7.0,0.5714285714285714
+Masvingo,Mwenezi,4.0,1.0,2.0,0,7.0,0.5714285714285714
+Matabeleland South,Beitbridge,3.0,1.0,3.0,0,7.0,0.42857142857142855
+Matabeleland South,Gwanda,4.0,0.0,3.0,0,7.0,0.5714285714285714

@@ -1,0 +1,5 @@
+lag_months,rows,matched,overestimated,underestimated,accuracy
+0,100,34,41,25,0.34
+1,80,26,30,24,0.325
+2,60,15,21,24,0.25
+3,40,6,11,23,0.15

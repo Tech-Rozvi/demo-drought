@@ -1,0 +1,101 @@
+adm1_name,adm2_name,adm2_code,pixel_count,yyyymm,scenario,model
+Mashonaland Central,Bindura,33060,96,202310,historical,hybrid
+Mashonaland Central,Bindura,33060,96,202311,historical,hybrid
+Mashonaland Central,Bindura,33060,96,202312,historical,hybrid
+Mashonaland Central,Bindura,33060,96,202401,historical,hybrid
+Mashonaland Central,Bindura,33060,96,202402,historical,hybrid
+Mashonaland Central,Bindura,33060,96,202403,historical,hybrid
+Mashonaland Central,Bindura,33060,96,202404,historical,hybrid
+Mashonaland Central,Bindura,33060,96,202207,historical,hybrid
+Mashonaland Central,Bindura,33060,96,202208,historical,hybrid
+Mashonaland Central,Bindura,33060,96,202209,historical,hybrid
+Mashonaland Central,Rushinga,33065,97,202310,historical,hybrid
+Mashonaland Central,Rushinga,33065,97,202311,historical,hybrid
+Mashonaland Central,Rushinga,33065,97,202312,historical,hybrid
+Mashonaland Central,Rushinga,33065,97,202401,historical,hybrid
+Mashonaland Central,Rushinga,33065,97,202402,historical,hybrid
+Mashonaland Central,Rushinga,33065,97,202403,historical,hybrid
+Mashonaland Central,Rushinga,33065,97,202404,historical,hybrid
+Mashonaland Central,Rushinga,33065,97,202207,historical,hybrid
+Mashonaland Central,Rushinga,33065,97,202208,historical,hybrid
+Mashonaland Central,Rushinga,33065,97,202209,historical,hybrid
+Midlands,Zvishavane,33107,105,202310,historical,hybrid
+Midlands,Zvishavane,33107,105,202311,historical,hybrid
+Midlands,Zvishavane,33107,105,202312,historical,hybrid
+Midlands,Zvishavane,33107,105,202401,historical,hybrid
+Midlands,Zvishavane,33107,105,202402,historical,hybrid
+Midlands,Zvishavane,33107,105,202403,historical,hybrid
+Midlands,Zvishavane,33107,105,202404,historical,hybrid
+Midlands,Zvishavane,33107,105,202207,historical,hybrid
+Midlands,Zvishavane,33107,105,202208,historical,hybrid
+Midlands,Zvishavane,33107,105,202209,historical,hybrid
+Manicaland,Mutasa,33058,107,202310,historical,hybrid
+Manicaland,Mutasa,33058,107,202311,historical,hybrid
+Manicaland,Mutasa,33058,107,202312,historical,hybrid
+Manicaland,Mutasa,33058,107,202401,historical,hybrid
+Manicaland,Mutasa,33058,107,202402,historical,hybrid
+Manicaland,Mutasa,33058,107,202403,historical,hybrid
+Manicaland,Mutasa,33058,107,202404,historical,hybrid
+Manicaland,Mutasa,33058,107,202207,historical,hybrid
+Manicaland,Mutasa,33058,107,202208,historical,hybrid
+Manicaland,Mutasa,33058,107,202209,historical,hybrid
+Mashonaland East,Hwedza,33068,109,202310,historical,hybrid
+Mashonaland East,Hwedza,33068,109,202311,historical,hybrid
+Mashonaland East,Hwedza,33068,109,202312,historical,hybrid
+Mashonaland East,Hwedza,33068,109,202401,historical,hybrid
+Mashonaland East,Hwedza,33068,109,202402,historical,hybrid
+Mashonaland East,Hwedza,33068,109,202403,historical,hybrid
+Mashonaland East,Hwedza,33068,109,202404,historical,hybrid
+Mashonaland East,Hwedza,33068,109,202207,historical,hybrid
+Mashonaland East,Hwedza,33068,109,202208,historical,hybrid
+Mashonaland East,Hwedza,33068,109,202209,historical,hybrid
+Mashonaland East,Seke,33073,112,202310,historical,hybrid
+Mashonaland East,Seke,33073,112,202311,historical,hybrid
+Mashonaland East,Seke,33073,112,202312,historical,hybrid
+Mashonaland East,Seke,33073,112,202401,historical,hybrid
+Mashonaland East,Seke,33073,112,202402,historical,hybrid
+Mashonaland East,Seke,33073,112,202403,historical,hybrid
+Mashonaland East,Seke,33073,112,202404,historical,hybrid
+Mashonaland East,Seke,33073,112,202207,historical,hybrid
+Mashonaland East,Seke,33073,112,202208,historical,hybrid
+Mashonaland East,Seke,33073,112,202209,historical,hybrid
+Matabeleland South,Umzingwane,33100,118,202310,historical,hybrid
+Matabeleland South,Umzingwane,33100,118,202311,historical,hybrid
+Matabeleland South,Umzingwane,33100,118,202312,historical,hybrid
+Matabeleland South,Umzingwane,33100,118,202401,historical,hybrid
+Matabeleland South,Umzingwane,33100,118,202402,historical,hybrid
+Matabeleland South,Umzingwane,33100,118,202403,historical,hybrid
+Matabeleland South,Umzingwane,33100,118,202404,historical,hybrid
+Matabeleland South,Umzingwane,33100,118,202207,historical,hybrid
+Matabeleland South,Umzingwane,33100,118,202208,historical,hybrid
+Matabeleland South,Umzingwane,33100,118,202209,historical,hybrid
+Masvingo,Zaka,33087,138,202310,historical,hybrid
+Masvingo,Zaka,33087,138,202311,historical,hybrid
+Masvingo,Zaka,33087,138,202312,historical,hybrid
+Masvingo,Zaka,33087,138,202401,historical,hybrid
+Masvingo,Zaka,33087,138,202402,historical,hybrid
+Masvingo,Zaka,33087,138,202403,historical,hybrid
+Masvingo,Zaka,33087,138,202404,historical,hybrid
+Masvingo,Zaka,33087,138,202207,historical,hybrid
+Masvingo,Zaka,33087,138,202208,historical,hybrid
+Masvingo,Zaka,33087,138,202209,historical,hybrid
+Masvingo,Chivi,33083,154,202310,historical,hybrid
+Masvingo,Chivi,33083,154,202311,historical,hybrid
+Masvingo,Chivi,33083,154,202312,historical,hybrid
+Masvingo,Chivi,33083,154,202401,historical,hybrid
+Masvingo,Chivi,33083,154,202402,historical,hybrid
+Masvingo,Chivi,33083,154,202403,historical,hybrid
+Masvingo,Chivi,33083,154,202404,historical,hybrid
+Masvingo,Chivi,33083,154,202207,historical,hybrid
+Masvingo,Chivi,33083,154,202208,historical,hybrid
+Masvingo,Chivi,33083,154,202209,historical,hybrid
+Manicaland,Buhera,33053,230,202310,historical,hybrid
+Manicaland,Buhera,33053,230,202311,historical,hybrid
+Manicaland,Buhera,33053,230,202312,historical,hybrid
+Manicaland,Buhera,33053,230,202401,historical,hybrid
+Manicaland,Buhera,33053,230,202402,historical,hybrid
+Manicaland,Buhera,33053,230,202403,historical,hybrid
+Manicaland,Buhera,33053,230,202404,historical,hybrid
+Manicaland,Buhera,33053,230,202207,historical,hybrid
+Manicaland,Buhera,33053,230,202208,historical,hybrid
+Manicaland,Buhera,33053,230,202209,historical,hybrid
