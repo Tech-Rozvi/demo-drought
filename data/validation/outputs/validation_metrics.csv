@@ -1,0 +1,10 @@
+metric,value
+Pearson r,-0.3033784226526096
+Spearman rho,-0.5
+Kendall tau,-0.33333333333333337
+MAE,2.547555970536363
+RMSE,2.840562043519393
+R2,-4.187081036267688
+Rank accuracy (%),0.0
+Top-event accuracy,0.0
+Weakest-event accuracy,0.0

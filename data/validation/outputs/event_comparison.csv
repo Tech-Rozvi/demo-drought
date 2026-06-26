@@ -1,0 +1,18 @@
+event_key,excel_event_id,event_period_raw,duration_months,excel_severity_score,excel_severity_label,event_start_yyyymm,event_end_yyyymm,event_month_count,rozvidrought_mean_class,rozvidrought_mean_confidence,rozvidrought_mean_p3,validated
+zimbabwe_1902_1903,1,1902–1903,12,2,2 – Moderate,190210,190309,12,,,,False
+zimbabwe_1911_1912,2,1911–1912,10,2,2 – Moderate,191110,191207,10,,,,False
+zimbabwe_1921_1922,3,1921–1922,10,2,2 – Moderate,192110,192207,10,,,,False
+zimbabwe_1932_1933,4,1932–1933,12,3,3 – Severe,193210,193309,12,,,,False
+zimbabwe_1946_1947,5,1946–1947,11,3,3 – Severe,194610,194708,11,,,,False
+zimbabwe_1967_1968,6,1967–1968,10,2,2 – Moderate,196710,196807,10,,,,False
+zimbabwe_1972_1973,7,1972–1973,11,3,3 – Severe,197210,197308,11,,,,False
+zimbabwe_1982_1984,8,1982–1984,24,3,3 – Severe,198210,198409,24,,,,False
+zimbabwe_1986_1987,9,1986–1987,10,2,2 – Moderate,198610,198707,10,,,,False
+zimbabwe_1991_1992,10,1991–1992,12,5,5 – Catastrophic,199110,199209,12,,,,False
+zimbabwe_1994_1995,11,1994–1995,10,3,3 – Severe,199410,199507,10,,,,False
+zimbabwe_1997_1998,12,1997–1998,12,2,2 – Moderate,199710,199809,12,,,,False
+zimbabwe_2001_2002,13,2001–2002,18,4,4 – Extreme,200110,200303,18,,,,False
+zimbabwe_2012_2013,14,2012–2013,8,2,2 – Moderate,201210,201305,8,,,,False
+zimbabwe_2015_2016,15,2015–2016,12,4,4 – Extreme,201510,201609,12,0.1557572362278244,0.9441106485162908,0.0031468158392301,True
+zimbabwe_2018_2019,16,2018–2019,8,2,2 – Moderate,201810,201905,8,0.1180578898225957,0.954124759014915,0.0009366564697257,True
+zimbabwe_2023_2024,17,2023–2024,12,5,5 – Catastrophic,202310,202409,12,0.0835169623404917,0.9566782251570852,0.0002804721971188,True

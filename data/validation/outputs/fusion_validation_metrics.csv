@@ -1,0 +1,10 @@
+Metric,Value
+Pearson correlation,0.21754787520324348
+Spearman correlation,0.5
+Kendall Tau,0.33333333333333337
+MAE,1.4251055477226806
+RMSE,1.8345024426368186
+R²,-1.1634709220260064
+Rank accuracy (%),33.33333333333333
+Top event accuracy,0.0
+Weakest event accuracy,1.0

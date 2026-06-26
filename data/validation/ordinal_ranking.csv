@@ -1,0 +1,2 @@
+event_count,ordinal_rank_correlation,interpretation,scale_handling
+3,0.5,Descriptive only; three source-backed events; not a calibrated score-accuracy metric.,Excel severity retained as 1–5 and model expected class retained as 0–4. No forced numerical mapping.
